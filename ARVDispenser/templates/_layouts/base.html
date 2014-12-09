@@ -1,0 +1,1790 @@
+    <!DOCTYPE html>
+    <html lang="en">
+
+    <head>
+
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="description" content="">
+        <meta name="author" content="">
+
+        <title>{% block page_title %}ARV Dispenser{% endblock %} </title>
+
+        <!-- Bootstrap Core CSS -->
+        <link href="{{STATIC_URL}}css/bootstrap.min.css" rel="stylesheet">
+
+        <!-- Jquery UI CSS -->
+        <link href="{{STATIC_URL}}css/jquery-ui.min.css" rel="stylesheet">
+
+        <!-- Jquery UI Structure CSS -->
+        <link href="{{STATIC_URL}}css/jquery-ui.structure.min.css" rel="stylesheet">
+
+        <!-- Jquery UI Theme CSS -->
+        <link href="{{STATIC_URL}}css/jquery-ui.theme.min.css" rel="stylesheet">
+
+        <!-- MetisMenu CSS -->
+        <link href="{{STATIC_URL}}css/plugins/metisMenu/metisMenu.min.css" rel="stylesheet">
+
+        <!-- Chosen CSS -->
+        <link href="{{STATIC_URL}}css/plugins/chosen.min.css" rel="stylesheet">
+
+        <!-- Custom CSS -->
+        <link href="{{STATIC_URL}}css/sb-admin-2.css" rel="stylesheet">
+
+        <!-- DataTables CSS -->
+        <link href="{{STATIC_URL}}css/plugins/dataTables.bootstrap.css" rel="stylesheet">
+
+        
+
+        <!-- Custom Fonts -->
+        <link href="{{STATIC_URL}}font-awesome-4.1.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+        <link rel="shortcut icon" href="{{ STATIC_URL }}img/favicon/favicon.ico">
+
+        <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+        <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+</head>
+
+<body>
+
+    <div id="wrapper">
+
+        <!-- Navigation -->
+        <nav class="navbar navbar-default navbar-static-top navbar-fixed-top" role="navigation" style="margin-bottom: 0">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="/"><img src="{{ STATIC_URL }}img/favicon/favicon.ico"/> ARV Dispenser</a>
+            </div>
+            <!-- /.navbar-header -->
+
+            <ul class="nav navbar-top-links navbar-right">
+
+
+                <!-- /.dropdown -->
+                <li class="dropdown">
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                        <i class="fa fa-user fa-fw"></i>  <i class="fa fa-caret-down"></i>
+                    </a>
+                    <ul class="dropdown-menu dropdown-user">
+                        <li><a href="#"><i class="fa fa-user fa-fw"></i> User Profile</a>
+                        </li>
+                        <li><a href="/settings/"><i class="fa fa-gear fa-fw"></i> Settings</a>
+                        </li>
+                        <li class="divider"></li>
+                        <li><a href="/logout/"><i class="fa fa-sign-out fa-fw"></i> Logout</a>
+                        </li>
+                    </ul>
+                    <!-- /.dropdown-user -->
+                </li>
+                <!-- /.dropdown -->
+            </ul>
+            <!-- /.navbar-top-links -->
+
+            <div class="navbar-default sidebar" role="navigation">
+                <div class="sidebar-nav navbar-collapse">
+                    <ul class="nav" id="side-menu">
+
+                        <li>
+                            <a href="/"><i class="fa fa-university"></i>   Home</a>
+                        </li>
+                        <li>
+                            <a href="/patients/registration"><i class="glyphicon glyphicon-user"></i>   New Patient</a>
+                        </li>
+                        <li>
+                            <a href="#"><i class="glyphicon glyphicon-upload"></i>   Drugs Management</a>
+                            <ul class="nav nav-second-level">
+                                <li>
+                                    <a href="/drugs/registered-drugs">Registered Drugs</a>
+                                </li>
+                                <li>
+                                    <a href="/drugs/registration">New Drug Registration</a>
+                                </li>
+                                <li>
+                                    <a href="/drugs/transactions/new-transaction">Receive Or Issue Medicine</a>
+                                    <!--/drugs/transactions/new-transaction-->
+                                </li>
+                                
+
+                            </ul>
+                        </li>
+
+                        <li>
+                            <a href="#"><i class="fa fa-bullseye"></i>   Regimen Management</a>
+                            <ul class="nav nav-second-level">
+                                <li>
+                                    <a href="/regimen/registered_regimen">Registered Regimen</a>
+                                </li>
+                                <li>
+                                    <a href="/regimen/new-regimen/">New Regimen</a>
+                                </li>
+
+                                
+
+                            </ul>
+                        </li>
+                        
+                        <li>
+                            <a href="#"><i class="glyphicon glyphicon-th"></i>   View Bin Cards</a>
+                        </li>
+                        <li>
+                            <a href="#"><i class="glyphicon glyphicon-th-list"></i>   View Daily Drug Consumption</a>
+                        </li>
+                        
+
+
+
+                    </ul>
+                    <div class="calendar">
+                            <strong class = "calendar_heading"><em>Calendar:</em></strong><div id="calendar_dtp"></div>
+                        </div>
+                </div>
+                <!-- /.sidebar-collapse -->
+            </div>
+            <!-- /.navbar-static-side -->
+        </nav>
+        <!-- Page Content -->
+        <div id="page-wrapper">
+            <div class="row">
+                <div class="col-lg-12 col-md-12 main">
+                    <a href="">
+                        <h1 class="page-header">{% block page_name%}{% endblock page_name%}</h1>
+
+                    </a>
+
+                </div>
+                <!-- /.col-lg-12 -->
+            </div>
+            <!-- /.row -->
+            <div class="row content">
+                <div class="col-lg-12 col-md-12">
+                    {% if messages %}
+                    <ul class="messages msg">
+                        {% for message in messages %}
+                        <li{% if message.tags %} class="alert alert-{{ message.tags }}"{% endif %}>
+                        <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                        {{ message }}</li>
+                        {% endfor %}
+                    </ul>
+                    {% endif %}
+
+
+
+                </div>
+                {% block extra_header_details%}{% endblock extra_header_details%}
+                {% block content%}{% endblock content%}
+                <!--NOTIFICATIONS-->
+                {% block notifications%}
+                
+                {% endblock notifications%}
+                {% block other_info %}{% endblock other_info%}
+            </div>
+
+
+            <!-- /#page-wrapper -->
+
+        </div>
+
+        <div class="footer">
+            <div class="container">
+                <p class="text-muted centred">Copyright &copy; 2014 by KEMRI-CGHR, HISS. All Rights Reserved.</p>
+            </div>
+        </div>
+
+    </div>
+    <!-- /#wrapper -->
+
+    <!-- jQuery Version 1.11.0 -->
+    <script src="{{STATIC_URL}}js/jquery-1.11.0.min.js"></script>
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="{{STATIC_URL}}js/bootstrap.min.js"></script>
+
+    <!-- Metis Menu Plugin JavaScript -->
+    <script src="{{STATIC_URL}}js/plugins/metisMenu/metisMenu.min.js"></script>
+
+    <!-- DataTables JavaScript -->
+    <script src="{{STATIC_URL}}js/plugins/dataTables/jquery.dataTables.min.js"></script>
+    <script src="{{STATIC_URL}}js/plugins/dataTables/dataTables.bootstrap.js"></script>
+
+    <!-- Metis Menu Plugin JavaScript -->
+    <script src="{{STATIC_URL}}js/plugins/metisMenu/metisMenu.min.js"></script>
+
+    <!-- Custom Theme JavaScript -->
+    <script src="{{STATIC_URL}}js/jquery-ui.min.js"></script>
+
+    <!-- Bootbox Plugin JavaScript for handling modals -->
+    <script src="{{STATIC_URL}}js/plugins/bootbox.min.js"></script>
+
+    <!-- Custom Theme JavaScript -->
+    <script src="{{STATIC_URL}}js/sb-admin-2.js"></script>
+
+    <!-- Datejs Library -->
+    <script src="{{STATIC_URL}}js/plugins/date.js"></script>
+
+    <!-- Formset Library -->
+    <script src="{{STATIC_URL}}js/plugins/jquery.formset.min.js"></script>
+
+    <!-- Masking Library -->
+    <script src="{{STATIC_URL}}js/plugins/jquery.mask.js"></script>
+
+    <script>
+      $(function() {
+        $( document ).tooltip();
+    });
+
+      $('#formset tbody tr').formset();
+</script>
+
+<!-- Page-Level Demo Scripts - Tables - Use for reference -->
+<script>
+    $(document).ready(function() {
+        $('#dataTables-example').dataTable();
+
+        
+    });
+</script>
+
+<script>
+    $(function() {
+        $( ".datepicker" ).datepicker({
+            dateFormat: "mm/dd/yy",
+            showAnim:"drop"
+        });
+// Since confModal is essentially a nested modal it's enforceFocus method
+// must be no-op'd or the following error results 
+// "Uncaught RangeError: Maximum call stack size exceeded"
+// But then when the nested modal is hidden we reset modal.enforceFocus
+
+
+$.fn.modal.Constructor.prototype.enforceFocus = function() {};
+
+
+});
+    
+</script>
+<script type="text/javascript">
+$(function() {
+    
+
+    getCookie = function(name) {
+            var cookieValue = null;
+            if (document.cookie && document.cookie != '') {
+                var cookies = document.cookie.split(';');
+                for (var i = 0; i < cookies.length; i++) {
+                    var cookie = jQuery.trim(cookies[i]);
+                    // Does this cookie string begin with the name we want?
+                    if (cookie.substring(0, name.length + 1) == (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+getAllDates = function(name) {
+    var SelectedDates = [];
+    var actualDates=[]
+     $.ajax({
+                      type: "POST",
+                      url: '/get-appointment-dates/',
+                      headers: {"X-CSRFToken": getCookie('csrftoken')},
+                      success: function (data) {
+
+                        
+
+                        var batches = data.batches
+                        if(batches.length > 0)
+                        {
+                            for(var j = 0; j<batches.length; j++)
+                            {
+                                
+                                SelectedDates.push(batches[j]);
+                                
+                            }
+
+                            
+                        }
+
+                        
+                    },
+                    async:   false,
+                    dataType: 'json'
+                });
+            
+
+     
+     return SelectedDates;
+
+}
+    var allDates = getAllDates();
+
+    
+    $('#calendar_dtp').datepicker({
+        dateFormat: "yy-mm-dd",
+    
+        
+
+        beforeShowDay: function(date) {
+            
+        if($.inArray($.datepicker.formatDate('yy-mm-dd', date ), allDates) > -1){
+            return [true,"ui-state-active","Has Booking"];
+        }
+         else{
+            return [true,"",""];
+        }
+    }
+    });
+});
+</script>
+<!--<script>
+    $(function() {
+        var date = new Date();
+        var SelectedDates = [];
+
+        getCookie = function(name) {
+            var cookieValue = null;
+            if (document.cookie && document.cookie != '') {
+                var cookies = document.cookie.split(';');
+                for (var i = 0; i < cookies.length; i++) {
+                    var cookie = jQuery.trim(cookies[i]);
+                    // Does this cookie string begin with the name we want?
+                    if (cookie.substring(0, name.length + 1) == (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+
+        
+        
+        
+
+        $( "#calendar_dtp" ).datepicker({
+           dateFormat: "mm/dd/yy",
+           beforeShowDay: function(date) {
+                    $.ajax({
+                      type: "POST",
+                      url: '/get-appointment-dates/',
+                      headers: {"X-CSRFToken": getCookie('csrftoken')},
+                      success: function (data) {
+
+                        
+
+                        var batches = data.batches
+                        if(batches.length > 0)
+                        {
+                            for(var j = 0; j<batches.length; j++)
+                            {
+                                
+                                SelectedDates.push(new Date(batches[j]));
+                                
+                            }
+
+                            
+                        }
+
+                        
+                    },
+                    async:   false,
+                    dataType: 'json'
+                });
+
+            var Highlight = SelectedDates[date];
+            //console.log(SelectedDates);
+            console.log(Highlight.length);
+            if (Highlight) {
+
+                return [true, "Highlighted", Highlight];
+
+            }
+
+            else {
+
+                return [true, '', ''];
+
+            }
+
+        }
+
+            
+        });
+        
+
+
+});
+    
+</script>-->
+
+<script>
+    $(document).ready(function() {
+        getCookie = function(name) {
+            var cookieValue = null;
+            if (document.cookie && document.cookie != '') {
+                var cookies = document.cookie.split(';');
+                for (var i = 0; i < cookies.length; i++) {
+                    var cookie = jQuery.trim(cookies[i]);
+                    // Does this cookie string begin with the name we want?
+                    if (cookie.substring(0, name.length + 1) == (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+
+        $("#physicalDrugtran").change(function () {
+            $.ajax({
+              type: "POST",
+              url: '/get-drug-unit/',
+              data: "arv=" + $(this).find('option:selected').text(),
+              headers: {"X-CSRFToken": getCookie('csrftoken')},
+              success: function (data) {
+                $("#app").remove();
+                $("#packsize").remove();
+                
+                
+                $("#phys_drug").append($.parseHTML('<div id="app"><p></p><strong><em>Drug Unit:</em><span class="pull-right">' + data.unit+'</span></strong></div>'));
+                $("#app").append($.parseHTML('<div id="packsize"><p></p><strong><em>Pack Size:</em><span class="pull-right" id="packsizeval">' + data.packsize+'</span></strong></div>'));
+                
+
+            },
+            dataType: 'json'
+        });
+            if($("#physicalDrugtran").find('option:selected').text()=='<Select Drug>')
+            {
+              $("#app").remove();
+              $("#packsize").remove(); 
+          }
+          else{
+
+          }
+      });
+
+});
+
+
+</script>
+<script>
+    $(document).ready(function() {
+        getCookie = function(name) {
+            var cookieValue = null;
+            if (document.cookie && document.cookie != '') {
+                var cookies = document.cookie.split(';');
+                for (var i = 0; i < cookies.length; i++) {
+                    var cookie = jQuery.trim(cookies[i]);
+                    // Does this cookie string begin with the name we want?
+                    if (cookie.substring(0, name.length + 1) == (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+
+
+        $('#cccNumber').mask('00000-99');
+
+$("#chkTI").change(function () {
+    if($(this).prop('checked'))
+    {
+       $('#cccNumber').mask('TI-00000-99'); 
+    }
+    else{$('#cccNumber').mask('00000-99');}
+});
+        $("#cccNumber").change(function () {
+            if($("#cccNumber").val() !='')
+            {
+                $.ajax({
+                  type: "POST",
+                  url: '/check_if_CCCNumber_exists/',
+                  data: "ccc=" + $(this).val(),
+                  headers: {"X-CSRFToken": getCookie('csrftoken')},
+                  success: function (data) {
+                    if(data.patient == 'None')
+                    {
+                        $("#cccValidation").remove();
+                        $("#cccnum").removeClass('has-error');
+                    }
+                    else if(data.patient == 'Exists')
+                    {
+                      $("#cccValidation").remove();
+                      $("#cccnum").addClass('has-error');
+                      $("#cccnum").append('<div class="alert alert-danger" id="cccValidation">Patient With This CCC Number Already Exists!</div>');  
+                  }
+
+
+              },
+              dataType: 'json'
+          });
+            }
+            else
+            {
+                $("#cccValidation").remove();
+                $("#cccnum").removeClass('has-error');
+            }
+
+        });
+
+});
+
+
+</script>
+
+<script>
+    $(document).ready(function() {
+
+        $("#days_to_TCA").keyup(function () {
+            $("#tca_datelbl").remove(); 
+
+            var tca = Date.today().addDays($("#days_to_TCA").val()) ;
+
+        //console.log('Other Method '+new Date().getDate()+$("#days_to_TCA").val());
+        if(tca.is().saturday() || tca.is().sunday())
+        {
+            $('#tca_date').append('<div id="tca_datelbl" class = "alert alert-danger">Sorry, '+ tca.toString("M/d/yyyy") +' is a weekend!</div>')   
+        }
+        else
+        {
+            $('#tca_date').append('<div id="tca_datelbl" class = "alert alert-info">Next TCA Date: '+ tca.toString("M/d/yyyy")  +'</div>')
+        }
+
+        $.ajax({
+          type: "GET",
+          url: '/get-patients-booked/' + tca.toString("yyyy-MM-d"),
+          success: function (data) {
+            $(".info").remove();
+            if(data.slots_taken == data.slot_size || data.slots_taken > data.slot_size)
+            {
+                $("#tca_datelbl").append($.parseHTML('<div class ="info"><label class = "text-muted true"><em>Sorry, this date has already reached the maximum possible appointments allowed per day('+ data.slots_taken +')!</em></label></div>'));
+            }
+            else{
+                $("#tca_datelbl").append($.parseHTML('<div class ="info"><label class = "text-muted"><em>Patients Booked On Date: '
+                    + data.slots_taken +' </em></label></div>'));
+            }
+        },
+
+        dataType: 'json'
+    });       
+
+    });
+});
+</script>
+<script>
+
+    $(document).ready(function() {
+
+        if($("#days_to_TCA").length) {
+            $("#tca_datelbl").remove(); 
+
+            var tca = Date.today().addDays($("#days_to_TCA").val()) ;
+
+            //console.log('Other Method '+new Date().getDate()+$("#days_to_TCA").val());
+            if(tca.is().saturday() || tca.is().sunday())
+            {
+                $('#tca_date').append('<div id="tca_datelbl" class = "alert alert-danger">Sorry, '+ tca.toString("M/d/yyyy") +' is a weekend!</div>')   
+            }
+            else
+            {
+                $('#tca_date').append('<div id="tca_datelbl" class = "alert alert-info">Next TCA Date: '+ tca.toString("M/d/yyyy")  +'</div>')
+            }
+            $.ajax({
+              type: "GET",
+              url: '/get-patients-booked/' + tca.toString("yyyy-MM-d"),
+              success: function (data) {
+                $(".info").remove();
+                if(data.slots_taken == data.slot_size || data.slots_taken > data.slot_size){
+                    $("#tca_datelbl").append($.parseHTML('<div class ="info "><label class = "text-muted true"><em>Sorry, this date has already reached the maximum possible appointments allowed per day('+ data.slots_taken +')!</em></label></div>'));
+                }
+                else{
+                    $("#tca_datelbl").append($.parseHTML('<div class ="info"><label class = "text-muted"><em>Patients Booked On Date: '
+                        + data.slots_taken +' </em></label></div>'));
+                }
+            },
+            dataType: 'json'
+        });
+    }
+
+
+
+    });
+</script>
+
+<script>
+    $(document).ready(function() {
+        $("#dose").change(function () {
+         if($(this).find('option:selected').text() == 'Other')
+         {
+            $("#otherDose").removeClass('hidden');
+            
+        }
+        else{$("#otherDose").addClass('hidden');}
+    });
+
+        if($("#dose").find('option:selected').text() == 'Other')
+         {
+            $("#otherDose").removeClass('hidden');
+            
+        }
+        else{$("#otherDose").addClass('hidden');}
+    });
+</script>
+<script>
+    $(document).ready(function() {
+        $(".batchNo").change(function () {
+            $batchNo = $(this);
+            $batchNo.closest("tr").find(".selectedbatch").val( $batchNo.val());
+            });
+        });
+</script>
+<script>
+    
+  $(function() {
+    
+  });
+  
+  </script>
+
+  <script>
+    $(document).ready(function() {
+        $(".drugqty").keyup(function () {
+            
+         if( parseInt($(this).closest("tr").find(".stock_in_batch").html()) < $(this).val())
+         {
+            $("#btnDispense").attr("disabled","disabled");
+            $($(this).closest("tr").find(".arvquantity")).addClass('has-error');
+            $($(this).closest("tr").find(".arvquantity")).attr("title","Qty Dispensed cannot be greater than qty in batch ("+$(this).closest("tr").find(".stock_in_batch").html()+")");
+             
+            
+        }
+        else
+        {
+            $($(this).closest("tr").find(".arvquantity")).removeClass('has-error');
+            $($(this).closest("tr").find(".arvquantity")).removeAttr( "title" );
+            $("#btnDispense").removeAttr("disabled");
+        }
+
+    });
+    });
+</script>
+
+<script>
+    $(document).ready(function() {
+        $("#dispense_reset").click(function () {
+            
+         $(".unit").empty();
+         $(".expiry_date").empty();
+        $(".stock_in_batch").empty();
+
+    });
+    });
+</script>
+<script>
+    $(function() {
+        $(document).on("focus", ".expdate", function(){
+            $(this).datepicker({
+                minDate: new Date,
+                showAnim:"drop"
+            });
+        });
+    });
+</script>
+<script>
+    $(function() {
+        $(document).on("focus", ".transactiondate", function(){
+            $(this).datepicker({
+                minDate: new Date,
+                showAnim:"drop"
+            });
+        });
+
+
+
+    
+    });
+</script>
+<script>
+    $(document).ready(function() {
+        $(".dose").change(function () {
+            
+         if($(this).val()=="")
+         {
+            $($(this).closest("tr").find(".dosage")).addClass('has-error');
+            $($(this).closest("tr").find(".dosage")).attr("title","Dose Must Be Specified!");
+         }
+         else
+         {
+           $($(this).closest("tr").find(".dosage")).removeClass('has-error');
+            $($(this).closest("tr").find(".dosage")).removeAttr("title"); 
+         }
+
+    });
+    });
+</script>
+<script>
+  $(function() {
+    var standard_dosage = [
+        "1/2BD",
+        "1/2OD",
+        "1/2QDS",
+        "1/2TDS",
+        "1BD",
+        "1OD",
+        "1QDS",
+        "1TDS",
+        "2BD",
+        "2OD",
+        "2QDS"
+    ];
+
+    
+    $(document).on('focus', '.dose', function() {
+        $(this).autocomplete({
+          source: standard_dosage,
+          minLength: 0,
+          scroll: true
+        }).autocomplete("search", "");
+    });
+
+    $(document).on('blur', '.dose', function() {
+        $(this).autocomplete('destroy');
+    });
+
+    
+
+    
+    
+  });
+</script>
+
+<script>
+  $(function() {
+    
+    $(document).on('focus', '.reasonforchange', function() {
+            $(this).autocomplete({
+              source: '/get-regimen-change-reasons/',
+              minLength: 0,
+              scroll: true
+            }).autocomplete("search", "");
+        });
+
+  });
+</script>
+
+ 
+<script>
+    
+    $(document).ready(function() {
+        getCookie = function(name) {
+            var cookieValue = null;
+            if (document.cookie && document.cookie != '') {
+                var cookies = document.cookie.split(';');
+                for (var i = 0; i < cookies.length; i++) {
+                    var cookie = jQuery.trim(cookies[i]);
+                    // Does this cookie string begin with the name we want?
+                    if (cookie.substring(0, name.length + 1) == (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+         $( ".add-row" ).addClass("hidden");
+         $( ".delete-row" ).empty();
+         $( ".delete-row" ).append('<i class="fa fa-times"></i>');
+
+          
+
+        $(document).on('focus', '.lastrow', function () {
+                $( ".add-row" ).trigger( "click" );
+                $('.table tbody tr:last').find(".physicalDrug").addClass('lastrow');
+                $('.table tbody tr:last').find(".unit").empty();
+                $('.table tbody tr:last').find(".expiry_date").empty();
+                $('.table tbody tr:last').find(".stock_in_batch").empty();
+                $(this).off("focus").removeClass('lastrow');
+            
+            });
+
+        if($("#physical_drug").length) 
+        {
+            $.ajax({
+                  type: "POST",
+                  url: '/get-drug-unit/',
+                  data: "arv=" + $("#physical_drug").find('option:selected').text(),
+                  headers: {"X-CSRFToken": getCookie('csrftoken')},
+                  success: function (data) {
+                    
+                    $("#unit").empty();
+                    $("#packsize").empty();
+                    $("#phys_drug").append('<div id="unit" style="margin-top:10px;"><strong>Unit:</strong> '+data.unit+'</div>');
+                    $("#unit").append('<div id="packsize" style="margin-top:10px;"><strong>Packsize:</strong> '+data.packsize+'</div>');
+
+                    var batches = data.batches
+                if(batches.length > 0)
+                {
+                    $( "#batch" ).removeClass( "hidden" );
+                    $('#batchNo').find('option').remove();
+                    $('#batchNo')
+                    .append('<option value selected = "selected">Batch No.s</option>');
+
+
+                    for(var j = 0; j<batches.length; j++)
+                    {
+                        $('#batchNo').
+                        append('<option value = '+batches[j] +'>'+batches[j] +'</option>');
+                    }
+                     
+                     $('#batchNo').val($(".selectedbatch").val());
+                }
+                else{
+                    $( "#batchNo" ).addClass( "hidden" );
+                    $( "#lblbatchNo" ).addClass( "hidden" );
+                    $("#packsize").append($.parseHTML('<div id="nobatch" class="alert alert-danger"><p></p><strong><em>This drug has no batch whose quantity is greater than 0. Therefore you can\'t dispense from it!</em></strong></div>'));
+                //$(".form-control").prop('disabled', true);
+            }
+                    
+
+            },
+            dataType: 'json'
+        });
+    }
+
+        $("#physical_drug").change(function () {
+            $.ajax({
+                  type: "POST",
+                  url: '/get-drug-unit/',
+                  data: "arv=" + $("#physical_drug").find('option:selected').text(),
+                  headers: {"X-CSRFToken": getCookie('csrftoken')},
+                  success: function (data) {
+                    
+                    $("#unit").empty();
+                    $("#packsize").empty();
+                    $("#phys_drug").append('<div id="unit" style="margin-top:10px;"><strong>Unit:</strong> '+data.unit+'</div>');
+                    $("#unit").append('<div id="packsize" style="margin-top:10px;"><strong>Packsize:</strong> '+data.packsize+'</div>');
+
+                    var batches = data.batches
+                if(batches.length > 0)
+                {
+                    $( "#batch" ).removeClass( "hidden" );
+                    $('#batchNo').find('option').remove();
+                    $('#batchNo')
+                    .append('<option value selected = "selected">Batch No.s</option>');
+
+
+                    for(var j = 0; j<batches.length; j++)
+                    {
+                        $('#batchNo').
+                        append('<option value = '+batches[j] +'>'+batches[j] +'</option>');
+                    }
+                     
+                     $('.selectedbatch').val($("#batchNo").val());
+                }
+                else{
+                    $( "#batchNo" ).addClass( "hidden" );
+                    $( "#lblbatchNo" ).addClass( "hidden" );
+                    $("#packsize").append($.parseHTML('<div id="nobatch" class="alert alert-danger"><p></p><strong><em>This drug has no batch whose quantity is greater than 0. Therefore you can\'t dispense from it!</em></strong></div>'));
+                    $("#unit").empty();
+                    $("#packsize").empty();
+                //$(".form-control").prop('disabled', true);
+            }
+                    
+
+            },
+            dataType: 'json'
+        }); });
+
+        $(".packs").keyup(function () {
+            
+            
+            $packs = $(this);
+            $packsize = parseInt($packs.closest("tr").find(".packsize").text());
+            
+            $packs.closest("tr").find(".qty").val(parseInt($packs.val()) * $packsize);
+            $packs.closest("tr").find(".qty").attr("title","packsize ("+$packsize+") * packs ("+$packs.val()+")");
+
+        });
+
+
+        $(".physicalDrug").change(function () {
+            
+            
+            $physicalDrug = $(this);
+            
+            $.ajax({
+              type: "POST",
+              url: '/get-drug-unit/',
+              data: "arv=" + $(this).find('option:selected').text(),
+              headers: {"X-CSRFToken": getCookie('csrftoken')},
+              success: function (data) {
+                
+                $physicalDrug.closest("tr").find(".unit").empty();
+                $physicalDrug.closest("tr").find(".expiry_date").empty();
+                $physicalDrug.closest("tr").find(".stock_in_batch").empty();
+                $physicalDrug.closest("tr").find(".btch").find('#no_batch').remove();
+                
+
+                $physicalDrug.closest("tr").find(".unit").append(data.unit);
+
+                if(data.std_dose == "")
+                    {$physicalDrug.closest("tr").find(".dose").val();}
+                else
+                {$physicalDrug.closest("tr").find(".dose").val(data.std_dose);}
+
+                $physicalDrug.closest("tr").find(".dose").val(data.std_dose);
+
+                $physicalDrug.closest("tr").find(".packs_details").append('<div class="hidden packsize" >'+data.packsize+'</div>')
+
+                var batches = data.batches
+                if(batches.length > 0)
+                {
+                    $physicalDrug.closest("tr").find(".btch").removeClass( "danger" );
+                    $physicalDrug.closest("tr").find(".batchNo").removeClass( "hidden" );
+
+                    
+                    $physicalDrug.closest("tr").find(".batchNo").find('option').remove();
+                    $physicalDrug.closest("tr").find(".batchNo").append('<option value selected = "selected">Batch No.s</option>');
+
+
+                    for(var j = 0; j<batches.length; j++)
+                    {
+                        
+                        $physicalDrug.closest("tr").find(".batchNo").append('<option value = '+batches[j] +'>'+batches[j] +'</option>');
+                    }
+                }
+                else{
+                    $physicalDrug.closest("tr").find(".batchNo").addClass( "hidden" );
+                     $physicalDrug.closest("tr").find(".btch").append('<div id="no_batch" class="danger">No Batch!</div>');
+                     $physicalDrug.closest("tr").find(".btch").addClass( "danger" );
+
+            }
+
+        },
+        dataType: 'json'
+    });
+    if($(this).find('option:selected').text()=='<Drugs In Regimen>')
+    {
+     $( "#batchNo" ).addClass( "hidden" );
+     $( "#lblbatchNo" ).addClass( "hidden" );   
+ }
+ else{
+    $( "#batchNo" ).removeClass( "hidden" );
+    $( "#lblbatchNo" ).removeClass( "hidden" );
+}
+});
+if($("#physicalDrug").length)
+{
+    $.ajax({
+              type: "POST",
+              url: '/get-drug-unit/',
+              data: "arv=" + $("#physicalDrug").find('option:selected').text(),
+              headers: {"X-CSRFToken": getCookie('csrftoken')},
+              success: function (data) {
+                $("#app").remove();
+                $("#packsize").remove();
+                $("#nobatch").remove();
+                
+                $("#qty").remove();
+                $("#phys_drug").append($.parseHTML('<div id="app"><p></p><strong><em>Drug Unit:</em><span class="pull-right">' + data.unit+'</span></strong></div>'));
+                $("#app").append($.parseHTML('<div id="packsize"><p></p><strong><em>Pack Size:</em><span class="pull-right" id="packsizeval">' + data.packsize+'</span></strong></div>'));
+                var batches = data.batches
+                if(batches.length > 0)
+                {
+                    $( "#batch" ).removeClass( "hidden" );
+                    $('#batchNo').find('option').remove();
+                    $('#batchNo')
+                    .append('<option value selected = "selected">Batch No.s</option>');
+
+
+                    for(var j = 0; j<batches.length; j++)
+                    {
+                        $('#batchNo').
+                        append('<option value = '+batches[j] +'>'+batches[j] +'</option>');
+                    }
+                     
+                     $('#batchNo').val($("#selectedbatch").val());
+                }
+                else{
+                    $( "#batchNo" ).addClass( "hidden" );
+                    $( "#lblbatchNo" ).addClass( "hidden" );
+                    $("#packsize").append($.parseHTML('<div id="nobatch" class="alert alert-danger"><p></p><strong><em>This drug has no batch whose quantity is greater than 0. Therefore you can\'t dispense from it!</em></strong></div>'));
+                //$(".form-control").prop('disabled', true);
+            }
+
+        },
+        dataType: 'json'
+    });
+    if($("#physicalDrug").find('option:selected').text()=='<Drugs In Regimen>')
+    {
+     $( "#batchNo" ).addClass( "hidden" );
+     $( "#lblbatchNo" ).addClass( "hidden" );   
+ }
+ else{
+    $( "#batchNo" ).removeClass( "hidden" );
+    $( "#lblbatchNo" ).removeClass( "hidden" );
+}
+}
+
+});
+
+
+</script>
+
+<script>
+
+
+   $(document).keypress(function(e) {
+    if(e.which == 13 && $('#search').val() != "") {
+        $('#resultset').find('.gradeX').remove();
+        $('#matches').remove();
+        $('#loadingmessage').show();
+        $.ajax({
+          type: "GET",
+          url: '/search-patient/' 
+          + $('#search').val(),
+          success: function (data) {
+            var patients = data.data;
+            if(data.data == "Sorry, no patient matching this criteria! Create a new patient?" || patients.length == 0 || !data)
+                {   $( "#nopatients" ).remove();
+            $( "#resultset" ).addClass( "hidden" );
+            $( "#filter" ).append($.parseHTML( '<div class = "alert alert-warning" id="nopatients">Sorry, no patient matching this criteria! Create a  <a href="/patients/registration">New Patient</a> ?'));
+                    $('#loadingmessage').hide(); // hide the loading message
+                }
+                else
+                {
+                    $( "#nopatients" ).remove();
+
+                    $("#filter").append('<label id="matches" class = "pull-right">'+patients.length+' Matches Found</label>') 
+                    for(var j = 0; j<patients.length; j++)
+                    {
+                        var patient = patients[j];
+                        var is_active;
+                        if(patient[3].toString() === 'true' && patient[3] != 'undefined')
+                        {
+                           is_active = '<i class="fa fa-check-circle"></i>';
+                       }
+                       else
+                        { is_active ='<i class="fa fa-times"></i>';}
+                    $("#resultset")
+                    .find('tbody')
+                    .append('<tr class="odd gradeX"><td>'+patient[0]+'</td><td>'+patient[1]+'</td><td>'+patient[2]+'</td><td>'+is_active+'</td><td>'+patient[5]+'</td><td><div class="btn-group btn-group-xs">              <button type="button" class="btn btn-primary dropdown-toggle " data-toggle="dropdown">Possible Patient Actions <span class="caret">                 </span></button><ul class="dropdown-menu" role="menu"><li><a class="new-visit" href="/patients/new-visit/'+patient[4]+'/" ><span class="glyphicon glyphicon-plus-sign"></span> Dispense Drugs</a>                             </li>                             <li class="divider"></li><li><a class="new-visit" href="/patients/retrospective-visit/'+patient[4]+'/" ><span class="glyphicon glyphicon-plus-sign"></span> Dispense Drugs Retrospectively</a>                             </li>                             <li class="divider"></li>                                                         <li><a href="/patient-profile/'+patient[4]+'">                             <span class="glyphicon glyphicon-edit"></span> View Patient Profile                             </a>                             </li>                                                         <li class="divider"></li>                             <li><a href="/patients/regimen-change/'+patient[4]+'">                             <i class="glyphicon glyphicon-upload"></i> Change Regimen</a></li>                             </ul> </td></tr>');   
+
+                $('#loadingmessage').hide(); // hide the loading message              
+
+
+                
+            }
+
+            $( "#resultset" ).removeClass( "hidden" );
+        }
+
+
+    },
+    dataType: 'json'
+});
+}
+}); 
+
+</script>
+<script>
+    $(document).ready(function() {
+        $("#btnsearch").click(function () {
+            if( $('#search').val() != "") {
+                $('#resultset').find('.gradeX').remove();
+                $('#matches').remove();
+                $('#loadingmessage').show();
+                $.ajax({
+                  type: "GET",
+                  url: '/search-patient/' 
+                  + $('#search').val(),
+                  success: function (data) {
+                    $('#resultset').find('.gradeX').remove();
+                    if(data.data == "Sorry, no patient matching this criteria! Create a new patient?")
+                        {   $( "#nopatients" ).remove();
+                    $( "#resultset" ).addClass( "hidden" );
+                    $( "#filter" ).append($.parseHTML( '<div class = "alert alert-warning" id="nopatients">Sorry, no patient matching this criteria! Create a  <a href="/patients/registration">New Patient</a> ?'));
+                    $('#loadingmessage').hide(); // hide the loading message
+                }
+                else
+                {
+                    $( "#nopatients" ).remove();
+                    var patients = data.data;
+                    $("#filter").append('<label id="matches" class = "pull-right">'+patients.length+' Matches Found</label>');
+
+                    for(var j = 0; j<patients.length; j++)
+                    {
+                        var patient = patients[j];
+                        var is_active;
+                        if(patient[3].toString() === 'true' && patient[3] != 'undefined')
+                        {
+                           is_active = '<i class="fa fa-check-circle"></i>';
+                       }
+                       else
+                        { is_active ='<i class="fa fa-times"></i>';}
+
+                        $("#resultset")
+                        .find('tbody')
+                        .append('<tr class="odd gradeX"><td>'+patient[0]+'</td><td>'+patient[1]+'</td><td>'+patient[2]+'</td><td>'+is_active+'</td><td>'+patient[5]+'</td><td><div class="btn-group btn-group-xs">                <button type="button" class="btn btn-primary dropdown-toggle " data-toggle="dropdown">Possible Patient Actions <span class="caret">                 </span></button><ul class="dropdown-menu" role="menu"><li><a class="new-visit" href="/patients/new-visit/'+patient[4]+'/" ><span class="glyphicon glyphicon-plus-sign"></span> Dispense Drugs</a>                             </li>                             <li class="divider"></li>                                                         <li><a href="/patient-profile/'+patient[4]+'">                             <span class="glyphicon glyphicon-edit"></span> View Patient Profile                             </a>                             </li>                                                         <li class="divider"></li>                             <li><a href="/patients/regimen-change/'+patient[4]+'">                             <i class="glyphicon glyphicon-upload"></i> Change Regimen</a></li>                             </ul>                         </div><div class="modal" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"></div> </td></tr>');                 
+                    $('#loadingmessage').hide(); // hide the loading message
+
+
+                }
+
+                $( "#resultset" ).removeClass( "hidden" );
+            }
+
+
+        },
+        dataType: 'json'
+    });
+}
+});
+});
+</script>
+<script>
+    $(document).ready(function() {
+
+        $("#packs").change(function () {
+            if($('#packsizeval').text() != "")
+            {
+                $('#qty').val($('#packs').val() * $('#packsizeval').text());
+                $('#unit_cost').focus();
+            }
+        });
+    });
+</script>
+
+<script>
+    $(document).ready(function() {
+
+        function calcBSA(wt, ht, BSAMethod) {
+                /// <summary>returns the body surface area in meters^2; calling with a single arg is assumed to be 'wt'</summary>
+                /// <param name="ht">height, units = cm</param>
+                /// <param name="wt">weight, units = kg</param>
+                /// <param name="BSAMethod">optional; type = string (any of the following:"DuBois", "Haycock"(default), "Gehan", "Mosteller", "Boyd", or "Dreyer")</param>
+                /// <returns>Number</returns>
+                // allow for ht and method to be optional:
+                if (!ht && !BSAMethod) {
+                    // only one arg was passed, 'wt'
+                    var BSAMethod = "Dreyer";
+                }
+                else if (!BSAMethod) {
+                    var BSAMethod = "Haycock";
+                }
+                switch (BSAMethod) {
+                    case "DuBois":
+                    return 0.007184 * Math.pow(ht, 0.725) * Math.pow(wt, 0.425);
+                    case "Haycock":
+                    return 0.024265 * Math.pow(ht, 0.3964) * Math.pow(wt, 0.5378);
+                    case "Gehan":
+                    return 0.0235 * Math.pow(ht, 0.42246) * Math.pow(wt, 0.51456);
+                    case "Mosteller":
+                    return Math.sqrt((ht * wt) / 3600);
+                    case "Boyd":
+                    wt = wt * 1000;
+                        var exponent = 0.7285 - 0.0188 * (Math.LOG10E * Math.log(wt)); //necessary to get the Log base 10 of (wt)
+                        return 0.0003207 * Math.pow(ht, 0.3) * Math.pow(wt, exponent);
+                        case "Dreyer":
+                        return 0.1 * Math.pow(wt, (2 / 3));
+                        default:
+                        return Math.sqrt((ht * wt) / 3600);// returns Mosteller in the event an unfamiliar method is passed in
+                } //end switch
+
+            }
+            $("#weight").keyup(function () {
+                if($('#weight').val() != "" )
+                {
+                    console.log(calcBSA($('#weight').val(), $('#height').val()));
+                    $("#BSA").remove();
+                    $("#bsaDetails").append('<p></p><div id = "BSA">BSA: '+ calcBSA($('#weight').val(), $('#height').val())+'</div>');
+                }
+            });
+
+            $("#height").keyup(function () {
+                if($('#weight').val() != "" )
+                {
+                    console.log(calcBSA($('#weight').val(), $('#height').val()));
+                    $("#BSA").remove();
+                    $("#bsaDetails").append('<div id = "BSA">BSA: '+ calcBSA($('#weight').val(), $('#height').val())+'</div>');
+                }
+            });
+            if($("#dispensing_weight").length)
+            {
+                var height = "{{bsa_details.height}}";
+                if(height > 0)
+                {
+              $("#bsa").append( calcBSA(parseInt($("#dispensing_weight").text()), height).toFixed(4));
+                }
+                else
+                    {$("#bsa").append( calcBSA(parseInt($("#dispensing_weight").text())).toFixed(4));}
+
+              
+             
+            }
+        });
+    </script>
+
+
+    <script>
+        $(document).ready(function() {
+            $("#qty").change(function () {
+
+                $('#packs').val($('#qty').val() / $('#packsizeval').text());
+                $('#unit_cost').focus();
+            });
+        });
+    </script>
+
+    <script>
+        $(document).ready(function() {
+
+            $("#sex").change(function () {
+
+             if($(this).find('option:selected').text()=='<Gender>')
+             {
+                 $( "#pregnant" ).addClass( "hidden" );
+                 $( "#lblpregnant" ).addClass( "hidden" );   
+             }
+             else if($(this).find('option:selected').text()=='Female')
+             {
+                $( "#pregnant" ).removeClass( "hidden" );
+                $( "#lblpregnant" ).removeClass( "hidden" );
+
+
+            }
+            else{
+                $( "#pregnant" ).addClass( "hidden" );
+                $( "#lblpregnant" ).addClass( "hidden" ); 
+            }
+        });
+
+        });
+
+
+    </script>
+
+    <script>
+        $(document).ready(function() {
+            getCookie = function(name) {
+                var cookieValue = null;
+                if (document.cookie && document.cookie != '') {
+                    var cookies = document.cookie.split(';');
+                    for (var i = 0; i < cookies.length; i++) {
+                        var cookie = jQuery.trim(cookies[i]);
+                    // Does this cookie string begin with the name we want?
+                    if (cookie.substring(0, name.length + 1) == (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+
+        $(".batchNo").change(function () {
+            $batchNo = $(this);
+            if($(this).find('option:selected').text() !="Batch No.s")
+            {
+            $.ajax({
+              type: "POST",
+              url: '/get-batch-details/',
+              data: {"arv":$batchNo.closest("tr").find(".physicalDrug").find('option:selected').text(),
+              "batch_no": $batchNo.val()},
+              headers: {"X-CSRFToken": getCookie('csrftoken')},
+              
+              success: function (data) {
+
+                 $batchNo.closest("tr").find(".expiry_date").empty();
+                 $batchNo.closest("tr").find(".stock_in_batch").empty();
+                $batchNo.closest("tr").find(".expiry_date").append(data.expiry_date);
+
+                
+                $batchNo.closest("tr").find(".stock_in_batch").append(data.quantity);
+                
+                $("#qty").remove();
+                $("#expiry").remove();
+
+                $("#batch").append($.parseHTML('<div id="qty"><p></p><strong><em>Stock In Batch:</em><span class="pull-right" id="stockqty">' + data.quantity+'</span></strong></div>'));
+                $("#qty").append($.parseHTML('<div id="expiry"><p></p><strong><em>Expiry Date:</em><span class="pull-right">' + data.expiry_date+'</span></strong></div>'));
+
+                
+
+            },
+            dataType: 'json'
+        });
+            $("#selectedbatch").val($(this).val());
+        }
+        else
+        {
+            $("#qty").remove();
+            $("#expiry").remove();
+            $batchNo.closest("tr").find(".expiry_date").empty();
+                 $batchNo.closest("tr").find(".stock_in_batch").empty();
+        }
+            
+
+        });
+if($("#batchNo").length)
+{
+    if($("#batchNo").find('option:selected').text() !="Batch No.s")
+            {
+            $.ajax({
+              type: "POST",
+              url: '/get-batch-details/',
+              data: {"arv": $('#physical_drug').find('option:selected').text(),
+              "batch_no": $(".selectedbatch").val()},
+              headers: {"X-CSRFToken": getCookie('csrftoken')},
+              
+              success: function (data) {
+                $("#qty").remove();
+                $("#expiry").remove();
+
+                $("#batch").append($.parseHTML('<div id="qty"><p></p><strong><em>Stock In Batch:</em><span class="pull-right" id="stockqty">' + data.quantity+'</span></strong></div>'));
+                $("#qty").append($.parseHTML('<div id="expiry"><p></p><strong><em>Expiry Date:</em><span class="pull-right">' + data.expiry_date+'</span></strong></div>'));
+
+                
+
+            },
+            dataType: 'json'
+        });
+            
+        }
+        else
+        {
+            $("#qty").remove();
+            $("#expiry").remove();
+        }
+    }
+
+    });
+
+
+</script>
+
+
+<script>
+    $(document).ready(function(){
+
+         function getAge(dateString) 
+        {
+            var today = new Date();
+            var birthDate = new Date(dateString);
+            var age = today.getFullYear() - birthDate.getFullYear();
+            var m = today.getMonth() - birthDate.getMonth();
+            if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) 
+            {
+                age--;
+            }
+            return age;
+        }
+if($("#dob").length)
+{
+    if($("#dob").val() != "")
+    {
+      $("#age_from_dob").empty();
+      $("#age_from_dob").append('<p><strong>Age: </strong>'+getAge($("#dob").val())+'</p>');  
+      $("#age_from_dob").addClass("alert alert-success");
+
+    }
+    else{$("#age_from_dob").removeClass("alert alert-success");}
+}
+        $("#dob").datepicker({
+           
+         maxDate: new Date,
+         onSelect: function(selected) {
+            $("#age_from_dob").empty();
+            $("#age_from_dob").append('<p><strong>Age: </strong>'+getAge($("#dob").val())+'</p>');
+            $("#age_from_dob").addClass("alert alert-success");
+          $("#date_enrolled").datepicker("option","minDate", selected)
+      }
+  });
+        $("#date_enrolled").datepicker({ 
+            maxDate: new Date,
+            showAnim:"drop",
+            onSelect: function(selected) {
+
+
+             $("#dob").datepicker("option","maxDate", selected)
+         }
+     }); 
+        $("#ARTStart").datepicker({ 
+            maxDate: new Date,
+            showAnim:"drop",
+            onSelect: function(selected) {
+
+
+             $("#dob").datepicker("option","maxDate", selected)
+         }
+     });
+
+    });
+
+    
+</script>
+
+<script>
+    $(document).ready(function() {
+
+        getCookie = function(name) {
+            var cookieValue = null;
+            if (document.cookie && document.cookie != '') {
+                var cookies = document.cookie.split(';');
+                for (var i = 0; i < cookies.length; i++) {
+                    var cookie = jQuery.trim(cookies[i]);
+                    // Does this cookie string begin with the name we want?
+                    if (cookie.substring(0, name.length + 1) == (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+
+        if($("#transactiontype").find('option:selected').text()=='Received from' || $("#transactiontype").find('option:selected').text()=='Returns to (-)')
+            {           
+                $( "#lblsrc_or_dst" ).addClass( "hidden" );
+                $( "#src_or_dst" ).remove();
+
+                $.ajax({
+                  type: "POST",
+                  url: '/get-source-or-destination/',
+                  data: "act=source",
+                  headers: {"X-CSRFToken": getCookie('csrftoken')},
+                  success: function (data) {
+                    $( "#lblsrc_or_dst" ).text( "Source:*" );
+                    $( "#lblsrc_or_dst" ).removeClass( "hidden" );
+                    $("#src_or_dest_formgrp").append('<select class="form-control" id="src_or_dst" name = "src_or_dst"></select>');
+
+
+                    var batches = data.batches
+
+
+                    if(batches.length > 0)
+                    {
+
+                        $('#src_or_dst').find('option').remove();
+                        $('#src_or_dst').append('<option selected = "selected">&lt;Drug Source&gt;</option>');
+
+                        for(var j = 0; j<batches.length; j++)
+                        {
+                            $('#src_or_dst').
+                            append('<option value = "'+batches[j] +'">'+batches[j] +'</option>');
+                        }
+
+                        $( "#lblsrc_or_dst" ).removeClass( "hidden" );
+                        $( "#src_or_dst" ).removeClass( "hidden" );      
+
+                    }
+                },
+                dataType: 'json'
+            }
+            );
+
+
+}
+
+else if($("#transactiontype").find('option:selected').text()=='Returns from (+)' || $("#transactiontype").find('option:selected').text()=='Issued To')
+{
+    $( "#lblsrc_or_dst" ).addClass( "hidden" );
+    $( "#src_or_dst" ).remove();
+
+    $.ajax({
+      type: "POST",
+      url: '/get-source-or-destination/',
+      data: "act=destination",
+      headers: {"X-CSRFToken": getCookie('csrftoken')},
+      success: function (data) {
+        $( "#lblsrc_or_dst" ).text( "Destination:*" );
+        $( "#lblsrc_or_dst" ).removeClass( "hidden" );
+        $("#src_or_dest_formgrp").append('<select class="form-control" id="src_or_dst" name = "src_or_dst"></select>');
+
+
+        var batches = data.batches
+        if(batches.length > 0)
+        {
+
+            $('#src_or_dst').find('option').remove();
+            $('#src_or_dst').append('<option selected = "selected">&lt;Drug Destination&gt;</option>');
+
+            for(var j = 0; j<batches.length; j++)
+            {
+                $('#src_or_dst').
+                append('<option value = "'+batches[j] +'">'+batches[j] +'</option>');
+            }
+
+            $( "#lblsrc_or_dst" ).removeClass( "hidden" );
+            $( "#src_or_dst" ).removeClass( "hidden" );    
+
+        }
+    },
+    dataType: 'json'
+}
+);
+}
+else if($("#transactiontype").find('option:selected').text()=='Ajustment (+)' || $("#transactiontype").find('option:selected').text()=='Losses(-)'
+    || $("#transactiontype").find('option:selected').text()=='Expired(-)' || $("#transactiontype").find('option:selected').text()=='Starting Stock/Physical Count'
+    || $("#transactiontype").find('option:selected').text()=='Ajustment (-)' || $("#transactiontype").find('option:selected').text()=='Dispensed to Patients'
+    || $("#transactiontype").find('option:selected').text()=='<Transaction Type>')
+{
+
+    $( "#lblsrc_or_dst" ).addClass( "hidden" );
+    $( "#src_or_dst" ).remove();
+
+}
+
+
+        $(".transactiontype").change(function () {
+            $transactiontype = $(this);
+            if($(this).find('option:selected').text()=='Received from' || $(this).find('option:selected').text()=='Returns to (-)')
+            {           
+                
+                
+                $.ajax({
+                  type: "POST",
+                  url: '/get-source-or-destination/',
+                  data: "act=source",
+                  headers: {"X-CSRFToken": getCookie('csrftoken')},
+                  success: function (data) {
+                     
+                        
+                        var batches = data.batches
+
+
+                    if(batches.length > 0)
+                    {
+
+                        $transactiontype.closest("tr").find(".src_or_dst").find('option').remove();
+                        $transactiontype.closest("tr").find(".src_or_dst").append('<option selected = "selected">&lt;Drug Source&gt;</option>');
+
+                        for(var j = 0; j<batches.length; j++)
+                        {
+                            $transactiontype.closest("tr").find(".src_or_dst").
+                            append('<option value = "'+batches[j] +'">'+batches[j] +'</option>');
+                        }
+
+                            
+
+                    }
+                },
+                dataType: 'json'
+            }
+            );
+
+
+}
+
+else if($(this).find('option:selected').text()=='Returns from (+)' || $(this).find('option:selected').text()=='Issued To')
+{
+   
+
+    $.ajax({
+      type: "POST",
+      url: '/get-source-or-destination/',
+      data: "act=destination",
+      headers: {"X-CSRFToken": getCookie('csrftoken')},
+      success: function (data) {
+        $( "#lblsrc_or_dst" ).text( "Destination:*" );
+        $( "#lblsrc_or_dst" ).removeClass( "hidden" );
+        $("#src_or_dest_formgrp").append('<select class="form-control" id="src_or_dst" name = "src_or_dst"></select>');
+
+
+        var batches = data.batches
+        if(batches.length > 0)
+        {
+
+            
+
+            $transactiontype.closest("tr").find(".src_or_dst").find('option').remove();
+            $transactiontype.closest("tr").find(".src_or_dst").append('<option selected = "selected">&lt;Drug Destination&gt;</option>');
+
+            for(var j = 0; j<batches.length; j++)
+            {
+               $transactiontype.closest("tr").find(".src_or_dst").
+                            append('<option value = "'+batches[j] +'">'+batches[j] +'</option>');
+            }
+
+               
+
+        }
+    },
+    dataType: 'json'
+}
+);
+}
+else if($(this).find('option:selected').text()=='Ajustment (+)' || $(this).find('option:selected').text()=='Losses(-)'
+    || $(this).find('option:selected').text()=='Expired(-)' || $(this).find('option:selected').text()=='Starting Stock/Physical Count'
+    || $(this).find('option:selected').text()=='Ajustment (-)' || $(this).find('option:selected').text()=='Dispensed to Patients'
+    || $(this).find('option:selected').text()=='<Transaction Type>')
+{
+
+  $transactiontype.closest("tr").find(".src_or_dst").find('option').remove();
+
+}
+});
+
+});
+
+
+</script>
+
+
+<script>
+    $(document).ready(function() {
+        $(".src_or_dst").change(function () {
+            $src_or_dst = $(this);
+            $src_or_dst.closest("tr").find(".source_or_destination").val( $src_or_dst.val());
+            });
+        });
+</script>
+
+<script>
+    $(document).ready(function() {
+
+        $("#type_of_service").change(function () {
+
+            $.ajax({
+              type: "GET",
+              url: '/get-regimen-in-service/' + $(this).find('option:selected').val(),
+              success: function (data) {
+
+                $('#start_regimen').find('option').remove();
+                $('#start_regimen')
+                .append('<option selected = "selected">Start Regimen</option>');
+                
+                for(var j = 0; ; j++)
+                {
+
+
+                    $('#start_regimen').
+                    append('<option value = '+data[j].regimencode +'>'+data[j].regimen+' | '+data[j].regimencode +'</option>');
+
+                }
+
+                
+                   // $("#start_regimen option:[text='']").remove();
+               },
+               dataType: 'json'
+           });
+            if($(this).find('option:selected').text()=='<Type Of Service>')
+            {
+             $( "#start_regimen" ).addClass( "hidden" );
+             $( "#lblstart_regimen" ).addClass( "hidden" );
+             $( "#ARTStart" ).addClass( "hidden" );
+             $( "#lblARTStart" ).addClass( "hidden" );  
+             $( "#frmgrpARTStart" ).addClass( "hidden" );   
+         }
+         else{
+            $( "#start_regimen" ).removeClass( "hidden" );
+            $( "#lblstart_regimen" ).removeClass( "hidden" );
+            if($(this).find('option:selected').text()=='ART')
+            {
+               $( "#ARTStart" ).removeClass( "hidden" );
+               $( "#lblARTStart" ).removeClass( "hidden" );  
+               $( "#frmgrpARTStart" ).removeClass( "hidden" ); 
+           }
+           else{
+            $( "#ARTStart" ).addClass( "hidden" );
+            $( "#lblARTStart" ).addClass( "hidden" );  
+            $( "#frmgrpARTStart" ).addClass( "hidden" );
+        }
+    }
+});
+
+});
+
+
+</script>
+
+<script>
+    $(document).ready(function() {
+
+        $("#pregnant").change(function() {
+            $("#PMTCT").remove();
+            if(this.checked) {
+                $("#type_of_service").append("<option value='3' id='PMTCT'>PMTCT</option>");
+            }
+        });
+    });
+
+
+</script>
+
+    <!--<script type="text/javascript">
+    $(document).ready(function() {
+    $("#dispense_drugs").submit(function(event){
+        event.preventDefault();
+        $.ajax({
+             type:"POST",
+             url:'/patients/dispense-drugs/'+ $('#patientid').text() +'/' + $('#visitid').text(),
+
+        });
+
+        $.ajax({
+             type:"GET",
+             url:'/get-drugs-dispensed-today/' + $('#visitid').text(),
+             success: function(){
+                 $('#dispensed').html("<h2>Form Submitted! Load It Here</h2>") 
+             }
+        });
+        return false;
+    });
+
+    });
+</script>-->
+<!--<script>
+$(document).ready(function() {
+$("#dateofnextappointment").change(function (dateText) {
+     $.ajax({
+              type: "GET",
+              url: '/get-patients-booked/' + dateText,
+              success: function (data) {
+                $(".info").remove();
+                $("#tca_date").append($.parseHTML('<p class ="info"><label class = "text-muted"><em>Patients Booked On Date: '
+                    + data.slots_taken +' </em></label></p>'));
+                },
+            dataType: 'json'
+        });
+     });
+});
+</script>-->
+
+
+<script>
+    $(function() {
+        $( ".futuredates" ).datepicker({
+            minDate: new Date,
+            showAnim:"drop"
+        });
+// Since confModal is essentially a nested modal it's enforceFocus method
+// must be no-op'd or the following error results 
+// "Uncaught RangeError: Maximum call stack size exceeded"
+// But then when the nested modal is hidden we reset modal.enforceFocus
+
+
+$.fn.modal.Constructor.prototype.enforceFocus = function() {};
+
+
+});
+</script>
+
+
+</body>
+
+</html>
+
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      

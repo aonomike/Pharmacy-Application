@@ -1,0 +1,16 @@
+ADT QUERIES:
+-------------
+
+tblPhysicalDrugs:
+-------------------
+SELECT tblARVDrugStockMain.[ARVDrugsID], tblARVDrugStockMain.[DrugCategory], tblARVDrugStockMain.[Packsizes], tblARVDrugStockMain.[Unit], tblARVDrugStockMain.[GenericName], tblARVDrugStockMain.[MiximumLevel], tblARVDrugStockMain.[MinimumLevel], tblARVDrugStockMain.[ReorderLevel], tblARVDrugStockMain.[StdDose]
+FROM tblARVDrugStockMain;
+
+tbldrugphysicaltran:
+---------------------
+SELECT tblDrugPhysicalTran.[ARVDrugsID], tblDrugPhysicalTran.[BatchNo], Format(tblDrugPhysicalTran.[ExpiryDate],"yyyy-mm-dd"), tblDrugPhysicalTran.[PhyQty], Format(tblDrugPhysicalTran.[TranDate],"yyyy-mm-dd")
+FROM tblDrugPhysicalTran;
+
+
+
+ABC/3TC 60/30 FDC Tabs batchNo 23

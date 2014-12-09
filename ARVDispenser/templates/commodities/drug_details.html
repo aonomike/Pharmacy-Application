@@ -1,0 +1,153 @@
+{% extends '_layouts/base.html'%}
+
+{% block page_title %}Drug Details | {{block.super}}{% endblock %}
+
+{% block page_name%}{{drug.arvdrug}} Details:{% endblock page_name%}
+
+{% block content%}
+<div class="col-lg-10 ">
+                    <div class="panel panel-primary">
+                        <div class="panel-heading">
+                            <i class="fa fa-archive"></i> Drug Details:
+                            
+                        </div>
+                        <!-- /.panel-heading -->
+                        
+<div class="panel-body">
+    <div class="row">
+    
+<!-- - Demographic info-->
+<!--- Clinical Info-->
+<!-- - Drug Consumption History-->
+<div class="col-lg-6">
+<div class="panel panel-info">
+  <!-- Default panel contents -->
+  <div class="panel-heading">
+<i class="fa fa-bars"></i> General Details:</div>
+
+  <!-- List group -->
+  <ul class="list-group">
+    
+    <li class="list-group-item">
+        <strong>Name: </strong>
+        <span class="pull-right">{{drug.arvdrug}}</span>
+    </li>
+
+    <li class="list-group-item">
+        <strong>Generic Name: </strong>
+        <span class="pull-right">{{drug.genericname.genericname}}</span>
+    </li>
+
+    <li class="list-group-item">
+        <strong>Drug Unit: </strong>
+        <span class="pull-right">{{drug.drugunit}}</span>
+    </li>
+    
+     <li class="list-group-item">
+        <strong>Pack Size: </strong>
+        <span class="pull-right">{{drug.packsize}}</span>
+    </li>
+    
+    
+    <li class="list-group-item">
+    <p>
+        <strong>Min. Level: </strong>
+        <span class="pull-right">{{drug.minimumlevel}}</span>
+    </p>
+    </li>
+
+    <li class="list-group-item">
+    <p>
+        <strong>Max. Level: </strong>
+        <span class="pull-right">{{drug.maximumlevel}}</span>
+    </p>
+    </li>
+
+    <li class="list-group-item">
+    <p>
+        <strong>Reorder Level: </strong>
+        <span class="pull-right">{{drug.reorderlevel}}</span>
+    </p>
+    </li>
+
+    
+  </ul>
+</div>
+
+</div>
+
+<div class="col-lg-6">
+<div class="panel panel-info">
+  <!-- Default panel contents -->
+  <div class="panel-heading">
+<i class="fa fa-bars"></i> Record Management:</div>
+
+  <!-- List group -->
+  <ul class="list-group">
+    
+    <li class="list-group-item">
+    <p>
+        <strong>Created At: </strong>
+        <span class="pull-right">{{drug.created_at|date:'d/m/y'}}</span>
+        </p>
+    </li>
+    
+     <li class="list-group-item">
+    <p>
+        <strong>Last Modified On: </strong>
+        <span class="pull-right">{{drug.modified_at|date:'d/m/y'}}</span>
+    </p>
+    </li>
+     
+    
+    <li class="list-group-item">
+    <p>
+        <strong>Active: </strong>
+        <span class="pull-right">
+        {% if drug.is_active %}
+    	<i class="fa fa-check-circle"></i>
+    	{% else %}
+    	<i class="fa fa-times"></i>
+    	{% endif %}</span>
+    </p>
+    </li>
+    
+    
+    
+
+    
+  </ul>
+</div>
+<div class="btn-group pull-right" id="regimenctrls">
+  <button type="button" class="btn btn-primary dropdown-toggle " data-toggle="dropdown">
+    Update Drug Details <span class="caret"></span>
+  </button>
+  <ul class="dropdown-menu" role="menu">
+
+    <li><a href="/drugs/edit/{{drug.pk}}">
+    <i class="fa fa-check-circle-o"></i> Edit Drug Details</a></li>
+   
+  </ul>
+</div>
+</div>
+
+
+
+
+
+</div>
+
+
+</div>
+
+                
+</div>
+
+
+                        
+                        <!-- /.panel-body -->
+                    </div>
+
+                
+
+{% endblock content%}

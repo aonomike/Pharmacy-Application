@@ -1,0 +1,37 @@
+<!-- Modal -->
+  <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <form role="form" class="visit-form" method = "POST"  action = ".">
+                              {% csrf_token %}
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+          <h4 class="modal-title" id="myModalLabel">Add New Dosage:</h4>
+        </div>
+        <div class="modal-body">
+        
+              <label class="control-label"><em>Dose:* </em></label>
+              <div class="form-group">
+              <input class="form-control" id="dose" name="dose">
+              </div>
+
+              <label class="control-label"><em>Value:* </em></label>
+              <div class="form-group">
+              <input class="form-control" id="value" name="value">
+              </div>
+
+              <label class="control-label"><em>Frequency:* </em></label>
+              <div class="form-group">
+              <input class="form-control" id="frequency" name="frequency" type="number">
+              </div>
+
+          
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          <input type="submit" class="btn btn-primary" id="btnSave_dosage" value = "Save"/>
+        </div>
+      </div>
+    </div>
+    </form>
+  </div>

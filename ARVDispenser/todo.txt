@@ -1,0 +1,136 @@
+
+- In channel check if start regimen = current regimen, if so dont add two records, just one.
+- Have a hidden input as the one bound to batchNo db, then the select is not bound since we are using jquery to load it.
+- Then on selecting a batch number, update the hidden input coz this is what goes to db.
+- 0n edit, take batchNo from hidden input, and make it the selected value on select.
+- Adjust quantities appropriately when editting dispensed
+- Edit on 'other specify' dosage
+- Polish the edit transaction part
+- create queries to get rug stock from access
+- load the transactions
+- test everything
+
+
+
+- javascript, jquery, nodejs, angularjs, 
+
+- precompiled-css, less, sas in css
+
+- metroui css
+
+- sharepoint
+
+
+
+- black sails
+- boardwalk empire
+= black jesus
+- hanibal
+- orange is the new black
+
+
+
+
+
+qsat
+november 25th crc 1st floor afternoon
+
+0701534146
+
+0770064984
+
+WSGIScriptAlias / "E:/Pharmacy/ARVDispenser/ARVDispenser/wsgi.py"
+WSGIPythonPath "E:/Pharmacy/ARVDispenser"
+
+<Directory "E:/Pharmacy/ARVDispenser/ARVDispenser">
+<Files wsgi.py>
+Require all granted
+</Files>
+</Directory>
+
+Alias /favicon.ico "E:/Pharmacy/ARVDispenser/static/img/favicon/favicon.ico"
+
+
+Alias /static/ "E:/Pharmacy/ARVDispenser/static/"
+
+<Directory "E:/Pharmacy/ARVDispenser/static">
+Require all granted
+</Directory>
+
+REGIMEN CHANGE REASONS(done)
+
+display patients scheduled to be seen today
+
+change active patients to be the actual status
+
+end PEP patients after 28 days
+
+calculate qty based on packsize * packs(done)
+
+On transit:
+name, wt, dob, cccnumber, sex, contact
+
+validation of ccc number on registration
+
+add comments on new visit
+
+how to deal with appointments:
+--------------------------------
+- display a calendar on the sidebar
+- highlight the dates that have appointments (this is in appointments_tracker table). solution found here (http://stackoverflow.com/questions/6857025/highlight-dates-in-jquery-ui-datepicker) (http://www.jquerybyexample.net/2012/05/highlight-specific-dates-in-jquery-ui.html)
+- on hover of the highlighted dates, show number of slots taken/total number of slots on a tooltip
+- on click of the highhlighted dates, load all the patients who've been given this date
+- 
+PHARMACY SYSTEM:
+----------------
+- datetimepicker make it easy to change year.
+
+reports
+
+0720606933
+
+0701534146
+
+IQCARE Tables:
+---------------
+mst_patient
+dtl_PatientStage
+
+
+0723891871
+
+0707848171
+
+iqcare issues:
+---------------
+1. tables that contain info about who staging, cd4 count, viral load, ART start date, transafer in
+2. decryption of the patient names
+3. how to interpret info like sex being either 16 or 17, 
+
+
+MAPPING OF VARIOUS VARIABLES:
+--------------------------------
+Sex:
+----
+M - 16
+F - 17
+
+Marital Status:
+-----------------
+Single - 42
+Married - 43
+Divorced - 44
+Widowed - 189
+Other - 45
+Married Polygamous - 290
+Married Monogamous - 291
+Cohabitating - 292
+
+WHO Staging:
+------------
+1 - 87
+2 - 88
+3 - 89
+4 - 90
+
+

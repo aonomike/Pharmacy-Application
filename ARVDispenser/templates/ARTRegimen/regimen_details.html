@@ -1,0 +1,244 @@
+{% extends '_layouts/base.html'%}
+
+{% block page_title %}Regimen Details | {{block.super}}{% endblock %}
+
+{% block page_name%}{{regimen.regimen}}'s Details:{% endblock page_name%}
+
+{% block content%}
+<div class="col-lg-10">
+                    <div class="panel panel-primary">
+                        <div class="panel-heading">
+                            <i class="fa fa-archive"></i> Regimen Details:
+                            
+                        </div>
+                        <!-- /.panel-heading -->
+                        
+<div class="panel-body">
+    <div class="row">
+    
+<!-- - Demographic info-->
+<!--- Clinical Info-->
+<!-- - Drug Consumption History-->
+<div class="col-lg-6 col-md-12">
+<div class="panel panel-info">
+  <!-- Default panel contents -->
+  <div class="panel-heading">
+<i class="fa fa-bars"></i> General Details:</div>
+
+  <!-- List group -->
+  <ul class="list-group">
+    <li class="list-group-item ">
+        <strong>Code: </strong>
+        <span class="pull-right">{{regimen.regimencode}}</span>
+    </li>
+    <li class="list-group-item">
+    <p>
+        <strong>Name: </strong>
+        <span class="pull-right">{{regimen.regimen}}</span>
+    </p>
+    </li>
+    
+     <li class="list-group-item">
+        <strong>Category: </strong>
+        <span class="pull-right">{{regimen.regimencategory}}</span>
+    </li>
+     <li class="list-group-item">
+        <strong>Line: </strong>
+        <span class="pull-right">{{regimen.line}}</span>
+    </li>
+    
+    <li class="list-group-item">
+        <strong>Status: </strong>
+        <span class="pull-right">{{regimen.status}}</span>
+    </li>
+    
+    
+    <li class="list-group-item">
+    <p>
+        <strong>Type Of Service: </strong>
+        <span class="pull-right">
+        	{% if regimen.type_of_service == 1 %}
+                ART
+            {%endif%}
+            {% if regimen.type_of_service == 2 %}
+                PEP
+            {%endif%}
+            {% if regimen.type_of_service == 3 %}
+                PMTCT
+            {%endif%}
+            {% if regimen.type_of_service == 5 %}
+                OI Only
+            {%endif%}
+            {% if regimen.type_of_service == 6 %}
+                Unspecified
+            {%endif%}
+        </span>
+    </p>
+    </li>
+    
+  </ul>
+</div>
+</div>
+
+<div class="col-lg-6 col-md-6">
+<div class="panel panel-info ">
+  <!-- Default panel contents -->
+  <div class="panel-heading">
+  <i class="fa fa-bars"></i> Record Management:</div>
+  
+
+  <!-- List group -->
+  <ul class="list-group">
+    <li class="list-group-item">
+    <p>
+        <strong>Created At: </strong>
+        <span class="pull-right">{{regimen.created_at}}</span>
+    </p>
+    </li>
+
+    <li class="list-group-item">
+    <p>
+        <strong>Last Modified At: </strong>
+        <span class="pull-right">{{regimen.modified_at}}</span>
+    </p>
+    </li>
+
+    <li class="list-group-item">
+    <p>
+        <strong>Active: </strong>
+        <span class="pull-right">
+        {% if regimen.is_active %}
+    	<i class="fa fa-check-circle"></i>
+    	{% else %}
+    	<i class="fa fa-times"></i>
+    	{% endif %}</span>
+    </p>
+    </li>
+
+    
+  </ul>
+
+  <div class="btn-group pull-right" id="regimenctrls">
+  <button type="button" class="btn btn-primary dropdown-toggle " data-toggle="dropdown">
+    Update Regimen Details <span class="caret"></span>
+  </button>
+  <ul class="dropdown-menu" role="menu">
+
+    <li><a href="/regimen/edit-regimen/{{regimen.regimencode}}/">
+    <i class="fa fa-check-circle-o"></i> Edit Regimen</a></li>
+    <li class="divider"></li>
+    <li><a href="/regimen/add-drug-to-regimen/{{regimen.regimencode}}">
+    <i class="glyphicon glyphicon-upload"></i> Add Drug To Regimen</a></li>
+    
+    
+  </ul>
+</div>
+</div>
+</div>
+
+
+
+
+</div>
+
+                
+</div>
+
+
+                        
+                        <!-- /.panel-body -->
+                    </div>
+
+                </div>
+{% endblock content%}
+
+{% block other_info %}
+{% if drugs %}
+<div  id="accordion" class="col-lg-10">
+                <div class="panel panel-primary">
+                    <div class="panel-heading">
+                        <h4 class="panel-title">
+                            <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne">
+                            <i class="fa fa-file-excel-o"></i> Drugs In Regimen</a>
+                        </h4>
+                    </div>
+                    <div id="collapseOne" class="panel-collapse">
+                        <div class="panel-body">
+                            <div class="table-responsive">
+                                <table class="table table-striped table-bordered table-condensed table-hover" id="dataTables-example">
+                                    <thead>
+                                        <tr>
+                                            <th>Drug</th>
+                                            <th>Generic Name</th>
+                                            <th>Unit</th>
+                                            <th>Pack Size</th>
+                                            <th>Created At</th>
+                                            <th>Modified At</th>
+                                            <th>Active</th>
+                                            <th>Actions</th>
+                                            
+                                            
+                                            
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                    {% for drug_in_regimen in drugs %}
+                                        <tr class="odd gradeX">
+                                            
+                                            <td>{{drug_in_regimen.arvdrug}}</td>
+                                            <td>{{drug_in_regimen.genericname}}</td>
+                                            <td>{{drug_in_regimen.drugunit}}</td>
+                                            <td>{{drug_in_regimen.packsize}}</td>
+                                            
+                                            <td>{{drug_in_regimen.created_at|date:'d/m/y'}}</td>
+                                            <td>{{drug_in_regimen.modified_at|date:'d/m/y'}}</td>
+                                            <td>
+                                            	{% if drug_in_regimen.is_active %}
+                                            	<i class="fa fa-check-circle"></i>
+                                            	{% else %}
+                                            	<i class="fa fa-times"></i>
+                                            	{% endif %}
+                                            </td>
+                                            <td>
+                                            	<div class="btn-group btn-group-xs">
+                          <button type="button" class="btn btn-primary dropdown-toggle " data-toggle="dropdown">
+                            Possible Actions <span class="caret"></span>
+                          </button>
+                          <ul class="dropdown-menu" role="menu">
+                          <li><a  href="/regimen/add-drug-to-regimen/{{regimen.regimencode}}/{{drug_in_regimen.pk}}/">
+                                <i class="fa fa-code-fork"></i> Remove From Regimen</a>
+                            </li>
+                            
+                            <li class="divider"></li>
+                            <li><a  href="/drugs/drug-details/{{ drug_in_regimen.pk }}/">
+                                <span class="glyphicon glyphicon-plus-sign"></span> Drug Details</a>
+                            </li>
+                            
+                            <li class="divider"></li>
+                            <li>
+                            <a  href="/drugs/edit/{{drug_in_regimen.pk}}">
+                                <i class="fa fa-dot-circle-o"></i> Edit Drug Details</a>
+                            </li>
+                            
+                          </ul>
+                        </div>
+                                            </td>
+                                            
+                                            
+                                            
+                                        </tr>
+                                       {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                            
+                           
+                            
+                        </div>
+                        
+                        
+                    </div>
+                </div>
+</div>
+{% endif %}
+{% endblock other_info%}

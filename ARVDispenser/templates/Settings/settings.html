@@ -1,0 +1,73 @@
+{% extends '_layouts/base.html'%}
+
+{% block page_title %}Settings | {{block.super}}{% endblock %}
+
+{% block page_name%}{{page_title}}{% endblock page_name%}
+
+{% block content%}
+
+<div  id="drug_src" class="col-lg-4">
+                <div class="panel panel-primary">
+                    <div class="panel-heading">
+                        <h4 class="panel-title">
+                            <a data-toggle="collapse" data-parent="#drug_src" href="#drug_src_collapse">
+                            <i class="fa fa-file-excel-o"></i> Add Drug Source</a>
+                        </h4>
+                    </div>
+                    <div id="drug_src_collapse" class="panel-collapse collapse">
+                        <div class="panel-body">
+                            
+                            <form role="form" method = "POST" action = "/patients/new-visit/{{patient.pk}}/">
+                              {% csrf_token %}
+                              <label class="control-label"><em>Source:* </em></label>
+                                <input class="form-control" id="source" name="source" placeholder="Source">
+
+                                <button type="submit" class="btn btn-primary dispense reg" id="btndrug_src">Save</button>
+                                <input type="reset" name="reset"  class="btn btn-primary reg" value="Reset">
+                                <input name="cancel" class="btn reg" type="submit" value="Cancel"/>
+
+                            </form>
+                            {% if drug_sources %}
+                            <ul class="list-group items">
+                            {% for source in drug_sources %}
+                                <li class="list-group-item text-muted">
+                                    {{source.sourcename}}
+                                </li>
+                                {% endfor %}
+                            </ul>
+                            {% endif %}
+                            
+
+    
+                            
+                            
+                        </div>
+                        
+                        
+                    </div>
+                </div>
+</div>
+
+<div  id="drug_dest" class="col-lg-4">
+                <div class="panel panel-primary">
+                    <div class="panel-heading">
+                        <h4 class="panel-title">
+                            <a data-toggle="collapse" data-parent="#drug_dest" href="#drug_dest_collapse">
+                            <i class="fa fa-file-excel-o"></i> Add Drug Destination</a>
+                        </h4>
+                    </div>
+                    <div id="drug_dest_collapse" class="panel-collapse collapse">
+                        <div class="panel-body">
+                            
+                            
+                            
+                            
+                        </div>
+                        
+                        
+                    </div>
+                </div>
+</div>
+
+
+{% endblock content%}

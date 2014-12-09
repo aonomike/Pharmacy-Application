@@ -1,0 +1,140 @@
+{% extends '_layouts/base.html'%}
+
+{% block page_title %}Drug Registration | {{block.super}}{% endblock %}
+
+{% block page_name%}Drug Registration:{% endblock page_name%}
+
+{% block content%}
+ <div class="col-lg-10">
+                    <div class="panel panel-primary">
+                        <div class="panel-heading">
+                            <i class="glyphicon glyphicon-edit"></i> New Drug Registration
+                            
+                        </div>
+                        <!-- /.panel-heading -->
+                        
+<div class="panel-body">
+    <div class="row">
+    <form role="form form-horizontal" method = "POST" action = '.'>
+    {% csrf_token %}
+        <div class="col-lg-4">
+        <label class="control-label"><em>Drug:* </em></label>
+            {% if form.arvdrug.errors %}
+            <div class="form-group has-error data-toggle="tooltip" data-placement="right" title='{{ form.CCC_Number.errors }}' ">
+                                            
+                {{ form.arvdrug }}
+            </div>
+            {% else %}
+            <div class="form-group data-toggle="tooltip" data-placement="right" title="Tooltip on right" ">
+               {{ form.arvdrug }}
+            </div>
+            {% endif %}
+
+        <label class="control-label"><em>Generic Name:*</em></label>
+                {% if form.genericname.errors %}
+                <div class="form-group has-error">
+                    {{ form.genericname }}
+                </div>
+                {% else %}
+                <div class="form-group">
+                    {{ form.genericname }}
+                </div>
+                {% endif %}
+
+        <label class="control-label"><em>Drug Unit:* </em></label>
+                {% if form.drugunit.errors %}
+            <div class="form-group has-error">
+                {{ form.drugunit }}
+            </div>
+            {% else %}
+            <div class="form-group">
+                {{ form.drugunit }}
+            </div>
+            {% endif %}
+
+        <label class="control-label"><em>Pack Size:* </em></label>
+            {% if form.packsize.errors %}
+            <div class="form-group has-error">
+                {{ form.packsize }}
+            </div>
+            {% else %}
+            <div class="form-group">
+                {{ form.packsize }}
+            </div>
+            {% endif %}
+
+        
+                </div>
+<div class ="col-lg-4">
+	
+        
+        <label class="control-label"><em>Minimum Level: </em></label>
+                {% if form.minimumlevel.errors %}
+            <div class="form-group has-error">
+                {{ form.minimumlevel }}
+            </div>
+            {% else %}
+            <div class="form-group">
+                {{ form.minimumlevel }}
+            </div>
+            {% endif %}
+
+
+        <label class="control-label"><em>Maximum Level: </em></label>
+            {% if form.maximumlevel.errors %}
+            <div class="form-group has-error">
+                {{ form.maximumlevel }}
+            </div>
+            {% else %}
+            <div class="form-group">
+                {{ form.maximumlevel }}
+            </div>
+            {% endif %}
+
+        <label class="control-label"><em>Reorder Level: </em></label>
+            {% if form.reorderlevel.errors %}
+            <div class="form-group has-error">
+                {{ form.reorderlevel }}
+            </div>
+            {% else %}
+            <div class="form-group">
+                {{ form.reorderlevel }}
+            </div>
+            {% endif %}
+
+        
+
+        		
+</div>
+          <div class="col-lg-4">
+          	<label class="control-label"><em>Description: </em></label>
+            {% if form.description.errors %}
+            <div class="form-group has-error">
+                {{ form.description }}
+            </div>
+            {% else %}
+            <div class="form-group">
+                 {{ form.description }}
+            </div>
+            {% endif %}
+            <input type="submit" name="submit"  class="btn btn-primary reg" value="Save">
+                <input type="reset" name="reset"  class="btn btn-primary reg" value="Reset">
+                <input name="cancel" class="btn reg" type="submit" value="Cancel"/>
+          </div>      
+
+                </form>
+
+                </div>
+</div>
+
+<div class="panel-footer">
+        Fields With * Are Required, Therefore Must Be Filled
+</div>
+
+
+                        
+                        <!-- /.panel-body -->
+                    </div>
+
+                </div>
+{% endblock content%}

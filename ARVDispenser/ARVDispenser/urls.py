@@ -1,0 +1,55 @@
+from django.conf.urls import patterns, include, url
+
+from django.contrib import admin
+admin.autodiscover()
+
+
+urlpatterns = patterns('',
+    # Examples:
+    url(r'^$', 'patients.views.homepage', name='home'),
+    url(r'patients/registration/$', 'patients.views.patient_registration_view',name='registration'),
+    url(r'^login/$','user_account.views.LoginRequest',name='login'),
+    url(r'^logout/$','user_account.views.LogoutRequest', name='logout'),
+    url(r'^patient-profile/(?P<pk>[-\w]+)/$','patients.views.patient_profile',
+    	name='patient-profile'),
+    url(r'^patients/edit/(?P<pk>[-\w]+)/$','patients.views.patient_registration_view'),
+    url(r'^patients/weight-and-height-details/(?P<pk>[-\w]+)/$','patients.views.patient_bsa'),
+    url(r'^patients/dispense-drugs/(?P<pk>[-\w]+)/(?P<visit_id>[-\w]+)$','transactions.views.dispense'),
+    url(r'^patients/dispense-drugs/(?P<pk>[-\w]+)/(?P<visit_id>[-\w]+)/(?P<transaction_id>[-\w]+)$','transactions.views.dispense_drugs'),
+    url(r'^patients/dispensed-drugs/delete/(?P<transaction_id>[-\w]+)$','transactions.views.delete_transaction'),
+    url(r'^get-drug-unit/$','commodities.views.get_drug_unit'),
+    url(r'^get-appointment-dates/$','visits.views.get_appointment_dates'),
+    url(r'^get-drugs-dispensed-today/(?P<visitid>[-\w\(\) ]+)/$','transactions.views.get_drugs_dispensed_today'),
+    url(r'^patients/new-visit/(?P<pk>[-\w]+)/$','visits.views.create_visit'),
+    url(r'^patients/regimen-change/(?P<pk>[-\w]+)/$','ARTRegimen.views.regimen_history'),
+    url(r'^get-regimen-change-reasons/$','ARTRegimen.views.get_regimen_change_reasons'),
+    url(r'drugs/transactions/new-transaction/$', 'commodities.views.new_transaction'),
+    url(r'drugs/registered-drugs/$', 'commodities.views.registered_drugs'),
+    url(r'^get-regimen-in-service/(?P<type_of_service>[-\w\(\) ]+)/$','patients.views.get_regimen_in_service'),
+    url(r'^get-batch-details/$','commodities.views.get_batch_details'),
+    url(r'^get-patients-booked/(?P<tca>[-\w\(\) ]+)/$','visits.views.get_patients_booked'),
+    url(r'^activate-drug/(?P<pk>[-\w]+)/(?P<activate>[-\w]+)$','commodities.views.activate_drug'),
+    url(r'^activate-patient/(?P<pk>[-\w]+)/$','patients.views.activate_patient'),
+    url(r'^search-patient/(?P<search_text>[-\w\(\) ]+)$','patients.views.search_patient'),
+    url(r'drugs/registration/$', 'commodities.views.drug_registration'),
+    url(r'drugs/edit/(?P<pk>[-\w]+)/$', 'commodities.views.drug_registration'),
+    url(r'drugs/drug-details/(?P<pk>[-\w]+)/$', 'commodities.views.drug_details'),
+    url(r'transaction/delete/(?P<transaction_id>[-\w]+)/$', 'commodities.views.delete_transaction'),
+    url(r'^transaction/edit/(?P<pk>[-\w]+)/$','commodities.views.receive_drugs'),
+    url(r'^get-source-or-destination/$','sourceOrDestination.views.get_drug_source_or_destination'),
+    url(r'^regimen/registered_regimen/$','ARTRegimen.views.registered_regimen'),
+    url(r'^regimen/regimen-details/(?P<pk>[-\w]+)/$','ARTRegimen.views.regimen_details'),
+    url(r'^regimen/add-drug-to-regimen/(?P<pk>[-\w]+)/$','ARTRegimen.views.add_drug_to_regimen'),
+    url(r'^regimen/add-drug-to-regimen/(?P<pk>[-\w]+)/(?P<drug_id>[-\w]+)/$',
+        'ARTRegimen.views.remove_from_regimen'),
+    url(r'^regimen/edit-regimen/(?P<pk>[-\w]+)/$','ARTRegimen.views.new_regimen'),
+    url(r'^regimen/new-regimen/$','ARTRegimen.views.new_regimen'),
+    url(r'^check_if_CCCNumber_exists/$','patients.views.check_if_CCCNumber_exists'),
+    url(r'^settings/$','patients.views.settings'),
+    url(r'^activate-regimen/(?P<pk>[-\w]+)/(?P<activate>[-\w]+)$','ARTRegimen.views.activate_regimen'),
+    url(r'^add-new-dosage/$','transactions.views.add_new_dosage'),
+    url(r'^patients/retrospective-visit/(?P<pk>[-\w]+)/$','visits.views.create_visit_retrospectively'),
+    
+    
+    url(r'^admin/', include(admin.site.urls)),
+)

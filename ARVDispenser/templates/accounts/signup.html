@@ -1,0 +1,11 @@
+
+{% extends '_layouts/base.html' %}
+{% load crispy_forms_tags %}
+
+{% block title %}Register | {{block.super}}{% endblock %}
+
+{% block headline %}<h1>Register For Pycon Survival Series</h1>{% endblock %}
+
+{% block content %}
+{% crispy form %}
+{% endblock %}

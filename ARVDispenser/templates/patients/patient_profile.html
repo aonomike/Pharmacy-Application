@@ -1,0 +1,375 @@
+{% extends '_layouts/base.html'%}
+{% block page_title %}{{page_title}} | {{block.super}}{% endblock %}
+
+{% block page_name%}{{patient|upper}}'s Profile:{% endblock page_name%}
+
+{% block content%}
+<!-- /.row -->
+            <div class="col-lg-12 col-md-12">
+                    <div class="panel panel-primary">
+                        <div class="panel-heading">
+                            <i class="fa fa-archive"></i> Patient Details:
+                            
+                        </div>
+                        <!-- /.panel-heading -->
+                        
+<div class="panel-body">
+    <div class="row">
+    
+<!-- - Demographic info-->
+<!--- Clinical Info-->
+<!-- - Drug Consumption History-->
+<div class="col-lg-4 col-md-12">
+<div class="panel panel-info">
+  <!-- Default panel contents -->
+  <div class="panel-heading">
+<i class="fa fa-bars"></i> Demographic:</div>
+
+  <!-- List group -->
+  <ul class="list-group">
+    <li class="list-group-item ">
+        <strong>CCC Number: </strong>
+        <span class="pull-right">{{patient.CCC_Number}}</span>
+    </li>
+    <li class="list-group-item">
+        <strong>Gender: </strong>
+        <span class="pull-right">{{patient.sex}}</span>
+    </li>
+    <li class="list-group-item">
+    <p>
+        <strong>Date Of Birth: </strong>
+		{% if patient.date_of_birth %} 
+        <span>
+            {{patient.date_of_birth|date:"d/m/y"}}  
+        </span></p><p>
+        (<strong>Age: </strong><span>{{ patient.calculate_age }} {% if patient.calculate_age == 1 %}year{% else %}years{% endif %} )</span>
+        </p>
+		{% else %}
+		<span class="pull-right">
+            Not Specified 
+        </span>
+		</p><p>
+        (<strong>Age: </strong><span>Not Specified)</span>
+		{% endif %}
+    </li>
+     <li class="list-group-item">
+        <strong>Wt (Kg): </strong>
+        <span class="pull-right">{{patient_past_bsa.weight}}</span>
+    </li>
+     <li class="list-group-item">
+        <strong>Ht (cm): </strong>
+        <span class="pull-right">{{patient_past_bsa.height}}</span>
+    </li>
+    
+    <li class="list-group-item">
+        <strong>BSA (msq): </strong>
+        <span class="pull-right">{{ patient_past_bsa.calculate_BSA|floatformat:3 }}</span>
+    </li>
+    
+    {% if patient.sex == "Female" %}
+    <li class="list-group-item">
+        <strong>Pregnant: </strong>
+        {% if patient.pregnant == True %}
+        <span class="pull-right true"><strong>Yes</strong></span>
+        {% else %}
+        <span class="pull-right">No</span>
+        {% endif %}
+    </li>
+    {% endif %}
+    <li class="list-group-item">
+    <p>
+        <strong>Mobile Number: </strong>
+        <span class="pull-right">{{patient.cellphone_no}}</span>
+    </p>
+    </li>
+    {% if patient.alternate_contact %}
+    <li class="list-group-item">
+    <p>
+        <strong>Alt. Contact: </strong>
+        <span class="pull-right">{{patient.alternate_contact}}</span>
+    </p>
+    </li>
+
+    {% endif %}
+  </ul>
+</div>
+</div>
+
+<div class="col-lg-4 col-md-6">
+<div class="panel panel-info ">
+  <!-- Default panel contents -->
+  <div class="panel-heading">
+  <i class="fa fa-bars"></i> Patient History:</div>
+  <div class="panel-body">
+    <p><strong>Other Chronic Illnesses: </strong>
+    {% if patient.other_disease_conditions %}
+    <span class="pull-right">{{patient.other_disease_conditions}}</span>
+    {% else %}
+    <span class="pull-right">None specified</span>
+    {% endif %}
+    </p>
+
+  </div>
+
+  <!-- List group -->
+  <ul class="list-group">
+    <li class="list-group-item">
+        <p><strong>Other Drugs: </strong>
+    {% if patient.other_drugs %}
+    <span class="pull-right">{{patient.other_drugs}}</span>
+    {% else %}
+    <span class="pull-right">None specified</span>
+    {% endif %}
+    </p>
+    </li>
+
+    <li class="list-group-item">
+        <p><strong>Drug Allergies/ADR: </strong>
+    {% if patient.adr_or_side_effects %}
+    <span class="pull-right">{{patient.adr_or_side_effects}}</span>
+    {% else %}
+    <span class="pull-right">None specified</span>
+    {% endif %}
+    </p>
+    </li>
+
+    <li class="list-group-item">
+     <strong>TB Positive: </strong>
+    {% if patient.TB == True %}
+    <span class="pull-right true">Yes</span>
+    {% else %}
+    <span class="pull-right">No</span>
+    {% endif %}
+    
+    </li>
+
+    
+
+    <li class="list-group-item">
+     <strong>Smokes: </strong>
+    {% if patient.smokes == True %}
+    <span class="pull-right true">Yes</span>
+    {% else %}
+    <span class="pull-right">No</span>
+    {% endif %}
+    
+    </li>
+
+    <li class="list-group-item">
+     <strong>Drinks: </strong>
+    {% if patient.drinks == True %}
+    <span class="pull-right true">Yes</span>
+    {% else %}
+    <span class="pull-right">No</span>
+    {% endif %}
+    
+    </li>
+
+    <li class="list-group-item">
+     <p>
+         <strong>Next Appointment Date: </strong>
+        
+        <span class="pull-right">{{latest_visit.dateofnextappointment|date:"d/m/y"}}</span>
+    </p>
+    </li>
+
+    <li class="list-group-item">
+        <p>
+         <strong>Days To Next App: </strong>
+    <span class="pull-right">{{latest_visit.days_to_TCA}}</span>
+    
+    </p>
+    </li>
+
+  </ul>
+</div>
+</div>
+
+<div class="col-lg-4 col-md-6">
+<div class="panel panel-info">
+  <!-- Default panel contents -->
+  <div class="panel-heading">
+  <i class="fa fa-bars"></i> Program Information</div>
+  
+
+  <!-- List group -->
+  <ul class="list-group">
+    <li class="list-group-item">
+    <p>
+        <strong>Date Enrolled: </strong>
+        <span class="pull-right">{{patient.date_therapy_started|date:"d/m/y"}}</span></p>
+    </li>
+
+    <li class="list-group-item">
+    <p>
+        <strong>Current Status: </strong>
+        <span class="pull-right">{{patient.current_status}}</span>
+        </p>
+    </li>
+
+    <li class="list-group-item">
+    <div><p>
+        <strong>Client Source: </strong>
+        <span class="pull-right">{{patient.client_source}}</span>
+        </p></div>
+    </li>
+
+    <li class="list-group-item">
+    <div>
+        <p><strong>Supported By: </strong>
+        <span class="pull-right">{{patient.client_supported_by}}</span></p>
+        </div>
+    </li>
+
+    <li class="list-group-item">
+    <div><p> 
+        <strong>Type Of Service: </strong>
+        {% if patient.type_of_service == '1' %}
+        <span class="pull-right">ART</span>
+        {% elif patient.type_of_service == '2' %}
+        <span class="pull-right">PEP</span>
+        {% elif patient.type_of_service == '5' %}
+        <span class="pull-right">OI Only</span>
+        {% elif patient.type_of_service == '3' %}
+        <span class="pull-right">PMTCT</span>
+        {% endif %}
+        </p>
+        </div>
+    </li>
+
+    <li class="list-group-item">
+    <p>
+        <strong>Start Regimen: </strong>
+        <span class="pull-right">{{ patient.get_regimen }}</span></p>
+    </li>
+
+    <li class="list-group-item">
+    <p>
+        <strong>Current Regimen: </strong>
+		<p>
+		{% if current_regimen %}
+        <span>{{current_regimen.regimen.regimencode}} | {{current_regimen.regimen.regimen}}</span>
+		{% else %}
+		<span></span>
+		{% endif %}
+		</p></p>
+    </li>
+
+  </ul>
+</div>
+
+<div class="btn-group pull-right">
+  <button type="button" class="btn btn-primary dropdown-toggle " data-toggle="dropdown">
+    Update Patient Details <span class="caret"></span>
+  </button>
+  <ul class="dropdown-menu" role="menu">
+
+    <li><a href="/patients/edit/{{patient.pk}}">
+    <i class="fa fa-check-circle-o"></i> Edit Patient Record</a></li>
+    <li class="divider"></li>
+    <li><a href="/patients/new-visit/{{patient.pk}}">
+    <i class="glyphicon glyphicon-upload"></i> Dispense Drugs</a></li>
+    <li class="divider"></li>
+    <li><a class="new-visit" href="/patients/retrospective-visit/{{patient.pk}}" ><span class="glyphicon glyphicon-plus-sign"></span> Dispense Drugs Retrospectively</a></li>
+    <li class="divider"></li>
+    <li><a href="/patients/weight-and-height-details/{{patient.pk}}">
+    <i class="fa fa-check-circle-o"></i> Add BSA Details</a></li>
+    
+  </ul>
+</div>
+
+</div>
+
+
+</div>
+
+                
+</div>
+
+
+                        
+                        <!-- /.panel-body -->
+                    </div>
+
+                </div>
+
+{% endblock content%}
+
+
+{% block other_info %}
+{% if drugs_dispensed %}
+<div  id="accordion" class="col-lg-12 col-md-12">
+                <div class="panel panel-primary">
+                    <div class="panel-heading">
+                        <h4 class="panel-title">
+                            <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne">
+                            <i class="fa fa-file-excel-o"></i> Dispensing History</a>
+                        </h4>
+                    </div>
+                    <div id="collapseOne" class="panel-collapse">
+                        <div class="panel-body">
+                            <div class="table-responsive">
+                                <table class="table table-striped table-bordered table-condensed table-hover" id="dataTables-example">
+                                    <thead>
+                                        <tr>
+                                            <th>Date</th>
+                                            <th>Purpose of visit</th>
+                                            <th>Drug</th>
+                                            <th>Unit</th>
+                                            <th>Dose</th>
+                                            <th>Duration</th>
+                                            <th>Qty</th>
+                                            <th>Batch No</th>
+                                            <th>Pill Count</th>
+                                            <th>Indication</th>
+                                            <th>Actions</th>
+                                            
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                    {% for drug_dispensed in drugs_dispensed %}
+                                        <tr class="odd gradeX">
+                                            
+                                            <td>{{drug_dispensed.visit.eventdate|date:'d/m/y'}}</td>
+                                            <td>{{drug_dispensed.visit.visittype.visittype}}</td>
+                                            <td>{{drug_dispensed.physicalDrug.arvdrug}}</td>
+                                            <td>{{drug_dispensed.physicalDrug.drugunit}}</td>
+                                            <td>{{drug_dispensed.dosage}}</td>
+                                            <td>{{drug_dispensed.duration}}</td>
+                                            <td>{{drug_dispensed.arvquantity}}</td>
+                                            <td>{{drug_dispensed.batchNo}}</td>
+                                            <td>{{drug_dispensed.pillcount}}</td>
+                                            <td>{{drug_dispensed.indication}}</td>
+                                            <td>
+                                                <div class="btn-group btn-group-xs">
+                                                  <button type="button" class="btn btn-primary dropdown-toggle " data-toggle="dropdown">
+                                                    Possible Actions <span class="caret"></span>
+                                                  </button>
+                                                  <ul class="dropdown-menu" role="menu">
+                                                    
+                                                    <li><a href="/patients/dispense-drugs/{{patient.pk}}/{{drug_dispensed.visit.pk}}/{{drug_dispensed.transactioncode}}">
+                                                    <span class="glyphicon glyphicon-edit"></span> Edit
+                                                    </a>
+                                                    </li>
+                                                    <li class="divider"></li>
+                                                    <li><a href="/patients/dispensed-drugs/delete/{{drug_dispensed.transactioncode}}">
+                                                    <i class="fa fa-ban"></i> Delete</a></li>
+                                                    
+                                                  </ul>
+                                                </div>
+                                            </td>
+                                            
+                                        </tr>
+                                       {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                            
+                        </div>
+                        
+                        
+                    </div>
+                </div>
+</div>
+{% endif %}
+{% endblock other_info%}

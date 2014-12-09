@@ -1,0 +1,325 @@
+{% extends '_layouts/base.html'%}
+{% block page_title %}Patient Registration | {{block.super}}{% endblock %}
+
+{% block page_name%}Patient Registration:{% endblock page_name%}
+
+{% block content%}
+<!-- /.row -->
+            <div class="col-lg-12 col-md-12">
+                    <div class="panel panel-primary">
+                        <div class="panel-heading">
+                            <i class="glyphicon glyphicon-edit"></i> New Patient Registration
+                            
+                        </div>
+                      <!-- /.panel-heading -->
+                        
+<div class="panel-body">
+    <div class="row">
+    <form role="form form-horizontal" method = "POST" action = '.' id="patients_reg">
+    {% csrf_token %}
+        <div class="col-lg-4">
+        <label class="control-label"><em>CCC Number:* (00000-99) </em></label><label class="checkbox-inline pull-right">
+                        <input id="chkTI" type="checkbox" placeholder="Smokes"> Transfer In?
+                    </label>  
+            {% if form.CCC_Number.errors %}
+            <div class="form-group has-error" id="cccnum">
+                                            
+                {{ form.CCC_Number }}
+            </div>
+            {% else %}
+            <div class="form-group" id="cccnum">
+               {{ form.CCC_Number }}
+            </div>
+            {% endif %}
+
+        <label class="control-label"><em>First Name:* </em></label>
+                {% if form.first_name.errors %}
+            <div class="form-group has-error">
+                {{ form.first_name }}
+            </div>
+            {% else %}
+            <div class="form-group">
+                {{ form.first_name }}
+            </div>
+            {% endif %}
+
+        <label class="control-label"><em>Middle Name: </em></label>
+            {% if form.middle_name.errors %}
+            <div class="form-group has-error">
+                {{ form.middle_name }}
+            </div>
+            {% else %}
+            <div class="form-group">
+                {{ form.middle_name }}
+            </div>
+            {% endif %}
+
+        <label class="control-label"><em>Surname:* </em></label>
+            {% if form.surname.errors %}
+            <div class="form-group has-error">
+                {{ form.surname }}
+            </div>
+            {% else %}
+            <div class="form-group">
+                 {{ form.surname }}
+            </div>
+            {% endif %}
+        
+        <label class="control-label"><em>Gender: </em></label>
+                {% if form.sex.errors %}
+            <div class="form-group has-error">
+                {{ form.sex }}
+            </div>
+            {% else %}
+            <div class="form-group">
+                {{ form.sex }}
+            </div>
+            {% endif %}
+
+        {% if form.pregnant.errors %}
+                <div class="form-group has-error">
+                   <em>                       
+                    <label class="checkbox-inline hidden" id="lblpregnant">
+                        {{ form.pregnant }} Pregnant?
+                    </label>
+                    </em>
+                </div>
+                {% else %}
+                <div class="form-group">
+                     <em>                       
+                    <label class="checkbox-inline hidden" id="lblpregnant">
+                        {{ form.pregnant }} Pregnant
+                    </label>
+                    </em>
+                </div>
+                {% endif %}
+
+        <label class="control-label"><em>Physical Address: </em></label>
+            {% if form.address.errors %}
+            <div class="form-group has-error">
+                {{ form.address }}
+            </div>
+            {% else %}
+            <div class="form-group">
+                {{ form.address }}
+            </div>
+            {% endif %}
+
+        <label class="control-label"><em>Date Of Birth: (mm/dd/yyyy) </em></label>
+            {% if form.date_of_birth.errors %}
+            <div class="form-group has-error input-group">
+                <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span>
+                </span>{{ form.date_of_birth }}
+            </div>
+            {% else %}
+            <div class="form-group input-group">
+            <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span>
+                </span>{{ form.date_of_birth }}
+            </div>
+            {% endif %}
+
+
+
+                </div>
+
+                <div class="col-lg-4">
+
+                <label class="control-label"><em>Mobile Number:</em></label>
+                {% if form.cellphone_no.errors %}
+                <div class="form-group has-error">
+                    {{ form.cellphone_no }}
+                </div>
+                {% else %}
+                <div class="form-group">
+                    {{ form.cellphone_no }}
+                </div>
+                {% endif %}
+
+                <!--<label class="control-label"><em>Alternate Contact:</em></label>
+                {% if form.alternate_contact.errors %}
+                <div class="form-group has-error">
+                    {{ form.alternate_contact }}
+                </div>
+                {% else %}
+                <div class="form-group">
+                    {{ form.alternate_contact }}
+                </div>
+                {% endif %}-->
+
+                <label class="control-label"><em>Date Enrolled:</em></label>
+                    {% if form.date_therapy_started.errors %}
+                <div class="form-group has-error input-group">
+                    <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span>
+                    </span>{{ form.date_therapy_started }}
+                </div>
+                {% else %}
+                <div class="form-group input-group">
+                <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span>
+                    </span>{{ form.date_therapy_started }}
+                </div>
+                {% endif %}
+
+                <label class="control-label"><em>Other Disease Conditions: </em></label>
+                {% if form.other_disease_conditions.errors %}
+                <div class="form-group has-error">
+                    {{ form.other_disease_conditions }}
+                </div>
+                {% else %}
+                <div class="form-group">
+                    {{ form.other_disease_conditions }}
+                    
+                </div>
+                {% endif %}
+
+                <label class="control-label"><em>ADR Or Side Effects: </em></label>
+                {% if form.adr_or_side_effects.errors %}
+                <div class="form-group has-error">
+                    {{ form.adr_or_side_effects }}
+                </div>
+                {% else %}
+                <div class="form-group">
+                    {{ form.adr_or_side_effects }}
+                    
+                </div>
+                {% endif %}
+
+                {% if form.TB.errors %}
+                <div class="form-group has-error">
+                    <em>                       
+                    <label class="checkbox-inline">
+                        Does Patient Have Confirmed TB? {{ form.TB }} 
+                    </label>
+                    
+                    
+                    </em>
+                </div>
+                {% else %}
+                <div class="form-group">
+                     <em>                       
+                    <label class="checkbox-inline">
+                        {{ form.TB }} Does Patient Have Confirmed TB?  
+                    </label>
+                    
+                    
+                    </em>
+                </div>
+                {% endif %}
+
+                
+                
+                <div class="form-group">
+                     <em>                       
+                    <label class="checkbox-inline">
+                        {{ form.smokes }} Does Patient Smoke?
+                    </label>
+                    </em>
+                </div>
+
+                <div class="form-group">
+                     <em>  
+                    <label class="checkbox-inline">
+                         {{ form.drinks }} Does Patient Drink Alcohol?
+                    </label>
+                    
+                    </em>
+                </div>
+
+                <div id ="age_from_dob"></div>
+
+                </div>
+
+
+                <div class="col-lg-4">
+
+                <label class="control-label"><em>Type Of Service:*</em></label>
+                {% if form.type_of_service.errors  %}
+                <div class="form-group has-error">
+                    {{ form.type_of_service }}
+                </div>
+                {% else %}
+                <div class="form-group">
+                    {{ form.type_of_service }}
+                </div>
+                {% endif %}
+
+
+                <label class="control-label"><em>Client Source:*</em></label>
+                {% if form.client_source.errors %}
+                <div class="form-group has-error">
+                    {{ form.client_source }}
+                </div>
+                {% else %}
+                <div class="form-group">
+                    {{ form.client_source }}
+                </div>
+                {% endif %}
+
+                
+                <label class="control-label"><em>Current Status:*</em></label>
+                {% if form.current_status.errors %}
+                <div class="form-group has-error">
+                    {{ form.current_status }}
+                </div>
+                {% else %}
+                <div class="form-group">
+                     {{ form.current_status }}
+                </div>
+                {% endif %}
+
+                <label class="control-label hidden" id = "lblARTStart"><em>ART Start Date:*</em></label>
+                {% if form.ART_start_date.errors %}
+                <div class="form-group input-group has-error hidden" id = "frmgrpARTStart">
+                    <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span>
+                    </span>{{ form.ART_start_date }}
+                </div>
+                {% else %}
+                <div class="form-group input-group hidden" id = "frmgrpARTStart">
+                <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span>
+                    </span>{{ form.ART_start_date }}
+            
+                </div>
+                {% endif %}
+
+                <label class="control-label hidden" id="lblstart_regimen"><em>Start Regimen: </em></label>
+                {% if form.regimen.errors %}
+                <div class="form-group has-error">
+                    {{ form.regimen }}
+                </div>
+                {{form.regimen.errors}}
+                {% else %}
+                <div class="form-group">
+                     {{ form.regimen }}
+                </div>
+                {% endif %}
+
+                <div id ="bsaDetails">
+                <label class="control-label"><em>Wt (Kg):* </em></label>
+                <input class="form-control" id="weight" name="weight" placeholder="Weight" type="number" min="5" max="200" required="true">
+                <p></p>
+
+                <label class="control-label"><em>Ht (cm): </em></label>
+                <input class="form-control" id="height" name="height" placeholder="Height" type="number" min="60" max="200">
+                </div>
+
+                <input type="submit" name="submit"  class="btn btn-primary reg" value="Save">
+                <input type="reset" name="reset"  class="btn btn-primary reg" value="Reset">
+                <input name="cancel" formnovalidate class="btn reg" type="submit" value="Cancel"/>
+                
+                </div>
+                
+
+                </form>
+
+                </div>
+</div>
+<div class="panel-footer">
+        Fields With * Are Required, Therefore Must Be Filled
+</div>
+
+
+                        
+                        <!-- /.panel-body -->
+                    </div>
+
+                </div>
+{% endblock content%}

@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <!--Add these next two lines to prevent logging back in on browser back button-->
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate, post-check=0, pre-check=0" /> 
+    <meta http-equiv="Pragma" content="no-cache" />
+
+    <title>ARV Dispenser | Login</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link href="{{STATIC_URL}}css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- MetisMenu CSS -->
+    <link href="{{STATIC_URL}}css/plugins/metisMenu/metisMenu.min.css" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link href="{{STATIC_URL}}css/sb-admin-2.css" rel="stylesheet">
+
+    <!-- Custom Fonts -->
+    <link href="{{STATIC_URL}}font-awesome-4.1.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+    <link rel="shortcut icon" href="{{ STATIC_URL }}img/favicon/favicon.ico">
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+</head>
+
+<body>
+
+    <div class="container">
+        <div class="row">
+        <div class="col-lg-8 col-md-offset-2">
+                {% if messages %}
+    <ul class="messages msg">
+        {% for message in messages %}
+        <li{% if message.tags %} class="alert alert-danger"{% endif %}>
+         <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+        {{ message }}</li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+
+
+
+    </div>
+
+            <div class="col-md-4 col-md-offset-4">
+                <div class="login-panel panel panel-default">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">
+                        <img src="{{ STATIC_URL }}img/favicon/favicon.ico" class="image-responsive " />  ARV Dispenser</h3>
+                    </div>
+                    <div class="panel-body">
+                        <form role="form" method = "POST" action = '.'>
+                        {% csrf_token %}
+                            <fieldset>
+                            <p>
+                            <strong>Please Sign In:</strong>
+                            <strong class="pull-right">{% now "d-M-Y" %}</strong>
+                            </p>
+                                <div class="form-group">
+                                {% if form.username.errors %}
+						            <div class="form-group has-error">
+						                {{ form.username }}
+						            </div>
+						            {% else %}
+						            <div class="form-group">
+						                {{ form.username }}
+						            </div>
+						            {% endif %}
+                                    
+                                </div>
+                                <div class="form-group">
+                                    {% if form.password.errors %}
+						            <div class="form-group has-error">
+						                {{ form.password }}
+						            </div>
+						            {% else %}
+						            <div class="form-group">
+						                {{ form.password }}
+						            </div>
+						            {% endif %}
+                                </div>
+                                
+                                <!-- Change this to a button or input when using this as a form -->
+                                <button type="submit" class="btn btn-md btn-success btn-block pull-right">
+                        <span class="glyphicon glyphicon-lock"></span> login
+                      </button>
+                            </fieldset>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- jQuery Version 1.11.0 -->
+    <script src="{{STATIC_URL}}js/jquery-1.11.0.min.js"></script>
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="{{STATIC_URL}}js/bootstrap.min.js"></script>
+
+    <!-- Metis Menu Plugin JavaScript -->
+    <script src="{{STATIC_URL}}js/plugins/metisMenu/metisMenu.min.js"></script>
+
+    <!-- Custom Theme JavaScript -->
+    <script src="{{STATIC_URL}}js/sb-admin-2.js"></script>
+
+</body>
+
+</html>

@@ -1,0 +1,240 @@
+{% extends '_layouts/base.html'%}
+{% block page_title %}{{page_title}} | {{block.super}}{% endblock %}
+
+
+{% block page_name%}
+<div>{{art_patient|upper}}</div>
+<p></p>
+
+
+{% endblock page_name%}
+{% block extra_header_details%}
+
+{% endblock extra_header_details%}
+
+{% block content%}
+
+<div class="col-lg-10">
+                <div class="panel panel-primary">
+                    <div class="panel-heading">
+                        <h4 class="panel-title">
+                            
+                            <i class="fa fa-file-excel-o"></i> Dispense Drugs
+                        </h4>
+                    </div>
+                    <div class="panel-body">
+                    <div class ="alert alert-info col-lg-12 col-md-12 col-sm-12 col-xs-12">
+
+                            <div class = "pull-left">
+                            <div><strong>CCC NUMBER: </strong><span class="text-muted pull-right">{{art_patient.CCC_Number}}</span></div>
+                            <div><strong>Weight: </strong><span class="text-muted pull-right">{{bsa_details.weight}}</span></div>
+                            <div><strong>BSA: </strong><span class="text-muted pull-right">{{bsa_details.calculate_BSA}}</span></div>
+                            </div>
+                            <div class = "pull-right">
+                            <div><strong>TCA Date: </strong><span class="text-muted pull-right">{{todays_visit.dateofnextappointment|date:'d/m/y'}}</span> </div>
+                            <div><strong>Days To TCA: </strong><span class="text-muted pull-right">{{todays_visit.days_to_TCA}}</span></div>
+                            </div>
+                    </div>
+
+                    <div class="row">
+                        {% if form.instance.pk %}
+                    <form role="form form-horizontal" method = "POST" action = '/patients/dispense-drugs/{{art_patient.pk}}/{{visit_id}}/{{form.instance.pk}}' id = "dispense_drugs">
+                        {% else %}
+                    <form role="form form-horizontal" method = "POST" action = '/patients/dispense-drugs/{{art_patient.pk}}/{{visit_id}}' id = "dispense_drugs">
+
+                        {% endif %}
+                        {% csrf_token %}
+
+                        <div class="col-lg-4">
+                            {% if not current_regimen %}
+                            
+                                    <div>
+                                        <a href="/patients/regimen-change/{{art_patient.pk}}" class = "changeRegimen pull-right">
+                                        <strong>Assign Regimen</strong></a>
+                                    </div>
+                            {% endif %}
+
+                            {% if current_regimen %}
+                            <div>
+                                <label class="control-label"><em>Current Regimen: </em></label>
+                                <span class="pull-right true"><strong><u>{{regimen.regimen}}</u></strong>
+                                <div>
+
+                                <a href="/patients/regimen-change/{{art_patient.pk}}" class = "changeRegimen">Change Regimen</a>
+                            
+                            </div></span>
+                            </div>
+                            
+            
+                            <div>
+                            <label class="control-label"><em>Drug:* </em></label>
+                            </div>
+                        
+                            {% if form.physicalDrug.errors  %}
+                                <div class="form-group has-error" id ="phys_drug">
+                                    {{ form.physicalDrug }} 
+                                </div>
+                                {% else %}
+                                <div class="form-group" id ="phys_drug">
+                                    {{ form.physicalDrug }}
+                                </div>
+                                
+                            {% endif %}
+                            {% else %}
+                            <label class="control-label"><em>Drug:* </em></label>
+                        
+                            {% if form.physicalDrug.errors  %}
+                                <div class="form-group has-error" id ="phys_drug">
+                                    {{ form.physicalDrug }} 
+                                </div>
+                                {% else %}
+                                <div class="form-group" id ="phys_drug">
+                                    {{ form.physicalDrug }}
+                                </div>
+                            {% endif %}{% endif %}
+
+                            <label class="control-label hidden" id="lblbatchNo"><em>Batch No:* </em></label>
+                                {% if form.batchNo.errors %}
+                                    <div class="form-group has-error" id="batch">
+                                        <select id="batchNo" class="form-control" name="batches">
+                                            <option value="" selected="selected">&lt;Select Batch No&gt;</option>
+                                            
+                                        </select>
+                                        {{ form.batchNo }}
+                                    </div>
+                                    {{ form.batchNo.errors }}
+                                    {% else %}
+                                    <div class="form-group hidden" id="batch" >
+                                        <select id="batchNo" class="form-control" name="batches">
+                                            <option value="" selected="selected">&lt;Select Batch No&gt;</option>
+                                            
+                                        </select>
+                                        {{ form.batchNo }}
+                                    </div>
+                                {% endif %}
+
+                            <!--Display Stock in batch and expiry date on batch selection --> 
+                            
+                            <label class="control-label"><em>Pill Count: </em></label>
+                                    {% if form.pillcount.errors %}
+                                        <div class="form-group has-error">
+                                            {{ form.pillcount }}
+                                        </div>
+                                        {% else %}
+                                        <div class="form-group">
+                                            {{ form.pillcount }}
+                                        </div>
+                                    {% endif %} 
+                       
+                           
+
+                            
+
+                            
+                        </div>
+
+
+                        <div class="col-lg-4">
+
+                                
+                                        
+
+                                <label class="control-label"><em>Dosage:* </em></label>
+                                {% if form.dosage.errors %}
+                                <div class="form-group has-error" id="dosage">
+                                    {{ form.dosage }}
+                                </div>
+                                {% else %}
+                                <div class="form-group " id="dosage">
+                                    {{ form.dosage }}
+                                </div>
+                                {% endif %}
+
+                                {% if form.other_dosage.errors %}
+                                <div class="form-group has-error">
+                                    {{ form.other_dosage }}
+                                </div>
+                                {% else %}
+                                <div class="form-group ">
+                                    {{ form.other_dosage }}
+                                </div>
+                                {% endif %}
+                                
+
+                                
+                                
+
+                                <label class="control-label"><em>Duration:* </em></label>
+                                {% if form.duration.errors %}
+                                    <div class="form-group has-error">
+                                        {{ form.duration }}
+                                    </div>
+                                    {% else %}
+                                    <div class="form-group">
+                                        {{ form.duration }}
+                                    </div>
+                                {% endif %}
+
+                                <label class="control-label"><em>Qty Dispensed:* </em></label>
+                                {% if form.arvquantity.errors %}
+                                    <div class="form-group has-error" id="qty_dispensed">
+                                        {{ form.arvquantity }}
+                                    </div>
+                                    {% else %}
+                                    <div class="form-group" id="qty_dispensed">
+                                        {{ form.arvquantity }}
+                                    </div>
+                                {% endif %}
+
+                                <label class="control-label"><em>Indication: </em></label>
+                                {% if form.indication.errors %}
+                                        <div class="form-group has-error">
+                                            {{ form.indication }}
+                                        </div>
+                                        {% else %}
+                                        <div class="form-group">
+                                            {{ form.indication }}
+                                        </div>
+                                    {% endif %}
+
+                        </div>
+
+                        <div class="col-lg-4">
+                                
+                                <label class="control-label"><em>Comment: </em></label>
+                                {% if form.comment.errors %}
+                                        <div class="form-group has-error">
+                                            {{ form.comment }}
+                                        </div>
+                                        {% else %}
+                                        <div class="form-group">
+                                            {{ form.comment }}
+                                        </div>
+                                    {% endif %}
+
+
+                                <button type="submit" class="btn btn-primary dispense reg">Save</button>
+                                <input type="reset" name="reset" class="btn btn-primary reg" value="Reset">
+                                <input name="cancel" class="btn reg" type="submit" value="Cancel"/>
+                                <label class="hidden" id="visitid">{{visit_id}}</label>
+                                <label class="hidden" id="patientid">{{art_patient.pk}}</label>
+                                
+
+                       </div>
+                </form>
+            </div>
+        </div>
+        <div class="panel-footer">
+        Fields With * Are Required, Therefore Must Be Filled
+</div>
+    </div>
+</div>
+
+                
+{% endblock content%}
+
+ <!--NOTIFICATIONS-->
+    {% block notifications%}
+   <div class="col-lg-4"></div>
+    {% endblock notifications%}
+
