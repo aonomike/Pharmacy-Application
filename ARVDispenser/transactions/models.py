@@ -44,8 +44,21 @@ class PatientTransaction(MetaData):
     operator = models.ForeignKey(User, db_column='operator')
     pillcount = models.IntegerField(db_column='pillCount', blank=True, null=True)
     batchNo = models.CharField(max_length=15)
-    #dayslate = models.CharField(db_column='daysLate', max_length=45, blank=True)
     
+    #everytime  we create a transaction, we also  deduct from the stocks
+    def save(self, drug_qty, *args,**kwargs):
+        super(PatientTransaction, self).save(*args, **kwargs)
+        drug_qty = drug_qty - self.arvquantity
+        return drug_qty
+
+    def save_edit(self, drug_qty, old_qty, *args,**kwargs):
+            super(PatientTransaction, self).save(*args, **kwargs)
+            if old_qty == self.arvquantity:
+                pass
+            else:
+                drug_qty = drug_qty +(old_qty - self.arvquantity)
+            return drug_qty
+            
     class Meta:
         db_table = 'tblpatienttransaction'
 

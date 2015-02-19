@@ -49,6 +49,9 @@ urlpatterns = patterns('',
     url(r'^activate-regimen/(?P<pk>[-\w]+)/(?P<activate>[-\w]+)$','ARTRegimen.views.activate_regimen'),
     url(r'^add-new-dosage/$','transactions.views.add_new_dosage'),
     url(r'^patients/retrospective-visit/(?P<pk>[-\w]+)/$','visits.views.create_visit_retrospectively'),
+    url(r'^patients/dispense-drugs/(?P<visit_id>[-\w]+)$','transactions.views.edit_dispensed'),
+    url(r'transit-patient/$', 'patients.views.transit_patient_registration'),
+    url(r'transit-patient/edit/(?P<pk>[-\w]+)/$', 'patients.views.transit_patient_registration'),
     
     
     url(r'^admin/', include(admin.site.urls)),

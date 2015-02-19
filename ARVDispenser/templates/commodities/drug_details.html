@@ -43,30 +43,37 @@
         <span class="pull-right">{{drug.drugunit}}</span>
     </li>
     
-     <li class="list-group-item">
+    <li class="list-group-item">
+    <p>
+    <span style="float:left">
         <strong>Pack Size: </strong>
         <span class="pull-right">{{drug.packsize}}</span>
+    </span>
+    <span style="float:right;">
+        <strong>Qty. In Stock: </strong>
+        <span class="pull-right">{{qty_in_stock}}</span>
+    </span>
+    <span style="float:right;padding-right:29%">
+        <strong>Packs: </strong>
+        <span class="pull-right">{{packs}}</span>
+    </span>
+    </p>
     </li>
-    
-    
+
     <li class="list-group-item">
     <p>
+    <span style="float:left">
         <strong>Min. Level: </strong>
         <span class="pull-right">{{drug.minimumlevel}}</span>
-    </p>
-    </li>
-
-    <li class="list-group-item">
-    <p>
-        <strong>Max. Level: </strong>
-        <span class="pull-right">{{drug.maximumlevel}}</span>
-    </p>
-    </li>
-
-    <li class="list-group-item">
-    <p>
+    </span>
+    <span style="float:right;padding-right:1%">
         <strong>Reorder Level: </strong>
         <span class="pull-right">{{drug.reorderlevel}}</span>
+    </span>
+    <span style="float:right;padding-right:29%">
+        <strong>Max. Level: </strong>
+        <span class="pull-right">{{drug.maximumlevel}}</span>
+    </span>
     </p>
     </li>
 
@@ -118,7 +125,7 @@
     
   </ul>
 </div>
-<div class="btn-group pull-right" id="regimenctrls">
+<div class="btn-group pull-right">
   <button type="button" class="btn btn-primary dropdown-toggle " data-toggle="dropdown">
     Update Drug Details <span class="caret"></span>
   </button>
@@ -151,3 +158,58 @@
                 
 
 {% endblock content%}
+
+{% block other_info %}
+{% if drug_audit_trail %}
+<div  id="accordion" class="col-lg-12 col-md-12">
+                <div class="panel panel-primary">
+                    <div class="panel-heading">
+                        <h4 class="panel-title">
+                            <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne">
+                            <i class="fa fa-file-excel-o"></i> Drug Movement:</a>
+                        </h4>
+                    </div>
+                    <div id="collapseOne" class="panel-collapse">
+                        <div class="panel-body">
+                            <div class="table-responsive">
+                                <table class="table table-striped table-bordered table-condensed table-hover" id="dataTables-example">
+                                    <thead>
+                                        <tr>
+                                            <th>Operator</th>
+                                            <th>Transaction Date</th>
+                                            <th>Transaction Type</th>
+                                            <th>Batch No</th>
+                                            <th>Expiry Date</th>
+                                            <th>Quantity</th>
+                                            <th>Remarks</th>
+                                            
+                                            
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                    {% for trail in drug_audit_trail %}
+                                        <tr class="odd gradeX">
+                                            
+                                            <td>{{trail.operator.first_name}} {{trail.operator.last_name}}</td>
+                                            <td>{{trail.transactiondate}}</td>
+                                            <td>{{trail.transactiontype}}</td>
+                                            <td>{{trail.tranbatch}}</td>
+                                            <td>{{trail.expirydate}}</td>
+                                            <td>{{trail.quantity}}</td>
+                                            <td>{{trail.remarks}}</td>
+                                            
+                                            
+                                        </tr>
+                                       {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                            
+                        </div>
+                        
+                        
+                    </div>
+                </div>
+</div>
+{% endif %}
+{% endblock other_info%}

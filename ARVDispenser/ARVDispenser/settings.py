@@ -51,6 +51,7 @@ LOCAL_APPS = (
     'transactions',
     'visits',
     'user_account',
+    'AuditTrail',
     )
 
 # Application definition
@@ -108,10 +109,59 @@ STATICFILES_DIRS = (
 )
 
 #local directory that stores static files(css,js,imgs)
-#STATIC_ROOT =os.path.join(BASE_DIR,'static')
+STATIC_ROOT =os.path.join(BASE_DIR,'served')
 
 TEMPLATE_DIRS = (
     os.path.join(BASE_DIR, 'templates'),
 
     )
 
+TEMPLATE_LOADERS = (
+    ('django.template.loaders.cached.Loader', (
+        'django.template.loaders.filesystem.Loader',
+        'django.template.loaders.app_directories.Loader',
+    )),
+)
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': True,
+    'formatters': {
+        'standard': {
+            'format': '%(asctime)s [%(levelname)s] %(name)s: %(message)s \n',
+            'datefmt' : "%d %b %Y %H:%M:%S"
+        },
+    },
+    'handlers': {
+        'default': {
+            'level': 'INFO',
+            'class':'logging.handlers.RotatingFileHandler',
+            'filename':'logs/mylog.log',
+            'maxBytes':1024*1024*5,
+            'backupCount':5,
+            'formatter':'standard',
+        },
+    
+    'request_handler': {
+            'level': 'DEBUG',
+            'class':'logging.handlers.RotatingFileHandler',
+            'filename':'logs/django_request.log',
+            'maxBytes':1024*1024*5,
+            'backupCount':5,
+            'formatter':'standard',
+        },
+    },
+    'loggers':{
+    '':{
+        'handlers':['default'],
+        'level':'INFO',
+        'propagate':True
+        },
+    'django.request':{
+        'handlers':['request_handler'],
+        'level':'DEBUG',
+        'propagate':False
+        },
+
+    }
+}

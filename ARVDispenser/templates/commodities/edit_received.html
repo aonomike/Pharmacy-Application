@@ -1,0 +1,199 @@
+{% extends '_layouts/base.html'%}
+{% block page_title %}{{page_title}} | {{block.super}}{% endblock %}
+
+
+{% block page_name%}
+<div>{{art_patient|upper}}</div>
+<p></p>
+
+
+{% endblock page_name%}
+{% block extra_header_details%}
+
+{% endblock extra_header_details%}
+
+{% block content%}
+
+<div class="col-lg-10">
+                <div class="panel panel-primary">
+                    <div class="panel-heading">
+                        <h4 class="panel-title">
+                            
+                            <i class="fa fa-file-excel-o"></i> Update Received Drugs:
+                        </h4>
+                    </div>
+                    <div class="panel-body">
+                    
+
+                    <div class="row">
+                       
+                    <form role="form form-horizontal" method = "POST" action = '.' id = "dispense_drugs">
+                        
+                        {% csrf_token %}
+
+                        <div class="col-md-6">
+                            
+            
+                            <label class="control-label"><em>Transaction Date:* </em></label>
+                            
+                            {% if form.transactiondate.errors  %}
+                                <div class="form-group has-error">
+                                    {{ form.transactiondate }} 
+                                </div>
+                                {% else %}
+                                <div class="form-group">
+                                    {{ form.transactiondate }}
+                                </div>
+                                
+                            {% endif %}
+                           
+                            <label class="control-label"><em>Transaction Type:* </em></label>
+                        
+                            {% if form.transactiontype.errors  %}
+                                <div class="form-group has-error">
+                                    {{ form.transactiontype }} 
+                                </div>
+                                {% else %}
+                                <div class="form-group">
+                                    {{ form.transactiontype }}
+                                </div>
+                            {% endif %}
+
+                            <label class="control-label" id="lblsrc_or_dst"><em>Source Or Dest.:* </em></label>
+                        
+                            {% if form.source_or_destination.errors  %}
+                                <div class="form-group has-error" id="src_or_dest_formgrp">
+                                
+                                    {{ form.source_or_destination }} 
+                                </div>
+                                {% else %}
+                                <div class="form-group" id="src_or_dest_formgrp">
+                                
+                                    {{ form.source_or_destination }}
+                                </div>
+                            {% endif %}
+
+                            <label class="control-label"><em>Ref Number:* </em></label>
+                        
+                            {% if form.ref_number.errors  %}
+                                <div class="form-group has-error">
+                                    {{ form.ref_number }} 
+                                </div>
+                                {% else %}
+                                <div class="form-group">
+                                    {{ form.ref_number }}
+                                </div>
+                            {% endif %}
+
+                            <label class="control-label"><em>Drug:* </em></label>
+                            
+                        
+                            {% if form.arvdrug.errors  %}
+                                <div class="form-group has-error" id ="phys_drug">
+                                    {{ form.arvdrug }} 
+                                </div>
+                                {% else %}
+                                <div class="form-group" id ="phys_drug">
+                                    {{ form.arvdrug }}
+                                </div>
+                                
+                            {% endif %}
+
+                            
+                            <label class="control-label"><em>Batch No.: </em></label>
+                                    {% if form.tranbatch.errors %}
+                                        <div class="form-group has-error">
+                                            {{ form.tranbatch }}
+                                        </div>
+                                        {% else %}
+                                        <div class="form-group">
+                                            {{ form.tranbatch }}
+                                        </div>
+                                    {% endif %} 
+                       
+                        </div>
+
+
+                        <div class="col-md-6">
+
+                                <label class="control-label"><em>Expiry Date:* </em></label>
+                                {% if form.expirydate.errors %}
+                                <div class="form-group has-error">
+                                    {{ form.expirydate }}
+                                </div>
+                                {% else %}
+                                <div class="form-group ">
+                                    {{ form.expirydate }}
+                                </div>
+                                {% endif %}
+
+                                <label class="control-label"><em>Packs:* </em></label>
+                                {% if form.packs.errors %}
+                                <div class="form-group has-error packs_details">
+                                    {{ form.packs }}
+                                    
+                                </div>
+                                {% else %}
+                                <div class="form-group packs_details">
+                                    {{ form.packs }}
+                                    
+                                </div>
+                                {% endif %}
+                                
+                                <label class="control-label"><em>Quantity:* </em></label>
+                                {% if form.quantity.errors %}
+                                    <div class="form-group has-error">
+                                        {{ form.quantity }}
+                                    </div>
+                                    {% else %}
+                                    <div class="form-group">
+                                        {{ form.quantity }}
+                                    </div>
+                                {% endif %}
+
+                                <label class="control-label"><em>Unit Cost: </em></label>
+                                {% if form.unitcost.errors %}
+                                    <div class="form-group has-error">
+                                        {{ form.unitcost }}
+                                    </div>
+                                    {% else %}
+                                    <div class="form-group">
+                                        {{ form.unitcost }}
+                                    </div>
+                                {% endif %}
+                                
+                                <label class="control-label"><em>Remarks: </em></label>
+                                {% if form.remarks.errors %}
+                                        <div class="form-group has-error">
+                                            {{ form.remarks }}
+                                        </div>
+                                        {% else %}
+                                        <div class="form-group">
+                                            {{ form.remarks }}
+                                        </div>
+                                    {% endif %}
+
+                                <button type="submit" class="btn btn-primary dispense reg">Save</button>
+                                <input type="reset" name="reset" class="btn btn-primary reg" value="Reset">
+                                <input name="cancel" class="btn reg" type="submit" value="Cancel"/>
+
+                        </div>
+
+                        
+                </form>
+            </div>
+        </div>
+        <div class="panel-footer">
+        Fields With * Are Required, Therefore Must Be Filled
+</div>
+    </div>
+</div>
+
+                
+{% endblock content%}
+
+ <!--NOTIFICATIONS-->
+    {% block notifications%}
+   <div class="col-lg-4"></div>
+    {% endblock notifications%}
+

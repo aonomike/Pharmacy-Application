@@ -12,10 +12,11 @@ from django.forms.formsets import formset_factory
 
 
 from .models import PhysicalDrug, DrugDhysicalTran
-from .forms import make_forms, DrugRegistrationForm
+from .forms import make_forms, DrugRegistrationForm,DrugDhysicalTranForm
 from ARTRegimen.models import Regimen
 from user_account.views import LoginRequest
 from patients.views import homepage
+from AuditTrail.models import DrugFlowTracker
 
 def get_drug_unit(request):
 	if request.is_ajax():
@@ -156,8 +157,21 @@ def drug_details(request, pk):
 
 	drug = get_object_or_404(PhysicalDrug, pk = pk)
 
+	drug_audit_trail = DrugFlowTracker.objects.filter(arvdrug = drug.arvdrug)
+
+	drug_in_stock = DrugDhysicalTran.objects.filter(arvdrug = drug.arvdrug)
+
+	qty_in_stock = 0;
+
+	packs = 0;
+
+	for d in drug_in_stock:
+		qty_in_stock += d.quantity
+		if d.packs:
+			packs += d.packs
+
 	return render_to_response(template_name,locals(),
-                              context_instance=RequestContext(request))
+		context_instance=RequestContext(request))
 
 def registered_drugs(request):
 	if not request.user.is_authenticated:
@@ -221,6 +235,15 @@ def new_transaction(request):
                             transaction.created_at = date.today()
                             transaction.is_active = True
                             transaction.save()
+                            audit_trail = DrugFlowTracker(transactiontype = transaction.transactiontype,
+                                                  transactiondate = transaction.created_at,
+                                                  tranbatch = transaction.tranbatch,
+                                                  arvdrug = transaction.arvdrug,
+                                                  expirydate = transaction.expirydate,
+                                                  remarks = 'Received Stock',
+                                                  quantity = transaction.quantity,
+                                                  operator = request.user)
+                            audit_trail.save()
                         
                             
                     messages.info(request, ("Transactions Saved Successfully!"))
@@ -234,7 +257,7 @@ def new_transaction(request):
         
 def receive_drugs(request, pk = None):
 	if request.user.is_authenticated():
-		template_name='commodities/receiv_drugs.html'
+		template_name='commodities/edit_received.html'
 		page_title = 'Receive Drugs'
 		drug_transactions = DrugDhysicalTran.objects.all().order_by('-created_at')
 
@@ -260,6 +283,15 @@ def receive_drugs(request, pk = None):
 					if request.POST.get('src_or_dst') != u"":
 						edited_drug.source_or_destination = request.POST.get('src_or_dst')
 					edited_drug.save()
+					audit_trail = DrugFlowTracker(transactiontype = edited_drug.transactiontype,
+                                                  transactiondate = edited_drug.created_at,
+                                                  tranbatch = edited_drug.tranbatch,
+                                                  arvdrug = edited_drug.arvdrug,
+                                                  expirydate = edited_drug.expirydate,
+                                                  remarks = 'An Update To Received Stock',
+                                                  quantity = edited_drug.quantity,
+                                                  operator = request.user)
+					audit_trail.save()
 					messages.info(request, 
 						("{0} Transaction Updated Successfully!")
 						.format(edited_drug.arvdrug))
@@ -271,11 +303,20 @@ def receive_drugs(request, pk = None):
 					if request.POST.get('src_or_dst') != u"":
 						saved_drug.source_or_destination = request.POST.get('src_or_dst')
 					saved_drug.save()
+					audit_trail = DrugFlowTracker(transactiontype = saved_drug.transactiontype,
+                                                  transactiondate = saved_drug.created_at,
+                                                  tranbatch = saved_drug.tranbatch,
+                                                  arvdrug = saved_drug.arvdrug,
+                                                  expirydate = saved_drug.expirydate,
+                                                  remarks = 'Received Stock',
+                                                  quantity = saved_drug.quantity,
+                                                  operator = request.user)
+					audit_trail.save()
 					pk = saved_drug.pk
 					messages.info(request, 
 						("{0} Transaction Created Successfully!")
 						.format(saved_drug.arvdrug))
-				return HttpResponseRedirect('')
+				return redirect(new_transaction)
 			else:
 				messages.warning(request, 
 					"Ooops! Please correct the highlighted fields, then try again.")

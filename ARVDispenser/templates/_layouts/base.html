@@ -9,7 +9,7 @@
         <meta name="description" content="">
         <meta name="author" content="">
 
-        <title>{% block page_title %}ARV Dispenser{% endblock %} </title>
+        <title>{% block page_title %}Pharmacy System{% endblock %} </title>
 
         <!-- Bootstrap Core CSS -->
         <link href="{{STATIC_URL}}css/bootstrap.min.css" rel="stylesheet">
@@ -64,7 +64,7 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="/"><img src="{{ STATIC_URL }}img/favicon/favicon.ico"/> ARV Dispenser</a>
+                <a class="navbar-brand" href="/"><img src="{{ STATIC_URL }}img/pharmacy.png" height="40" width="60"/> <strong>Pharmacy System</strong></a>
             </div>
             <!-- /.navbar-header -->
 
@@ -100,6 +100,9 @@
                         </li>
                         <li>
                             <a href="/patients/registration"><i class="glyphicon glyphicon-user"></i>   New Patient</a>
+                        </li>
+                        <li>
+                            <a href="/transit-patient"><i class="glyphicon glyphicon-compressed"></i>   Transit Patient</a>
                         </li>
                         <li>
                             <a href="#"><i class="glyphicon glyphicon-upload"></i>   Drugs Management</a>
@@ -145,9 +148,9 @@
 
 
                     </ul>
-                    <div class="calendar">
+                    <!--<div class="calendar">
                             <strong class = "calendar_heading"><em>Calendar:</em></strong><div id="calendar_dtp"></div>
-                        </div>
+                        </div>-->
                 </div>
                 <!-- /.sidebar-collapse -->
             </div>
@@ -170,10 +173,28 @@
                 <div class="col-lg-12 col-md-12">
                     {% if messages %}
                     <ul class="messages msg">
+
                         {% for message in messages %}
-                        <li{% if message.tags %} class="alert alert-{{ message.tags }}"{% endif %}>
+
+                        {% if message.tags == 'warning'%}
+                            <li{% if message.tags %} class="alert alert-danger"{% endif %}>
+                            <p><strong>{{message.tags.upper}}:</strong></p>
+                        {% elif message.tags == 'info' %}
+                            <li{% if message.tags %} class="alert alert-success"{% endif %}>
+                            <p><strong>SUCCESS:</strong></p>
+                            <!--<li{% if message.tags %} class="alert alert-{{ message.tags }}"{% endif %}>-->
+                        {% endif %}
+                        
+
+                        {% if message.tags == 'warning'%}
+                            <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                        {% endif %}
+                        {% if message.tags == 'info'%}
+                            <span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
+                        {% endif %}
+                        
                         <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-                        {{ message }}</li>
+                          {{ message }}</li>
                         {% endfor %}
                     </ul>
                     {% endif %}
@@ -259,6 +280,7 @@
     $(function() {
         $( ".datepicker" ).datepicker({
             dateFormat: "mm/dd/yy",
+            changeYear: true,
             showAnim:"drop"
         });
 // Since confModal is essentially a nested modal it's enforceFocus method
@@ -273,7 +295,7 @@ $.fn.modal.Constructor.prototype.enforceFocus = function() {};
 });
     
 </script>
-<script type="text/javascript">
+<!--<script type="text/javascript">
 $(function() {
     
 
@@ -332,6 +354,7 @@ getAllDates = function(name) {
     
     $('#calendar_dtp').datepicker({
         dateFormat: "yy-mm-dd",
+        changeYear: true,
     
         
 
@@ -346,7 +369,7 @@ getAllDates = function(name) {
     }
     });
 });
-</script>
+</script>-->
 <!--<script>
     $(function() {
         var date = new Date();
@@ -646,6 +669,7 @@ $("#chkTI").change(function () {
 <script>
     $(document).ready(function() {
         $(".batchNo").change(function () {
+            
             $batchNo = $(this);
             $batchNo.closest("tr").find(".selectedbatch").val( $batchNo.val());
             });
@@ -698,6 +722,7 @@ $("#chkTI").change(function () {
         $(document).on("focus", ".expdate", function(){
             $(this).datepicker({
                 minDate: new Date,
+                changeYear: true,
                 showAnim:"drop"
             });
         });
@@ -708,6 +733,7 @@ $("#chkTI").change(function () {
         $(document).on("focus", ".transactiondate", function(){
             $(this).datepicker({
                 minDate: new Date,
+                changeYear: true,
                 showAnim:"drop"
             });
         });
@@ -819,6 +845,10 @@ $("#chkTI").change(function () {
                 $(this).off("focus").removeClass('lastrow');
             
             });
+        if($(".drugqty").length) 
+        {
+          $("#old_qty").val($(".drugqty").val()); 
+        }
 
         if($("#physical_drug").length) 
         {
@@ -892,7 +922,8 @@ $("#chkTI").change(function () {
                         append('<option value = '+batches[j] +'>'+batches[j] +'</option>');
                     }
                      
-                     $('.selectedbatch').val($("#batchNo").val());
+                    // $('.selectedbatch').val($("#batchNo").val());
+                     $('#batchNo').val($('.selectedbatch').val());
                 }
                 else{
                     $( "#batchNo" ).addClass( "hidden" );
@@ -906,7 +937,7 @@ $("#chkTI").change(function () {
 
             },
             dataType: 'json'
-        }); });
+        });});
 
         $(".packs").keyup(function () {
             
@@ -919,12 +950,79 @@ $("#chkTI").change(function () {
 
         });
 
+        $("#packs").change(function () {
+            $(".unit_cost").focus();
+        });
 
+        $("#qty").change(function () {
+            $(".unit_cost").focus();
+        });
+
+        $("#packs").keyup(function () {
+            
+            
+            $packs = $(this);
+            $packsize = parseInt($(".packsize").text());
+            
+            $("#qty").val(parseInt($(this).val()) * $packsize);
+            
+         
+        });
+
+        $("#qty").keyup(function () {
+            
+            
+            $packs = $(this);
+            $packsize = parseInt($(".packsize").text());
+            
+            $("#packs").val(parseInt($(this).val()) / $packsize);
+            
+            
+
+        });
+
+        if($("#physicalDrugs").length)
+        {
+            if($("#physicalDrugs").find('option:selected').text()!='<Drugs In Regimen>')
+                {
+                $.ajax({
+                  type: "POST",
+                  url: '/get-drug-unit/',
+                  data: "arv=" + $("#physicalDrugs").find('option:selected').text(),
+                  headers: {"X-CSRFToken": getCookie('csrftoken')},
+                  success: function (data) {
+
+                    $(".packs_details").append('<div class="hidden packsize" >'+data.packsize+'</div>');
+                    },
+                    dataType: 'json'
+                });
+            }
+        }
+
+        $("#physicalDrugs").change(function () {
+            var $physicalDrug = $(this);
+            $(".packsize").remove();
+            if($(this).find('option:selected').text()!='<Drugs In Regimen>')
+            {
+            $.ajax({
+              type: "POST",
+              url: '/get-drug-unit/',
+              data: "arv=" + $(this).find('option:selected').text(),
+              headers: {"X-CSRFToken": getCookie('csrftoken')},
+              success: function (data) {
+
+                $(".packs_details").append('<div class="hidden packsize" >'+data.packsize+'</div>');
+                },
+                dataType: 'json'
+            });
+        }
+        });
         $(".physicalDrug").change(function () {
             
             
-            $physicalDrug = $(this);
-            
+            var $physicalDrug = $(this);
+            if($(this).find('option:selected').text()!='<Drugs In Regimen>')
+            {
             $.ajax({
               type: "POST",
               url: '/get-drug-unit/',
@@ -937,9 +1035,8 @@ $("#chkTI").change(function () {
                 $physicalDrug.closest("tr").find(".stock_in_batch").empty();
                 $physicalDrug.closest("tr").find(".btch").find('#no_batch').remove();
                 
-
                 $physicalDrug.closest("tr").find(".unit").append(data.unit);
-
+                
                 if(data.std_dose == "")
                     {$physicalDrug.closest("tr").find(".dose").val();}
                 else
@@ -964,28 +1061,44 @@ $("#chkTI").change(function () {
                     {
                         
                         $physicalDrug.closest("tr").find(".batchNo").append('<option value = '+batches[j] +'>'+batches[j] +'</option>');
+
                     }
                 }
-                else{
+                else {
                     $physicalDrug.closest("tr").find(".batchNo").addClass( "hidden" );
                      $physicalDrug.closest("tr").find(".btch").append('<div id="no_batch" class="danger">No Batch!</div>');
                      $physicalDrug.closest("tr").find(".btch").addClass( "danger" );
 
-            }
+                }
+
+                console.log($physicalDrug.closest("tr").find("input.selectedbatch"));
+                if($physicalDrug.closest("tr").find(".selectedbatch").val()!="") {
+                        var slectedval = $physicalDrug.closest("tr").find(".selectedbatch").val();
+                        console.log(slectedval)
+
+                        updateBatchNo($physicalDrug.closest("tr").find(".batchNo"), slectedval);
+                }
 
         },
         dataType: 'json'
     });
-    if($(this).find('option:selected').text()=='<Drugs In Regimen>')
-    {
-     $( "#batchNo" ).addClass( "hidden" );
-     $( "#lblbatchNo" ).addClass( "hidden" );   
+    
+      $( "#batchNo" ).removeClass( "hidden" );
+    $( "#lblbatchNo" ).removeClass( "hidden" );
  }
  else{
-    $( "#batchNo" ).removeClass( "hidden" );
-    $( "#lblbatchNo" ).removeClass( "hidden" );
+    
+
+     $( "#batchNo" ).addClass( "hidden" );
+     $( "#lblbatchNo" ).addClass( "hidden" ); 
 }
 });
+
+$(".physicalDrug").each(function() { 
+    $(this).change();
+    //$(".batchNo").each(function(){$(this).change();})
+});
+
 if($("#physicalDrug").length)
 {
     $.ajax({
@@ -1016,7 +1129,7 @@ if($("#physicalDrug").length)
                         append('<option value = '+batches[j] +'>'+batches[j] +'</option>');
                     }
                      
-                     $('#batchNo').val($("#selectedbatch").val());
+                     $('#batchNo').val($(".selectedbatch").val());
                 }
                 else{
                     $( "#batchNo" ).addClass( "hidden" );
@@ -1041,7 +1154,12 @@ if($("#physicalDrug").length)
 
 });
 
-
+function updateBatchNo($batchNo, slectedval) { 
+    console.log($batchNo);
+    console.log(slectedval);
+    $batchNo.val(slectedval).change();
+    //$(".batchNo").each(function() { $(this).change(); });
+}
 </script>
 
 <script>
@@ -1073,7 +1191,8 @@ if($("#physicalDrug").length)
                     {
                         var patient = patients[j];
                         var is_active;
-                        if(patient[3].toString() === 'true' && patient[3] != 'undefined')
+
+                        if(patient[3] === '1' && patient[3] != 'undefined')
                         {
                            is_active = '<i class="fa fa-check-circle"></i>';
                        }
@@ -1081,7 +1200,7 @@ if($("#physicalDrug").length)
                         { is_active ='<i class="fa fa-times"></i>';}
                     $("#resultset")
                     .find('tbody')
-                    .append('<tr class="odd gradeX"><td>'+patient[0]+'</td><td>'+patient[1]+'</td><td>'+patient[2]+'</td><td>'+is_active+'</td><td>'+patient[5]+'</td><td><div class="btn-group btn-group-xs">              <button type="button" class="btn btn-primary dropdown-toggle " data-toggle="dropdown">Possible Patient Actions <span class="caret">                 </span></button><ul class="dropdown-menu" role="menu"><li><a class="new-visit" href="/patients/new-visit/'+patient[4]+'/" ><span class="glyphicon glyphicon-plus-sign"></span> Dispense Drugs</a>                             </li>                             <li class="divider"></li><li><a class="new-visit" href="/patients/retrospective-visit/'+patient[4]+'/" ><span class="glyphicon glyphicon-plus-sign"></span> Dispense Drugs Retrospectively</a>                             </li>                             <li class="divider"></li>                                                         <li><a href="/patient-profile/'+patient[4]+'">                             <span class="glyphicon glyphicon-edit"></span> View Patient Profile                             </a>                             </li>                                                         <li class="divider"></li>                             <li><a href="/patients/regimen-change/'+patient[4]+'">                             <i class="glyphicon glyphicon-upload"></i> Change Regimen</a></li>                             </ul> </td></tr>');   
+                    .append('<tr class="odd gradeX"><td>'+patient[0]+'</td><td>'+patient[1]+'</td><td>'+patient[2]+'</td><td>'+patient[4]+'</td><td>'+patient[5]+'</td><td><div class="btn-group btn-group-xs">              <button type="button" class="btn btn-primary dropdown-toggle " data-toggle="dropdown">Possible Patient Actions <span class="caret">                 </span></button><ul class="dropdown-menu" role="menu"><li><a class="new-visit" href="/patients/new-visit/'+patient[6]+'/" ><span class="glyphicon glyphicon-plus-sign"></span> Dispense Drugs</a>                             </li>                             <li class="divider"></li><li><a class="new-visit" href="/patients/retrospective-visit/'+patient[6]+'/" ><span class="glyphicon glyphicon-plus-sign"></span> Dispense Drugs Retrospectively</a>                             </li>                             <li class="divider"></li>                                                         <li><a href="/patient-profile/'+patient[6]+'">                             <span class="glyphicon glyphicon-edit"></span> View Patient Profile                             </a>                             </li>                                                         <li class="divider"></li>                             <li><a href="/patients/regimen-change/'+patient[6]+'">                             <i class="glyphicon glyphicon-upload"></i> Change Regimen</a></li>                             </ul> </td></tr>');   
 
                 $('#loadingmessage').hide(); // hide the loading message              
 
@@ -1097,7 +1216,7 @@ if($("#physicalDrug").length)
     dataType: 'json'
 });
 }
-}); 
+});
 
 </script>
 <script>
@@ -1222,6 +1341,14 @@ if($("#physicalDrug").length)
                     $("#bsaDetails").append('<div id = "BSA">BSA: '+ calcBSA($('#weight').val(), $('#height').val())+'</div>');
                 }
             });
+
+            if($('#weight').length && $('#weight').val() != "" )
+                {
+                    console.log(calcBSA($('#weight').val(), $('#height').val()));
+                    $("#BSA").remove();
+                    $("#bsaDetails").append('<p></p><div id = "BSA">BSA: '+ calcBSA($('#weight').val(), $('#height').val())+'</div>');
+                }
+
             if($("#dispensing_weight").length)
             {
                 var height = "{{bsa_details.height}}";
@@ -1292,7 +1419,7 @@ if($("#physicalDrug").length)
                     }
                 }
             }
-            return cookieValue;
+            return cookieValue;   
         }
 
         $(".batchNo").change(function () {
@@ -1326,7 +1453,9 @@ if($("#physicalDrug").length)
             },
             dataType: 'json'
         });
-            $("#selectedbatch").val($(this).val());
+            //$(".selectedbatch").val($(this).val());
+             $batchNo.closest("tr").find(".selectedbatch").val($(this).val());
+
         }
         else
         {
@@ -1338,10 +1467,44 @@ if($("#physicalDrug").length)
             
 
         });
-if($("#batchNo").length)
-{
+
+$("#batchNo").change(function () {
     if($("#batchNo").find('option:selected').text() !="Batch No.s")
             {
+
+            $.ajax({
+              type: "POST",
+              url: '/get-batch-details/',
+              data: {"arv": $('#physical_drug').find('option:selected').text(),
+              "batch_no": $("#batchNo").val()},
+              headers: {"X-CSRFToken": getCookie('csrftoken')},
+              
+              success: function (data) {
+                $("#qty").remove();
+                $("#expiry").remove();
+
+                $("#batch").append($.parseHTML('<div id="qty"><p></p><strong><em>Stock In Batch:</em><span class="pull-right" id="stockqty">' + data.quantity+'</span></strong></div>'));
+                $("#qty").append($.parseHTML('<div id="expiry"><p></p><strong><em>Expiry Date:</em><span class="pull-right">' + data.expiry_date+'</span></strong></div>'));
+
+                
+
+            },
+            dataType: 'json'
+        });
+            $(".selectedbatch").val($("#batchNo").val());
+        }
+        else
+        {
+            $("#qty").remove();
+            $("#expiry").remove();
+        }
+});
+if($("#batchNo").length)
+{
+    //$("#batchNo").val($(".selectedbatch").val());
+    if($("#batchNo").find('option:selected').text() !="Batch No.s")
+            {
+
             $.ajax({
               type: "POST",
               url: '/get-batch-details/',
@@ -1405,6 +1568,7 @@ if($("#dob").length)
         $("#dob").datepicker({
            
          maxDate: new Date,
+         changeYear: true,
          onSelect: function(selected) {
             $("#age_from_dob").empty();
             $("#age_from_dob").append('<p><strong>Age: </strong>'+getAge($("#dob").val())+'</p>');
@@ -1415,6 +1579,7 @@ if($("#dob").length)
         $("#date_enrolled").datepicker({ 
             maxDate: new Date,
             showAnim:"drop",
+            changeYear: true,
             onSelect: function(selected) {
 
 
@@ -1424,6 +1589,7 @@ if($("#dob").length)
         $("#ARTStart").datepicker({ 
             maxDate: new Date,
             showAnim:"drop",
+            changeYear: true,
             onSelect: function(selected) {
 
 
@@ -1454,6 +1620,11 @@ if($("#dob").length)
             }
             return cookieValue;
         }
+        $("#src_or_dst").val($(".source_or_destination").val());
+        $("#src_or_dst").change(function () {
+            console.log($(this).find('option:selected').text());
+            $(".source_or_destination").val( $(this).find('option:selected').text());
+            });
 
         if($("#transactiontype").find('option:selected').text()=='Received from' || $("#transactiontype").find('option:selected').text()=='Returns to (-)')
             {           
@@ -1478,7 +1649,7 @@ if($("#dob").length)
                     {
 
                         $('#src_or_dst').find('option').remove();
-                        $('#src_or_dst').append('<option selected = "selected">&lt;Drug Source&gt;</option>');
+                        //$('#src_or_dst').append('<option selected = "selected">&lt;Drug Source&gt;</option>');
 
                         for(var j = 0; j<batches.length; j++)
                         {
@@ -1519,7 +1690,7 @@ else if($("#transactiontype").find('option:selected').text()=='Returns from (+)'
         {
 
             $('#src_or_dst').find('option').remove();
-            $('#src_or_dst').append('<option selected = "selected">&lt;Drug Destination&gt;</option>');
+            //$('#src_or_dst').append('<option selected = "selected">&lt;Drug Destination&gt;</option>');
 
             for(var j = 0; j<batches.length; j++)
             {
@@ -1547,6 +1718,99 @@ else if($("#transactiontype").find('option:selected').text()=='Ajustment (+)' ||
 
 }
 
+$("#transactiontype").change(function () {
+    if($("#transactiontype").find('option:selected').text()=='Received from' || $("#transactiontype").find('option:selected').text()=='Returns to (-)')
+            {           
+                $( "#lblsrc_or_dst" ).addClass( "hidden" );
+                $( "#src_or_dst" ).remove();
+
+                $.ajax({
+                  type: "POST",
+                  url: '/get-source-or-destination/',
+                  data: "act=source",
+                  headers: {"X-CSRFToken": getCookie('csrftoken')},
+                  success: function (data) {
+                    $( "#lblsrc_or_dst" ).text( "Source:*" );
+                    $( "#lblsrc_or_dst" ).removeClass( "hidden" );
+                    $("#src_or_dest_formgrp").append('<select class="form-control" id="src_or_dst" name = "src_or_dst"></select>');
+
+
+                    var batches = data.batches
+
+
+                    if(batches.length > 0)
+                    {
+
+                        $('#src_or_dst').find('option').remove();
+                        //$('#src_or_dst').append('<option selected = "selected">&lt;Drug Source&gt;</option>');
+
+                        for(var j = 0; j<batches.length; j++)
+                        {
+                            $('#src_or_dst').
+                            append('<option value = "'+batches[j] +'">'+batches[j] +'</option>');
+                        }
+
+                        $( "#lblsrc_or_dst" ).removeClass( "hidden" );
+                        $( "#src_or_dst" ).removeClass( "hidden" );      
+
+                    }
+                },
+                dataType: 'json'
+            }
+            );
+
+
+}
+
+else if($("#transactiontype").find('option:selected').text()=='Returns from (+)' || $("#transactiontype").find('option:selected').text()=='Issued To')
+{
+    $( "#lblsrc_or_dst" ).addClass( "hidden" );
+    $( "#src_or_dst" ).remove();
+
+    $.ajax({
+      type: "POST",
+      url: '/get-source-or-destination/',
+      data: "act=destination",
+      headers: {"X-CSRFToken": getCookie('csrftoken')},
+      success: function (data) {
+        $( "#lblsrc_or_dst" ).text( "Destination:*" );
+        $( "#lblsrc_or_dst" ).removeClass( "hidden" );
+        $("#src_or_dest_formgrp").append('<select class="form-control" id="src_or_dst" name = "src_or_dst"></select>');
+
+
+        var batches = data.batches
+        if(batches.length > 0)
+        {
+
+            $('#src_or_dst').find('option').remove();
+            //$('#src_or_dst').append('<option selected = "selected">&lt;Drug Destination&gt;</option>');
+
+            for(var j = 0; j<batches.length; j++)
+            {
+                $('#src_or_dst').
+                append('<option value = "'+batches[j] +'">'+batches[j] +'</option>');
+            }
+
+            $( "#lblsrc_or_dst" ).removeClass( "hidden" );
+            $( "#src_or_dst" ).removeClass( "hidden" );    
+
+        }
+    },
+    dataType: 'json'
+}
+);
+}
+else if($("#transactiontype").find('option:selected').text()=='Ajustment (+)' || $("#transactiontype").find('option:selected').text()=='Losses(-)'
+    || $("#transactiontype").find('option:selected').text()=='Expired(-)' || $("#transactiontype").find('option:selected').text()=='Starting Stock/Physical Count'
+    || $("#transactiontype").find('option:selected').text()=='Ajustment (-)' || $("#transactiontype").find('option:selected').text()=='Dispensed to Patients'
+    || $("#transactiontype").find('option:selected').text()=='<Transaction Type>')
+{
+
+    $( "#lblsrc_or_dst" ).addClass( "hidden" );
+    $( "#src_or_dst" ).remove();
+
+}
+});
 
         $(".transactiontype").change(function () {
             $transactiontype = $(this);
@@ -1636,7 +1900,7 @@ else if($(this).find('option:selected').text()=='Ajustment (+)' || $(this).find(
 
 }
 });
-
+  
 });
 
 
@@ -1649,6 +1913,9 @@ else if($(this).find('option:selected').text()=='Ajustment (+)' || $(this).find(
             $src_or_dst = $(this);
             $src_or_dst.closest("tr").find(".source_or_destination").val( $src_or_dst.val());
             });
+
+
+
         });
 </script>
 
@@ -1656,7 +1923,7 @@ else if($(this).find('option:selected').text()=='Ajustment (+)' || $(this).find(
     $(document).ready(function() {
 
         $("#type_of_service").change(function () {
-
+            
             $.ajax({
               type: "GET",
               url: '/get-regimen-in-service/' + $(this).find('option:selected').val(),
@@ -1768,6 +2035,7 @@ $("#dateofnextappointment").change(function (dateText) {
     $(function() {
         $( ".futuredates" ).datepicker({
             minDate: new Date,
+            changeYear: true,
             showAnim:"drop"
         });
 // Since confModal is essentially a nested modal it's enforceFocus method

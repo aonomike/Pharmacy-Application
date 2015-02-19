@@ -15,9 +15,9 @@ SEX_OPTIONS= [
 SEX_OPTIONS_AND_EMPTY = [('','<Gender>')] + SEX_OPTIONS
 
 TYPE_OF_SERVICE = [
-    ('1','ART'),
-    ('2','PEP'),
-    ('5','OI Only'),
+    ('ART','ART'),
+    ('PEP','PEP'),
+    ('OI Only','OI Only'),
 ]
 
 TYPE_OF_SERVICE_AND_EMPTY = [('','<Type Of Service>')] + TYPE_OF_SERVICE
@@ -31,7 +31,38 @@ class search_patient_form(forms.Form):
         attrs={'placeholder':'Search By Name Or CCC Number','class':'form-control',
         'autofocus':'true', 'type':'search'}))
 
+class TransitPatientForm(forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+        super(TransitPatientForm, self).__init__(*args,**kwargs)
 
+    CCC_Number=forms.CharField(widget=forms.TextInput(
+        attrs={'placeholder':'CCC Number','class':'form-control',
+        'autofocus':'true','id':'cccNumber'}))
+    first_name=forms.CharField(widget=forms.TextInput(
+        attrs={'placeholder':'First Name','class':'form-control'}))
+    middle_name=forms.CharField(widget=forms.TextInput(
+        attrs={'placeholder':'Middle Name','class':'form-control'}), required=False)
+    surname=forms.CharField(widget=forms.TextInput(
+        attrs={'placeholder':'Surname','class':'form-control'}))
+
+    sex=forms.ChoiceField(widget=forms.Select(
+        attrs={'placeholder':'Gender','class':'form-control', 'id':'sex'}),
+         choices=SEX_OPTIONS_AND_EMPTY, required=False)
+
+    date_of_birth=forms.DateTimeField(widget=forms.TextInput(
+        attrs={'placeholder':'Date Of Birth','class':'form-control', 'id':'dob'}),
+    required=False)
+    pregnant=forms.BooleanField(widget=forms.CheckboxInput(
+        attrs={'placeholder':'Pregnant','class':'checkbox-inline hidden','id':'pregnant'}),required=False)
+    cellphone_no=forms.CharField(widget=forms.TextInput(
+        attrs={'placeholder':'Mobile Number','class':'form-control'}),required=False)
+
+
+    class Meta:
+            model=ARTPatient
+            exclude = ('address','date_therapy_started','other_disease_conditions','adr_or_side_effects','current_status','regimen'
+                'TB','smokes','drinks','type_of_service','client_source','ART_start_date','alternate_contact','created_at',
+                'modified_at','is_active','slug','client_supported_by')
 
 class ARTPatientForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):

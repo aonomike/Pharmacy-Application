@@ -19,7 +19,10 @@ color: Black !important;
 background-color: Green !important;
 background-image :none !important;
 text-decoration: none;
+
 }
+.navbar-default .navbar-brand{color:#000;}
+.todays_schedule{margin-bottom: 10px;}
 .Highlighted a{
    background-color : Green !important;
    background-image :none !important;

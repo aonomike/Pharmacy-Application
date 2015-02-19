@@ -106,7 +106,7 @@
                                     {% else %}
                                     <div class="form-group hidden" id="batch" >
                                         <select id="batchNo" class="form-control" name="batches">
-                                            <option value="" selected="selected">&lt;Select Batch No&gt;</option>
+                                            <option value="" >&lt;Select Batch No&gt;</option>
                                             
                                         </select>
                                         {{ form.batchNo }}
@@ -185,6 +185,7 @@
                                         {{ form.arvquantity }}
                                     </div>
                                 {% endif %}
+                                <input id="old_qty" type="hidden" class="form-control formset-control" name="old_qty">
 
                                 <label class="control-label"><em>Indication: </em></label>
                                 {% if form.indication.errors %}

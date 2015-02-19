@@ -29,16 +29,6 @@
 - orange is the new black
 
 
-
-
-
-qsat
-november 25th crc 1st floor afternoon
-
-0701534146
-
-0770064984
-
 WSGIScriptAlias / "E:/Pharmacy/ARVDispenser/ARVDispenser/wsgi.py"
 WSGIPythonPath "E:/Pharmacy/ARVDispenser"
 
@@ -61,14 +51,14 @@ REGIMEN CHANGE REASONS(done)
 
 display patients scheduled to be seen today
 
-change active patients to be the actual status
+change active patients to be the actual status (done)
 
 end PEP patients after 28 days
 
 calculate qty based on packsize * packs(done)
 
 On transit:
-name, wt, dob, cccnumber, sex, contact
+name, wt, dob, cccnumber, sex, contact(done)
 
 validation of ccc number on registration
 
@@ -83,7 +73,9 @@ how to deal with appointments:
 - 
 PHARMACY SYSTEM:
 ----------------
-- datetimepicker make it easy to change year.
+- datetimepicker make it easy to change year.(done)
+
+dolphinekorandoed
 
 reports
 
@@ -133,4 +125,212 @@ WHO Staging:
 3 - 89
 4 - 90
 
+
+if transactions:
+            for  t in transactions:
+                #reverse the transaction by adding back what had been deducted
+                update_transaction = DrugDhysicalTran.objects.filter(
+                    arvdrug = t.physicalDrug).filter(
+                                    tranbatch = t.batchNo).latest('transactiondate')
+                update_transaction.quantity = (
+                                update_transaction.quantity + t.arvquantity)
+                update_transaction.save()
+            try:
+                current_regimen = RegimenHistory.objects.filter(
+                    ART_patient = art_patient).order_by("-pk")[0]
+            except RegimenHistory.DoesNotExist:
+                current_regimen = None
+            except IndexError:
+                current_regimen = None
+            if current_regimen:
+                drugs =[]
+                for t in transactions:
+                    drug = DrugsInRegimen.objects.filter(regimencode = current_regimen.regimen).get(combinations = t.physicalDrug.arvdrug)
+                    drug_dict = {}
+                    drug_dict['physicalDrug'] = drug
+                    drugs.append(drug_dict)
+            else:
+                drug = DrugsInRegimen.objects.filter(
+                    combinations = edit_transaction.physicalDrug.arvdrug).get(
+                        regimencode = Regimen.objects.get(regimencode = 'OI'))
+            if drug:
+                formset = transaction_inline_fact(instance=visit,initial=drugs)
+
+
+
+
+
+
+
+                24120-14
+                2207/15 (MCH 24670)
+                09618-06
+                10145-10 (ESTHER OKOTH)[not there]
+                13631-09 (PETER WERE)
+                2227/98
+                2236/97
+                2245/03
+                24585-14
+                24658-15
+                8116-05
+                22993-12 (22993-12B IN ADT)
+
+weight on viisit should accept decimals  (1dp)
+
+6542-6793
+
+ {3.0=12345678, 2.0=987654321, 1.0=IQ-000000DT196912027548}
+
+ for(var i = 0; i < $('identifiers').size(); i++){
+logger.info($('identifiers').get(i));
+}
+
+
+INTERMEDIARY APPLICATION - MIRTH APPLIANCE - 
+
+$(function(){
+	
+});
+
+$(document).ready(function(){
+	
+});
+
+
+NEXT STRATEGY:
+--------------
+1. IQCare Site and a CPAD  site, intergrated with HDSS kabisa!! - this will be tested against paper abstraction
+2. All variables on the adult form to be included
+3. We need to setup infrastructure (without Mirth Appliiance and Wimax)
+4. Feb. 15th 2015 we go live at tthe sites(minus HDSS )
+5. March 23rd 2015 we go live plus the HDSS
+6. April deadline for openMRS site implementation at the PGH
+
+Sections for improvement:
+-------------------------
+- All dates must be looked at and tested
+- The patient full name!!
+- Allow null inputs for most fields under demographic
+
+
+TODO:
+-----
+- Pick the database from the sites, set it up locally for testing
+- Site visit to know the infrastructure on the ground
+
+Setting up the infrastructure:
+------------------------------
+- At the facility we use VPN modems
+
+196111070
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+BACKUPS:
+--------
+- Set up 3 backups (weekly, daily and monthly) offsite
+
+- netapp backup system (data replication btwn Ksm and Nrb)
+
+- test the backups frequently
+
+INTERNET & POWER OUTAGES:
+-------------------------
+
+
+- Keep both appliances at separate sites
+
+- Keep track of the subscription times
+
+- Understand the warranty well, i.e. replacement procedures
+
+- canopy motorolla 
+
+- end-point protection (any anti-malware)
+
+Derbie Brains Unit AID
+
+
+Audit Trail Table:
+-------------------
+- ref no.
+- date
+- transaction type
+- batch no
+- drug
+- expiry date
+- packsize
+- no. of packs
+- qty
+- operator
+
+
+http://www.pluralsight.com/courses/jquery-tips-and-tricks (done)
+
+http://www.pluralsight.com/courses/unit-testing-python (done)
+
+http://www.pluralsight.com/courses/vagrant-versioning-environments
+
+http://www.pluralsight.com/courses/git-fundamentals
+
+http://www.pluralsight.com/courses/java-unit-testing-junit
+
+http://www.pluralsight.com/courses/django-fundamentals (done)
+
+http://www.pluralsight.com/courses/fixing-common-jquery-bugs (done)
+
+http://www.pluralsight.com/courses/python-beyond-basics
+
+interactive data visualization with d3.js vs d3.js data visualization fundamentals
+
+0725273099
 

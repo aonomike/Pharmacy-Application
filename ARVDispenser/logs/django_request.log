@@ -1,0 +1,528 @@
+2015-01-17 21:09:38,088 [ERROR] django.request: Internal Server Error: /transit-patient/
+Traceback (most recent call last):
+  File "C:\Python27\lib\site-packages\django\core\handlers\base.py", line 101, in get_response
+    request.path_info)
+  File "C:\Python27\lib\site-packages\django\core\urlresolvers.py", line 300, in resolve
+    sub_match = pattern.resolve(new_path)
+  File "C:\Python27\lib\site-packages\django\core\urlresolvers.py", line 209, in resolve
+    return ResolverMatch(self.callback, args, kwargs, self.name)
+  File "C:\Python27\lib\site-packages\django\core\urlresolvers.py", line 216, in callback
+    self._callback = get_callable(self._callback_str)
+  File "C:\Python27\lib\site-packages\django\utils\functional.py", line 27, in wrapper
+    result = func(*args)
+  File "C:\Python27\lib\site-packages\django\core\urlresolvers.py", line 92, in get_callable
+    lookup_view = getattr(import_module(mod_name), func_name)
+  File "C:\Python27\lib\site-packages\django\utils\importlib.py", line 35, in import_module
+    __import__(name)
+  File "D:\PROJECTS\PHARMACY\venv\Pharmacy-Application\ARVDispenser\patients\views.py", line 66
+    logger.debug('patient': patient)
+                          ^
+SyntaxError: invalid syntax
+2015-01-17 21:09:38,686 [WARNING] django.request: Not Found: /favicon.ico
+2015-01-17 21:14:39,653 [ERROR] django.request: Internal Server Error: /transit-patient/
+Traceback (most recent call last):
+  File "C:\Python27\lib\site-packages\django\core\handlers\base.py", line 111, in get_response
+    response = callback(request, *callback_args, **callback_kwargs)
+  File "D:\PROJECTS\PHARMACY\venv\Pharmacy-Application\ARVDispenser\patients\views.py", line 60, in transit_patient_registration
+    saved_patient.current_status = 15
+  File "C:\Python27\lib\site-packages\django\db\models\fields\related.py", line 366, in __set__
+    self.field.name, self.field.rel.to._meta.object_name))
+ValueError: Cannot assign "15": "ARTPatient.current_status" must be a "CurrentStatus" instance.
+2015-01-17 21:15:49,579 [ERROR] django.request: Internal Server Error: /transit-patient/
+Traceback (most recent call last):
+  File "C:\Python27\lib\site-packages\django\core\handlers\base.py", line 111, in get_response
+    response = callback(request, *callback_args, **callback_kwargs)
+  File "D:\PROJECTS\PHARMACY\venv\Pharmacy-Application\ARVDispenser\patients\views.py", line 63, in transit_patient_registration
+    saved_patient.save()
+  File "D:\PROJECTS\PHARMACY\venv\Pharmacy-Application\ARVDispenser\patients\models.py", line 90, in save
+    super(ARTPatient, self).save(*args,**kwargs)
+  File "C:\Python27\lib\site-packages\django\db\models\base.py", line 463, in save
+    self.save_base(using=using, force_insert=force_insert, force_update=force_update)
+  File "C:\Python27\lib\site-packages\django\db\models\base.py", line 551, in save_base
+    result = manager._insert([self], fields=fields, return_id=update_pk, using=using, raw=raw)
+  File "C:\Python27\lib\site-packages\django\db\models\manager.py", line 203, in _insert
+    return insert_query(self.model, objs, fields, **kwargs)
+  File "C:\Python27\lib\site-packages\django\db\models\query.py", line 1576, in insert_query
+    return query.get_compiler(using=using).execute_sql(return_id)
+  File "C:\Python27\lib\site-packages\django\db\models\sql\compiler.py", line 910, in execute_sql
+    cursor.execute(sql, params)
+  File "C:\Python27\lib\site-packages\django\db\backends\util.py", line 40, in execute
+    return self.cursor.execute(sql, params)
+  File "C:\Python27\lib\site-packages\django\db\backends\mysql\base.py", line 114, in execute
+    return self.cursor.execute(query, args)
+  File "C:\Python27\lib\site-packages\MySQLdb\cursors.py", line 205, in execute
+    self.errorhandler(self, exc, value)
+  File "C:\Python27\lib\site-packages\MySQLdb\connections.py", line 36, in defaulterrorhandler
+    raise errorclass, errorvalue
+IntegrityError: (1452, 'Cannot add or update a child row: a foreign key constraint fails (`arvdispenser`.`tblartpatientmasterinformation`, CONSTRAINT `regimen_refs_regimencode` FOREIGN KEY (`regimen`) REFERENCES `tblregimen` (`regimenCode`) ON DELETE NO ACTION ON UPDATE NO ACTION)')
+2015-01-17 21:49:01,308 [ERROR] django.request: Internal Server Error: /patient-profile/7729/
+Traceback (most recent call last):
+  File "C:\Python27\lib\site-packages\django\core\handlers\base.py", line 111, in get_response
+    response = callback(request, *callback_args, **callback_kwargs)
+  File "D:\PROJECTS\PHARMACY\venv\Pharmacy-Application\ARVDispenser\patients\views.py", line 283, in patient_profile
+    context_instance=RequestContext(request))
+  File "C:\Python27\lib\site-packages\django\shortcuts\__init__.py", line 20, in render_to_response
+    return HttpResponse(loader.render_to_string(*args, **kwargs), **httpresponse_kwargs)
+  File "C:\Python27\lib\site-packages\django\template\loader.py", line 169, in render_to_string
+    t = get_template(template_name)
+  File "C:\Python27\lib\site-packages\django\template\loader.py", line 145, in get_template
+    template, origin = find_template(template_name)
+  File "C:\Python27\lib\site-packages\django\template\loader.py", line 134, in find_template
+    source, display_name = loader(name, dirs)
+  File "C:\Python27\lib\site-packages\django\template\loader.py", line 42, in __call__
+    return self.load_template(template_name, template_dirs)
+  File "C:\Python27\lib\site-packages\django\template\loader.py", line 48, in load_template
+    template = get_template_from_string(source, origin, template_name)
+  File "C:\Python27\lib\site-packages\django\template\loader.py", line 156, in get_template_from_string
+    return Template(source, origin, name)
+  File "C:\Python27\lib\site-packages\django\template\base.py", line 125, in __init__
+    self.nodelist = compile_string(template_string, origin)
+  File "C:\Python27\lib\site-packages\django\template\base.py", line 153, in compile_string
+    return parser.parse()
+  File "C:\Python27\lib\site-packages\django\template\base.py", line 267, in parse
+    compiled_result = compile_func(self, token)
+  File "C:\Python27\lib\site-packages\django\template\loader_tags.py", line 214, in do_extends
+    nodelist = parser.parse()
+  File "C:\Python27\lib\site-packages\django\template\base.py", line 267, in parse
+    compiled_result = compile_func(self, token)
+  File "C:\Python27\lib\site-packages\django\template\loader_tags.py", line 189, in do_block
+    nodelist = parser.parse(('endblock',))
+  File "C:\Python27\lib\site-packages\django\template\base.py", line 267, in parse
+    compiled_result = compile_func(self, token)
+  File "C:\Python27\lib\site-packages\django\template\defaulttags.py", line 905, in do_if
+    condition = TemplateIfParser(parser, bits).parse()
+  File "C:\Python27\lib\site-packages\django\template\smartif.py", line 187, in parse
+    retval = self.expression()
+  File "C:\Python27\lib\site-packages\django\template\smartif.py", line 197, in expression
+    left = t.nud(self)
+  File "C:\Python27\lib\site-packages\django\template\smartif.py", line 145, in nud
+    raise parser.error_class("Unexpected end of expression in if tag.")
+TemplateSyntaxError: Unexpected end of expression in if tag.
+2015-01-17 21:49:57,701 [ERROR] django.request: Internal Server Error: /patient-profile/7729/
+Traceback (most recent call last):
+  File "C:\Python27\lib\site-packages\django\core\handlers\base.py", line 111, in get_response
+    response = callback(request, *callback_args, **callback_kwargs)
+  File "D:\PROJECTS\PHARMACY\venv\Pharmacy-Application\ARVDispenser\patients\views.py", line 283, in patient_profile
+    context_instance=RequestContext(request))
+  File "C:\Python27\lib\site-packages\django\shortcuts\__init__.py", line 20, in render_to_response
+    return HttpResponse(loader.render_to_string(*args, **kwargs), **httpresponse_kwargs)
+  File "C:\Python27\lib\site-packages\django\template\loader.py", line 169, in render_to_string
+    t = get_template(template_name)
+  File "C:\Python27\lib\site-packages\django\template\loader.py", line 145, in get_template
+    template, origin = find_template(template_name)
+  File "C:\Python27\lib\site-packages\django\template\loader.py", line 134, in find_template
+    source, display_name = loader(name, dirs)
+  File "C:\Python27\lib\site-packages\django\template\loader.py", line 42, in __call__
+    return self.load_template(template_name, template_dirs)
+  File "C:\Python27\lib\site-packages\django\template\loader.py", line 48, in load_template
+    template = get_template_from_string(source, origin, template_name)
+  File "C:\Python27\lib\site-packages\django\template\loader.py", line 156, in get_template_from_string
+    return Template(source, origin, name)
+  File "C:\Python27\lib\site-packages\django\template\base.py", line 125, in __init__
+    self.nodelist = compile_string(template_string, origin)
+  File "C:\Python27\lib\site-packages\django\template\base.py", line 153, in compile_string
+    return parser.parse()
+  File "C:\Python27\lib\site-packages\django\template\base.py", line 267, in parse
+    compiled_result = compile_func(self, token)
+  File "C:\Python27\lib\site-packages\django\template\loader_tags.py", line 214, in do_extends
+    nodelist = parser.parse()
+  File "C:\Python27\lib\site-packages\django\template\base.py", line 267, in parse
+    compiled_result = compile_func(self, token)
+  File "C:\Python27\lib\site-packages\django\template\loader_tags.py", line 189, in do_block
+    nodelist = parser.parse(('endblock',))
+  File "C:\Python27\lib\site-packages\django\template\base.py", line 267, in parse
+    compiled_result = compile_func(self, token)
+  File "C:\Python27\lib\site-packages\django\template\defaulttags.py", line 897, in do_if
+    condition = TemplateIfParser(parser, bits).parse()
+  File "C:\Python27\lib\site-packages\django\template\smartif.py", line 191, in parse
+    self.current_token.display())
+TemplateSyntaxError: Unused 'is' at end of if expression.
+2015-01-17 21:50:13,917 [ERROR] django.request: Internal Server Error: /patient-profile/7729/
+Traceback (most recent call last):
+  File "C:\Python27\lib\site-packages\django\core\handlers\base.py", line 111, in get_response
+    response = callback(request, *callback_args, **callback_kwargs)
+  File "D:\PROJECTS\PHARMACY\venv\Pharmacy-Application\ARVDispenser\patients\views.py", line 283, in patient_profile
+    context_instance=RequestContext(request))
+  File "C:\Python27\lib\site-packages\django\shortcuts\__init__.py", line 20, in render_to_response
+    return HttpResponse(loader.render_to_string(*args, **kwargs), **httpresponse_kwargs)
+  File "C:\Python27\lib\site-packages\django\template\loader.py", line 169, in render_to_string
+    t = get_template(template_name)
+  File "C:\Python27\lib\site-packages\django\template\loader.py", line 145, in get_template
+    template, origin = find_template(template_name)
+  File "C:\Python27\lib\site-packages\django\template\loader.py", line 134, in find_template
+    source, display_name = loader(name, dirs)
+  File "C:\Python27\lib\site-packages\django\template\loader.py", line 42, in __call__
+    return self.load_template(template_name, template_dirs)
+  File "C:\Python27\lib\site-packages\django\template\loader.py", line 48, in load_template
+    template = get_template_from_string(source, origin, template_name)
+  File "C:\Python27\lib\site-packages\django\template\loader.py", line 156, in get_template_from_string
+    return Template(source, origin, name)
+  File "C:\Python27\lib\site-packages\django\template\base.py", line 125, in __init__
+    self.nodelist = compile_string(template_string, origin)
+  File "C:\Python27\lib\site-packages\django\template\base.py", line 153, in compile_string
+    return parser.parse()
+  File "C:\Python27\lib\site-packages\django\template\base.py", line 267, in parse
+    compiled_result = compile_func(self, token)
+  File "C:\Python27\lib\site-packages\django\template\loader_tags.py", line 214, in do_extends
+    nodelist = parser.parse()
+  File "C:\Python27\lib\site-packages\django\template\base.py", line 267, in parse
+    compiled_result = compile_func(self, token)
+  File "C:\Python27\lib\site-packages\django\template\loader_tags.py", line 189, in do_block
+    nodelist = parser.parse(('endblock',))
+  File "C:\Python27\lib\site-packages\django\template\base.py", line 267, in parse
+    compiled_result = compile_func(self, token)
+  File "C:\Python27\lib\site-packages\django\template\defaulttags.py", line 905, in do_if
+    condition = TemplateIfParser(parser, bits).parse()
+  File "C:\Python27\lib\site-packages\django\template\smartif.py", line 187, in parse
+    retval = self.expression()
+  File "C:\Python27\lib\site-packages\django\template\smartif.py", line 197, in expression
+    left = t.nud(self)
+  File "C:\Python27\lib\site-packages\django\template\smartif.py", line 145, in nud
+    raise parser.error_class("Unexpected end of expression in if tag.")
+TemplateSyntaxError: Unexpected end of expression in if tag.
+2015-01-17 21:52:10,132 [ERROR] django.request: Internal Server Error: /transit-patient/edit/7729/
+Traceback (most recent call last):
+  File "C:\Python27\lib\site-packages\django\core\handlers\base.py", line 111, in get_response
+    response = callback(request, *callback_args, **callback_kwargs)
+  File "D:\PROJECTS\PHARMACY\venv\Pharmacy-Application\ARVDispenser\patients\views.py", line 61, in transit_patient_registration
+    editted_patient.save()
+  File "D:\PROJECTS\PHARMACY\venv\Pharmacy-Application\ARVDispenser\patients\models.py", line 90, in save
+    super(ARTPatient, self).save(*args,**kwargs)
+  File "C:\Python27\lib\site-packages\django\db\models\base.py", line 463, in save
+    self.save_base(using=using, force_insert=force_insert, force_update=force_update)
+  File "C:\Python27\lib\site-packages\django\db\models\base.py", line 529, in save_base
+    rows = manager.using(using).filter(pk=pk_val)._update(values)
+  File "C:\Python27\lib\site-packages\django\db\models\query.py", line 557, in _update
+    return query.get_compiler(self.db).execute_sql(None)
+  File "C:\Python27\lib\site-packages\django\db\models\sql\compiler.py", line 986, in execute_sql
+    cursor = super(SQLUpdateCompiler, self).execute_sql(result_type)
+  File "C:\Python27\lib\site-packages\django\db\models\sql\compiler.py", line 818, in execute_sql
+    cursor.execute(sql, params)
+  File "C:\Python27\lib\site-packages\django\db\backends\util.py", line 40, in execute
+    return self.cursor.execute(sql, params)
+  File "C:\Python27\lib\site-packages\django\db\backends\mysql\base.py", line 114, in execute
+    return self.cursor.execute(query, args)
+  File "C:\Python27\lib\site-packages\MySQLdb\cursors.py", line 205, in execute
+    self.errorhandler(self, exc, value)
+  File "C:\Python27\lib\site-packages\MySQLdb\connections.py", line 36, in defaulterrorhandler
+    raise errorclass, errorvalue
+IntegrityError: (1452, 'Cannot add or update a child row: a foreign key constraint fails (`arvdispenser`.`tblartpatientmasterinformation`, CONSTRAINT `regimen_refs_regimencode` FOREIGN KEY (`regimen`) REFERENCES `tblregimen` (`regimenCode`) ON DELETE NO ACTION ON UPDATE NO ACTION)')
+2015-01-18 12:01:18,861 [ERROR] django.request: Internal Server Error: /
+Traceback (most recent call last):
+  File "C:\Python27\lib\site-packages\django\core\handlers\base.py", line 101, in get_response
+    request.path_info)
+  File "C:\Python27\lib\site-packages\django\core\urlresolvers.py", line 300, in resolve
+    sub_match = pattern.resolve(new_path)
+  File "C:\Python27\lib\site-packages\django\core\urlresolvers.py", line 209, in resolve
+    return ResolverMatch(self.callback, args, kwargs, self.name)
+  File "C:\Python27\lib\site-packages\django\core\urlresolvers.py", line 216, in callback
+    self._callback = get_callable(self._callback_str)
+  File "C:\Python27\lib\site-packages\django\utils\functional.py", line 27, in wrapper
+    result = func(*args)
+  File "C:\Python27\lib\site-packages\django\core\urlresolvers.py", line 92, in get_callable
+    lookup_view = getattr(import_module(mod_name), func_name)
+  File "C:\Python27\lib\site-packages\django\utils\importlib.py", line 35, in import_module
+    __import__(name)
+  File "D:\PROJECTS\PHARMACY\venv\Pharmacy-Application\ARVDispenser\patients\views.py", line 22, in <module>
+    from transactions.views import dispense
+  File "D:\PROJECTS\PHARMACY\venv\Pharmacy-Application\ARVDispenser\transactions\views.py", line 18, in <module>
+    from patients.views import patient_profile, homepage
+ImportError: cannot import name patient_profile
+2015-01-18 12:11:16,954 [ERROR] django.request: Internal Server Error: /get-batch-details/
+Traceback (most recent call last):
+  File "C:\Python27\lib\site-packages\django\core\handlers\base.py", line 111, in get_response
+    response = callback(request, *callback_args, **callback_kwargs)
+  File "D:\PROJECTS\PHARMACY\venv\Pharmacy-Application\ARVDispenser\commodities\views.py", line 82, in get_batch_details
+    if transaction == None:
+UnboundLocalError: local variable 'transaction' referenced before assignment
+2015-01-18 12:11:30,394 [ERROR] django.request: Internal Server Error: /get-batch-details/
+Traceback (most recent call last):
+  File "C:\Python27\lib\site-packages\django\core\handlers\base.py", line 111, in get_response
+    response = callback(request, *callback_args, **callback_kwargs)
+  File "D:\PROJECTS\PHARMACY\venv\Pharmacy-Application\ARVDispenser\commodities\views.py", line 82, in get_batch_details
+    if transaction == None:
+UnboundLocalError: local variable 'transaction' referenced before assignment
+2015-01-18 12:11:56,210 [ERROR] django.request: Internal Server Error: /get-batch-details/
+Traceback (most recent call last):
+  File "C:\Python27\lib\site-packages\django\core\handlers\base.py", line 111, in get_response
+    response = callback(request, *callback_args, **callback_kwargs)
+  File "D:\PROJECTS\PHARMACY\venv\Pharmacy-Application\ARVDispenser\commodities\views.py", line 82, in get_batch_details
+    if transaction == None:
+UnboundLocalError: local variable 'transaction' referenced before assignment
+2015-01-18 12:13:20,505 [ERROR] django.request: Internal Server Error: /get-batch-details/
+Traceback (most recent call last):
+  File "C:\Python27\lib\site-packages\django\core\handlers\base.py", line 111, in get_response
+    response = callback(request, *callback_args, **callback_kwargs)
+  File "D:\PROJECTS\PHARMACY\venv\Pharmacy-Application\ARVDispenser\commodities\views.py", line 82, in get_batch_details
+    if transaction == None:
+UnboundLocalError: local variable 'transaction' referenced before assignment
+2015-01-18 12:14:02,959 [ERROR] django.request: Internal Server Error: /get-batch-details/
+Traceback (most recent call last):
+  File "C:\Python27\lib\site-packages\django\core\handlers\base.py", line 111, in get_response
+    response = callback(request, *callback_args, **callback_kwargs)
+  File "D:\PROJECTS\PHARMACY\venv\Pharmacy-Application\ARVDispenser\commodities\views.py", line 82, in get_batch_details
+    if transaction == None:
+UnboundLocalError: local variable 'transaction' referenced before assignment
+2015-01-18 12:14:20,109 [ERROR] django.request: Internal Server Error: /patients/dispense-drugs/7730/23286
+Traceback (most recent call last):
+  File "C:\Python27\lib\site-packages\django\core\handlers\base.py", line 111, in get_response
+    response = callback(request, *callback_args, **callback_kwargs)
+  File "D:\PROJECTS\PHARMACY\venv\Pharmacy-Application\ARVDispenser\transactions\views.py", line 168, in dispense
+    tranbatch = form.cleaned_data['batchNo']).latest('transactiondate')
+  File "C:\Python27\lib\site-packages\django\db\models\query.py", line 474, in latest
+    return obj.get()
+  File "C:\Python27\lib\site-packages\django\db\models\query.py", line 366, in get
+    % self.model._meta.object_name)
+DoesNotExist: DrugDhysicalTran matching query does not exist.
+2015-01-18 12:17:40,917 [ERROR] django.request: Internal Server Error: /patients/dispense-drugs/7730/23286
+Traceback (most recent call last):
+  File "C:\Python27\lib\site-packages\django\core\handlers\base.py", line 111, in get_response
+    response = callback(request, *callback_args, **callback_kwargs)
+  File "D:\PROJECTS\PHARMACY\venv\Pharmacy-Application\ARVDispenser\transactions\views.py", line 188, in dispense
+    tranbatch = transaction.batchNo).latest('transactiondate')
+  File "C:\Python27\lib\site-packages\django\db\models\query.py", line 474, in latest
+    return obj.get()
+  File "C:\Python27\lib\site-packages\django\db\models\query.py", line 366, in get
+    % self.model._meta.object_name)
+DoesNotExist: DrugDhysicalTran matching query does not exist.
+2015-01-18 12:22:58,302 [ERROR] django.request: Internal Server Error: /get-batch-details/
+Traceback (most recent call last):
+  File "C:\Python27\lib\site-packages\django\core\handlers\base.py", line 111, in get_response
+    response = callback(request, *callback_args, **callback_kwargs)
+  File "D:\PROJECTS\PHARMACY\venv\Pharmacy-Application\ARVDispenser\commodities\views.py", line 82, in get_batch_details
+    if transaction == None:
+UnboundLocalError: local variable 'transaction' referenced before assignment
+2015-01-18 12:23:56,206 [ERROR] django.request: Internal Server Error: /get-batch-details/
+Traceback (most recent call last):
+  File "C:\Python27\lib\site-packages\django\core\handlers\base.py", line 111, in get_response
+    response = callback(request, *callback_args, **callback_kwargs)
+  File "D:\PROJECTS\PHARMACY\venv\Pharmacy-Application\ARVDispenser\commodities\views.py", line 82, in get_batch_details
+    if transaction == None:
+UnboundLocalError: local variable 'transaction' referenced before assignment
+2015-01-18 12:24:56,894 [ERROR] django.request: Internal Server Error: /get-batch-details/
+Traceback (most recent call last):
+  File "C:\Python27\lib\site-packages\django\core\handlers\base.py", line 111, in get_response
+    response = callback(request, *callback_args, **callback_kwargs)
+  File "D:\PROJECTS\PHARMACY\venv\Pharmacy-Application\ARVDispenser\commodities\views.py", line 82, in get_batch_details
+    if transaction == None:
+UnboundLocalError: local variable 'transaction' referenced before assignment
+2015-01-18 12:43:05,953 [ERROR] django.request: Internal Server Error: /patients/registration/
+Traceback (most recent call last):
+  File "C:\Python27\lib\site-packages\django\core\handlers\base.py", line 111, in get_response
+    response = callback(request, *callback_args, **callback_kwargs)
+  File "D:\PROJECTS\PHARMACY\venv\Pharmacy-Application\ARVDispenser\patients\views.py", line 273, in patient_registration_view
+    except DoesNotExist:
+NameError: global name 'DoesNotExist' is not defined
+2015-01-18 12:43:12,069 [ERROR] django.request: Internal Server Error: /patients/registration/
+Traceback (most recent call last):
+  File "C:\Python27\lib\site-packages\django\core\handlers\base.py", line 111, in get_response
+    response = callback(request, *callback_args, **callback_kwargs)
+  File "D:\PROJECTS\PHARMACY\venv\Pharmacy-Application\ARVDispenser\patients\views.py", line 273, in patient_registration_view
+    except DoesNotExist:
+NameError: global name 'DoesNotExist' is not defined
+2015-01-18 12:45:13,081 [ERROR] django.request: Internal Server Error: /get-regimen-in-service/PEP/
+Traceback (most recent call last):
+  File "C:\Python27\lib\site-packages\django\core\handlers\base.py", line 129, in get_response
+    raise ValueError("The view %s.%s didn't return an HttpResponse object." % (callback.__module__, view_name))
+ValueError: The view patients.views.get_regimen_in_service didn't return an HttpResponse object.
+2015-01-18 12:52:53,128 [ERROR] django.request: Internal Server Error: /get-regimen-in-service/1/
+Traceback (most recent call last):
+  File "C:\Python27\lib\site-packages\django\core\handlers\base.py", line 129, in get_response
+    raise ValueError("The view %s.%s didn't return an HttpResponse object." % (callback.__module__, view_name))
+ValueError: The view patients.views.get_regimen_in_service didn't return an HttpResponse object.
+2015-01-18 12:52:54,697 [ERROR] django.request: Internal Server Error: /get-regimen-in-service/1/
+Traceback (most recent call last):
+  File "C:\Python27\lib\site-packages\django\core\handlers\base.py", line 129, in get_response
+    raise ValueError("The view %s.%s didn't return an HttpResponse object." % (callback.__module__, view_name))
+ValueError: The view patients.views.get_regimen_in_service didn't return an HttpResponse object.
+2015-01-18 12:52:56,102 [ERROR] django.request: Internal Server Error: /get-regimen-in-service/1/
+Traceback (most recent call last):
+  File "C:\Python27\lib\site-packages\django\core\handlers\base.py", line 129, in get_response
+    raise ValueError("The view %s.%s didn't return an HttpResponse object." % (callback.__module__, view_name))
+ValueError: The view patients.views.get_regimen_in_service didn't return an HttpResponse object.
+2015-01-18 12:55:27,023 [ERROR] django.request: Internal Server Error: /patients/registration/
+Traceback (most recent call last):
+  File "C:\Python27\lib\site-packages\django\core\handlers\base.py", line 101, in get_response
+    request.path_info)
+  File "C:\Python27\lib\site-packages\django\core\urlresolvers.py", line 300, in resolve
+    sub_match = pattern.resolve(new_path)
+  File "C:\Python27\lib\site-packages\django\core\urlresolvers.py", line 209, in resolve
+    return ResolverMatch(self.callback, args, kwargs, self.name)
+  File "C:\Python27\lib\site-packages\django\core\urlresolvers.py", line 216, in callback
+    self._callback = get_callable(self._callback_str)
+  File "C:\Python27\lib\site-packages\django\utils\functional.py", line 27, in wrapper
+    result = func(*args)
+  File "C:\Python27\lib\site-packages\django\core\urlresolvers.py", line 92, in get_callable
+    lookup_view = getattr(import_module(mod_name), func_name)
+  File "C:\Python27\lib\site-packages\django\utils\importlib.py", line 35, in import_module
+    __import__(name)
+  File "D:\PROJECTS\PHARMACY\venv\Pharmacy-Application\ARVDispenser\patients\views.py", line 359
+    if(type_of_service is 'ART')
+                               ^
+SyntaxError: invalid syntax
+2015-01-18 12:56:08,020 [ERROR] django.request: Internal Server Error: /patients/registration/
+Traceback (most recent call last):
+  File "C:\Python27\lib\site-packages\django\core\handlers\base.py", line 101, in get_response
+    request.path_info)
+  File "C:\Python27\lib\site-packages\django\core\urlresolvers.py", line 300, in resolve
+    sub_match = pattern.resolve(new_path)
+  File "C:\Python27\lib\site-packages\django\core\urlresolvers.py", line 209, in resolve
+    return ResolverMatch(self.callback, args, kwargs, self.name)
+  File "C:\Python27\lib\site-packages\django\core\urlresolvers.py", line 216, in callback
+    self._callback = get_callable(self._callback_str)
+  File "C:\Python27\lib\site-packages\django\utils\functional.py", line 27, in wrapper
+    result = func(*args)
+  File "C:\Python27\lib\site-packages\django\core\urlresolvers.py", line 92, in get_callable
+    lookup_view = getattr(import_module(mod_name), func_name)
+  File "C:\Python27\lib\site-packages\django\utils\importlib.py", line 35, in import_module
+    __import__(name)
+  File "D:\PROJECTS\PHARMACY\venv\Pharmacy-Application\ARVDispenser\patients\views.py", line 359
+    if(type_of_service == 'ART')
+                               ^
+SyntaxError: invalid syntax
+2015-01-18 13:05:56,209 [ERROR] django.request: Internal Server Error: /get-regimen-in-service/PEP/
+Traceback (most recent call last):
+  File "C:\Python27\lib\site-packages\django\core\handlers\base.py", line 111, in get_response
+    response = callback(request, *callback_args, **callback_kwargs)
+  File "D:\PROJECTS\PHARMACY\venv\Pharmacy-Application\ARVDispenser\patients\views.py", line 378, in get_regimen_in_service
+    logger.debug('regimens :'+regimen)
+TypeError: cannot concatenate 'str' and 'QuerySet' objects
+2015-01-18 13:07:02,131 [ERROR] django.request: Internal Server Error: /get-regimen-in-service/ART/
+Traceback (most recent call last):
+  File "C:\Python27\lib\site-packages\django\core\handlers\base.py", line 111, in get_response
+    response = callback(request, *callback_args, **callback_kwargs)
+  File "D:\PROJECTS\PHARMACY\venv\Pharmacy-Application\ARVDispenser\patients\views.py", line 378, in get_regimen_in_service
+    logger.debug('regimenstuff :'+regimen)
+TypeError: cannot concatenate 'str' and 'QuerySet' objects
+2015-01-18 13:16:49,575 [ERROR] django.request: Internal Server Error: /get-regimen-in-service/ART/
+Traceback (most recent call last):
+  File "C:\Python27\lib\site-packages\django\core\handlers\base.py", line 111, in get_response
+    response = callback(request, *callback_args, **callback_kwargs)
+  File "D:\PROJECTS\PHARMACY\venv\Pharmacy-Application\ARVDispenser\patients\views.py", line 389, in get_regimen_in_service
+    logger.debug(regimen)
+UnboundLocalError: local variable 'regimen' referenced before assignment
+2015-01-18 13:17:11,897 [ERROR] django.request: Internal Server Error: /get-regimen-in-service/PEP/
+Traceback (most recent call last):
+  File "C:\Python27\lib\site-packages\django\core\handlers\base.py", line 111, in get_response
+    response = callback(request, *callback_args, **callback_kwargs)
+  File "D:\PROJECTS\PHARMACY\venv\Pharmacy-Application\ARVDispenser\patients\views.py", line 389, in get_regimen_in_service
+    logger.debug(regimen)
+UnboundLocalError: local variable 'regimen' referenced before assignment
+2015-01-18 13:19:36,283 [ERROR] django.request: Internal Server Error: /get-regimen-in-service/ART/
+Traceback (most recent call last):
+  File "C:\Python27\lib\site-packages\django\core\handlers\base.py", line 111, in get_response
+    response = callback(request, *callback_args, **callback_kwargs)
+  File "D:\PROJECTS\PHARMACY\venv\Pharmacy-Application\ARVDispenser\patients\views.py", line 376, in get_regimen_in_service
+    logger.debug(regimen)
+UnboundLocalError: local variable 'regimen' referenced before assignment
+2015-01-18 13:21:01,334 [ERROR] django.request: Internal Server Error: /get-regimen-in-service/PEP/
+Traceback (most recent call last):
+  File "C:\Python27\lib\site-packages\django\core\handlers\base.py", line 111, in get_response
+    response = callback(request, *callback_args, **callback_kwargs)
+  File "D:\PROJECTS\PHARMACY\venv\Pharmacy-Application\ARVDispenser\patients\views.py", line 376, in get_regimen_in_service
+    logger.debug(regimen)
+UnboundLocalError: local variable 'regimen' referenced before assignment
+2015-01-18 13:23:13,109 [ERROR] django.request: Internal Server Error: /get-regimen-in-service/ART/
+Traceback (most recent call last):
+  File "C:\Python27\lib\site-packages\django\core\handlers\base.py", line 111, in get_response
+    response = callback(request, *callback_args, **callback_kwargs)
+  File "D:\PROJECTS\PHARMACY\venv\Pharmacy-Application\ARVDispenser\patients\views.py", line 372, in get_regimen_in_service
+    if regimen == None:
+UnboundLocalError: local variable 'regimen' referenced before assignment
+2015-01-18 13:24:19,267 [ERROR] django.request: Internal Server Error: /get-regimen-in-service/ART/
+Traceback (most recent call last):
+  File "C:\Python27\lib\site-packages\django\core\handlers\base.py", line 111, in get_response
+    response = callback(request, *callback_args, **callback_kwargs)
+  File "D:\PROJECTS\PHARMACY\venv\Pharmacy-Application\ARVDispenser\patients\views.py", line 372, in get_regimen_in_service
+    if regimen == None:
+UnboundLocalError: local variable 'regimen' referenced before assignment
+2015-01-18 16:39:47,845 [ERROR] django.request: Internal Server Error: /get-regimen-in-service/ART/
+Traceback (most recent call last):
+  File "C:\Python27\lib\site-packages\django\core\handlers\base.py", line 111, in get_response
+    response = callback(request, *callback_args, **callback_kwargs)
+  File "D:\PROJECTS\PHARMACY\venv\Pharmacy-Application\ARVDispenser\patients\views.py", line 372, in get_regimen_in_service
+    if regimen == None:
+UnboundLocalError: local variable 'regimen' referenced before assignment
+2015-01-18 16:41:05,030 [ERROR] django.request: Internal Server Error: /get-regimen-in-service/ART/
+Traceback (most recent call last):
+  File "C:\Python27\lib\site-packages\django\core\handlers\base.py", line 111, in get_response
+    response = callback(request, *callback_args, **callback_kwargs)
+  File "D:\PROJECTS\PHARMACY\venv\Pharmacy-Application\ARVDispenser\patients\views.py", line 372, in get_regimen_in_service
+    if regimen == None:
+UnboundLocalError: local variable 'regimen' referenced before assignment
+2015-01-18 16:52:24,506 [ERROR] django.request: Internal Server Error: /get-drug-unit/
+Traceback (most recent call last):
+  File "C:\Python27\lib\site-packages\django\core\handlers\base.py", line 111, in get_response
+    response = callback(request, *callback_args, **callback_kwargs)
+  File "D:\PROJECTS\PHARMACY\venv\Pharmacy-Application\ARVDispenser\commodities\views.py", line 50, in get_drug_unit
+    if batchNos == None:
+UnboundLocalError: local variable 'batchNos' referenced before assignment
+2015-01-18 17:02:39,460 [ERROR] django.request: Internal Server Error: /get-drug-unit/
+Traceback (most recent call last):
+  File "C:\Python27\lib\site-packages\django\core\handlers\base.py", line 111, in get_response
+    response = callback(request, *callback_args, **callback_kwargs)
+  File "D:\PROJECTS\PHARMACY\venv\Pharmacy-Application\ARVDispenser\commodities\views.py", line 50, in get_drug_unit
+    if batchNos == None:
+UnboundLocalError: local variable 'batchNos' referenced before assignment
+16 Feb 2015 15:21:26 [ERROR] django.request: Internal Server Error: /get-drug-unit/ 
+Traceback (most recent call last):
+  File "C:\Python27\lib\site-packages\django\core\handlers\base.py", line 111, in get_response
+    response = callback(request, *callback_args, **callback_kwargs)
+  File "D:\PROJECTS\PHARMACY\venv\Pharmacy-Application\ARVDispenser\commodities\views.py", line 51, in get_drug_unit
+    if batchNos == None:
+UnboundLocalError: local variable 'batchNos' referenced before assignment
+16 Feb 2015 15:22:07 [ERROR] django.request: Internal Server Error: /get-drug-unit/ 
+Traceback (most recent call last):
+  File "C:\Python27\lib\site-packages\django\core\handlers\base.py", line 111, in get_response
+    response = callback(request, *callback_args, **callback_kwargs)
+  File "D:\PROJECTS\PHARMACY\venv\Pharmacy-Application\ARVDispenser\commodities\views.py", line 51, in get_drug_unit
+    if batchNos == None:
+UnboundLocalError: local variable 'batchNos' referenced before assignment
+16 Feb 2015 15:22:20 [ERROR] django.request: Internal Server Error: /get-drug-unit/ 
+Traceback (most recent call last):
+  File "C:\Python27\lib\site-packages\django\core\handlers\base.py", line 111, in get_response
+    response = callback(request, *callback_args, **callback_kwargs)
+  File "D:\PROJECTS\PHARMACY\venv\Pharmacy-Application\ARVDispenser\commodities\views.py", line 51, in get_drug_unit
+    if batchNos == None:
+UnboundLocalError: local variable 'batchNos' referenced before assignment
+16 Feb 2015 15:24:57 [ERROR] django.request: Internal Server Error: /get-drug-unit/ 
+Traceback (most recent call last):
+  File "C:\Python27\lib\site-packages\django\core\handlers\base.py", line 111, in get_response
+    response = callback(request, *callback_args, **callback_kwargs)
+  File "D:\PROJECTS\PHARMACY\venv\Pharmacy-Application\ARVDispenser\commodities\views.py", line 51, in get_drug_unit
+    if batchNos == None:
+UnboundLocalError: local variable 'batchNos' referenced before assignment
+16 Feb 2015 15:25:39 [ERROR] django.request: Internal Server Error: /get-drug-unit/ 
+Traceback (most recent call last):
+  File "C:\Python27\lib\site-packages\django\core\handlers\base.py", line 111, in get_response
+    response = callback(request, *callback_args, **callback_kwargs)
+  File "D:\PROJECTS\PHARMACY\venv\Pharmacy-Application\ARVDispenser\commodities\views.py", line 51, in get_drug_unit
+    if batchNos == None:
+UnboundLocalError: local variable 'batchNos' referenced before assignment
+16 Feb 2015 16:25:21 [WARNING] django.request: Not Found: /favicon.ico 
+
+17 Feb 2015 09:33:24 [ERROR] django.request: Internal Server Error: /drugs/drug-details/1239/ 
+Traceback (most recent call last):
+  File "C:\Python27\lib\site-packages\django\core\handlers\base.py", line 111, in get_response
+    response = callback(request, *callback_args, **callback_kwargs)
+  File "D:\PROJECTS\PHARMACY\venv\Pharmacy-Application\ARVDispenser\commodities\views.py", line 170, in drug_details
+    packs += d.packs
+TypeError: unsupported operand type(s) for +=: 'int' and 'NoneType'
+17 Feb 2015 09:37:56 [ERROR] django.request: Internal Server Error: /patients/dispense-drugs/2406/98749/2 
+Traceback (most recent call last):
+  File "C:\Python27\lib\site-packages\django\core\handlers\base.py", line 111, in get_response
+    response = callback(request, *callback_args, **callback_kwargs)
+  File "D:\PROJECTS\PHARMACY\venv\Pharmacy-Application\ARVDispenser\transactions\views.py", line 393, in dispense_drugs
+    combinations = edit_transaction.physicalDrug.arvdrug)
+  File "C:\Python27\lib\site-packages\django\db\models\query.py", line 366, in get
+    % self.model._meta.object_name)
+DoesNotExist: DrugsInRegimen matching query does not exist.
+17 Feb 2015 12:12:51 [ERROR] django.request: Internal Server Error: /patients/dispense-drugs/2406/98749/2 
+Traceback (most recent call last):
+  File "C:\Python27\lib\site-packages\django\core\handlers\base.py", line 111, in get_response
+    response = callback(request, *callback_args, **callback_kwargs)
+  File "D:\PROJECTS\PHARMACY\venv\Pharmacy-Application\ARVDispenser\transactions\views.py", line 393, in dispense_drugs
+    combinations = edit_transaction.physicalDrug.arvdrug)
+  File "C:\Python27\lib\site-packages\django\db\models\query.py", line 366, in get
+    % self.model._meta.object_name)
+DoesNotExist: DrugsInRegimen matching query does not exist.

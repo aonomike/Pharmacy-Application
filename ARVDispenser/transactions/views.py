@@ -8,7 +8,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.views.decorators.csrf import csrf_exempt
 from django.forms.formsets import formset_factory
 from django.utils.functional import curry
-
+from django.forms.models import inlineformset_factory
 
 from .models import PatientTransaction, Indication, Dosage
 from .forms import make_form, PatientTransactionForm
@@ -19,6 +19,79 @@ from patients.views import patient_profile, homepage
 from ARTRegimen.models import Regimen, RegimenHistory, DrugsInRegimen
 from ARTRegimen.forms import RegimenHistoryForm
 from commodities.models import PhysicalDrug, StockTransactionType, DrugDhysicalTran
+from AuditTrail.models import DrugFlowTracker
+
+def edit_dispensed(request, visit_id):
+    if not request.user.is_authenticated():
+        return redirect(LoginRequest)
+
+    visit = Visits.objects.get(pk = visit_id)
+    transactions = PatientTransaction.objects.filter(visit = visit)
+    art_patient = visit.ART_patient
+
+    try:
+        current_regimen = RegimenHistory.objects.filter(ART_patient = art_patient).order_by("-pk")[0]
+        regimen= Regimen.objects.get(regimencode = current_regimen.regimen)
+
+    except RegimenHistory.DoesNotExist:
+        current_regimen = None
+        regimen = None
+    except IndexError:
+        current_regimen = None
+        regimen = None
+
+    try:
+        bsa_details = WeightHeightBSAHistory.objects.filter(ART_patient = art_patient).order_by("-pk")[0]
+    except IndexError:
+        bsa_details = None
+    except WeightHeightBSAHistory.DoesNotExist:
+        bsa_details = None
+
+    template_name ='transactions/edit_dispensed.html'
+
+    transaction_inline_fact = inlineformset_factory(Visits, PatientTransaction,form = make_form(patient_id = art_patient.pk, visit_id = visit_id))
+
+    if request.method == "POST":
+        formset = transaction_inline_fact(request.POST, request.FILES, instance=visit)
+        if formset.is_valid():
+            formset.save()
+            # Do something. Should generally end with a redirect. For example:
+            return redirect(dispense, transactions.visit.ART_patient.pk, transactions.visit.pk)
+    else:
+        if transactions:
+            formset = transaction_inline_fact(instance=visit)
+            for  t in transactions:
+                #reverse the transaction by adding back what had been deducted
+                update_transaction = DrugDhysicalTran.objects.filter(
+                    arvdrug = t.physicalDrug).filter(
+                                    tranbatch = t.batchNo).latest('transactiondate')
+                update_transaction.quantity = (
+                                update_transaction.quantity + t.arvquantity)
+                update_transaction.save()
+            try:
+                current_regimen = RegimenHistory.objects.filter(
+                    ART_patient = art_patient).order_by("-pk")[0]
+            except RegimenHistory.DoesNotExist:
+                current_regimen = None
+            except IndexError:
+                current_regimen = None
+            if current_regimen:
+                drugs =[]
+                for t in transactions:
+                    drug = DrugsInRegimen.objects.filter(regimencode = current_regimen.regimen).get(combinations = t.physicalDrug.arvdrug)
+                    drug_dict = {}
+                    drug_dict['physicalDrug'] = drug
+                    drugs.append(drug)
+            else:
+                drug = DrugsInRegimen.objects.filter(
+                    combinations = edit_transaction.physicalDrug.arvdrug).get(
+                        regimencode = Regimen.objects.get(regimencode = 'OI'))
+            if drugs:
+                #Use the enumerate() function to generate the index along with the elements of the drugs sequence
+                for idx, drug in enumerate(drugs):
+                    formset.forms[idx].initial['physicalDrug'] = drug
+    return render_to_response(template_name, locals(), context_instance=RequestContext(request))
+
 
 def dispense(request, pk, visit_id):
     if not request.user.is_authenticated():
@@ -91,16 +164,6 @@ def dispense(request, pk, visit_id):
                         return render_to_response(template_name, locals(),
                             context_instance=RequestContext(request))
 
-                    update_transaction = DrugDhysicalTran.objects.filter(
-                        arvdrug = physical_drug).filter(
-                        tranbatch = form.cleaned_data['batchNo']).latest('transactiondate')
-
-                    if form.cleaned_data['arvquantity'] > update_transaction.quantity:
-                        messages.warning(request,
-                            ("Qty Dispensed Cannot Be Greater Than Batch Qty!"))
-                        return render_to_response(template_name, locals(),
-                            context_instance=RequestContext(request))
-
                     if form.cleaned_data['physicalDrug'] == None:
                         messages.warning(request,
                             ("No Drug Selected!"))
@@ -121,12 +184,24 @@ def dispense(request, pk, visit_id):
                     transaction.batchNo = form.cleaned_data['batchNo']
                     
                     transaction.operator = request.user
-                    transaction.save()
-
+                    update_transaction = DrugDhysicalTran.objects.filter(
+                        arvdrug = transaction.physicalDrug).filter(
+                            tranbatch = transaction.batchNo).latest('transactiondate')
                     
-                    update_transaction.quantity = (
-                        update_transaction.quantity - transaction.arvquantity)
+                    new_qty = transaction.save(drug_qty = update_transaction.quantity)
+
+                    update_transaction.quantity = new_qty
                     update_transaction.save()
+                    
+                    audit_trail = DrugFlowTracker(transactiontype = StockTransactionType.objects.get(pk = 6),
+                                                  transactiondate = transaction.created_at,
+                                                  tranbatch = transaction.batchNo,
+                                                  arvdrug = transaction.physicalDrug.arvdrug,
+                                                  expirydate = update_transaction.expirydate,
+                                                  remarks = 'Dispensed To Patient: '+art_patient.CCC_Number,
+                                                  quantity = transaction.arvquantity,
+                                                  operator = request.user)
+                    audit_trail.save()
                 
                     
             messages.info(request, ("Drug(s) Dispensed Successfully!"))
@@ -182,13 +257,7 @@ def dispense_drugs(request, pk, visit_id, transaction_id = None):
 
 	        if request.method == 'POST':
                         form = PatientTransactionForm(request.POST, patient_id = art_patient.pk, instance = edit_transaction )
-                        if edit_transaction:
-                                        update_transaction = DrugDhysicalTran.objects.filter(
-                                                arvdrug = edit_transaction.physicalDrug).filter(
-                                                tranbatch = edit_transaction.batchNo).latest('transactiondate')
-                                        update_transaction.quantity = (
-                                                update_transaction.quantity + edit_transaction.arvquantity)
-                                        update_transaction.save()
+                        
                         updated_data = request.POST.copy()
 
                         if request.POST.get('cancel', None):
@@ -203,6 +272,10 @@ def dispense_drugs(request, pk, visit_id, transaction_id = None):
                         otherDose = None
                         if request.POST.get('otherDose') != u"":
                             otherDose = request.POST.get('otherDose')
+
+                        old_qty = None
+                        if request.POST.get('old_qty') != u"":
+                            old_qty = request.POST.get('old_qty')
 
 
                         
@@ -242,17 +315,28 @@ def dispense_drugs(request, pk, visit_id, transaction_id = None):
                                         editted.batchNo = form.cleaned_data['batchNo']
                                         editted.physicalDrug = drug
                                         editted.operator = request.user
-                                        editted.save()
                                         
                                         update_transaction = DrugDhysicalTran.objects.filter(
                                                 arvdrug = editted.physicalDrug).filter(
                                                 tranbatch = editted.batchNo).latest('transactiondate')
-                                        update_transaction.quantity = (
-                                                update_transaction.quantity - editted.arvquantity)
+
+                                        new_qty = editted.save_edit(drug_qty = int(update_transaction.quantity), old_qty = int(old_qty))
+
+                                        update_transaction.quantity = new_qty
                                         update_transaction.save()
+                                        
+                                        audit_trail = DrugFlowTracker(transactiontype = StockTransactionType.objects.get(pk = 6),
+                                                  transactiondate = editted.created_at,
+                                                  tranbatch = editted.batchNo,
+                                                  arvdrug = editted.physicalDrug.arvdrug,
+                                                  expirydate = update_transaction.expirydate,
+                                                  remarks = 'An Update To Dispensed Drug: '+art_patient.CCC_Number,
+                                                  quantity = editted.arvquantity,
+                                                  operator = request.user)
+                                        audit_trail.save()
 
                                         messages.info(request, ("Dispensed Drug Editted Successfully!"))
-                                        return redirect(patient_profile, pk = pk)
+                                        return redirect(dispense, pk = pk,visit_id = visit_id)
                                 else:
                                         transaction = form.save(commit = False)
                                         transaction.visit = Visits.objects.get(pk = visit_id)
@@ -273,13 +357,15 @@ def dispense_drugs(request, pk, visit_id, transaction_id = None):
 
                                         transaction.physicalDrug = drug
                                         transaction.operator = request.user
-                                        transaction.save()
-                                        
+
                                         update_transaction = DrugDhysicalTran.objects.filter(
                                                 arvdrug = transaction.physicalDrug).filter(
                                                 tranbatch = transaction.batchNo).latest('transactiondate')
-                                        update_transaction.quantity = (
-                                                update_transaction.quantity - transaction.arvquantity)
+
+                                        new_qty = transaction.save(drug_qty = update_transaction.quantity)
+                                        
+                                        
+                                        update_transaction.quantity = new_qty
                                         update_transaction.save()
 
                                         messages.info(request, ("Drug(s) Dispensed Successfully!"))
@@ -292,14 +378,6 @@ def dispense_drugs(request, pk, visit_id, transaction_id = None):
 
 		else:
                         if edit_transaction:
-                            update_transaction = DrugDhysicalTran.objects.filter(
-                                arvdrug = edit_transaction.physicalDrug).filter(
-                                    tranbatch = edit_transaction.batchNo).latest('transactiondate')
-                            
-                            update_transaction.quantity = (
-                                update_transaction.quantity + edit_transaction.arvquantity)
-
-                            update_transaction.save()
 
                             try:
                                 current_regimen = RegimenHistory.objects.filter(
@@ -310,8 +388,9 @@ def dispense_drugs(request, pk, visit_id, transaction_id = None):
                                 current_regimen = None
 
                             if current_regimen:
-                                drug = DrugsInRegimen.objects.get(
-                                    combinations = edit_transaction.physicalDrug.arvdrug)
+                                drug = DrugsInRegimen.objects.filter(
+                                    regimencode = current_regimen.regimen).get(
+                                        combinations = edit_transaction.physicalDrug.arvdrug)
                             else:
                                 drug = DrugsInRegimen.objects.filter(
                                     combinations = edit_transaction.physicalDrug.arvdrug).get(
@@ -343,11 +422,20 @@ def delete_transaction(request, transaction_id):
         update_transaction.quantity =  transaction.arvquantity + update_transaction.quantity
         update_transaction.save()                                     
         transaction.delete()
+        audit_trail = DrugFlowTracker(transactiontype = StockTransactionType.objects.get(pk = 4),
+                                      transactiondate = transaction.created_at,
+                                      tranbatch = transaction.batchNo,
+                                      arvdrug = transaction.physicalDrug.arvdrug,
+                                      expirydate = update_transaction.expirydate,
+                                      remarks = 'Transaction Reversed',
+                                      quantity = transaction.arvquantity,
+                                      operator = request.user)
+        audit_trail.save()
         messages.info(request, ("Transaction Deleted Successfully!"))
     else:
         messages.info(request, ("Ooops! Seems Like The Transaction Has Already Been Deleted. Just Refresh The Page. If This Persists Please Contact The Admin."))
         
-    return redirect(homepage)
+    return redirect(dispense, transaction.visit.ART_patient.pk, transaction.visit.pk)
 
 
 def get_drugs_dispensed_today(request, visitid):

@@ -48,6 +48,22 @@ def get_appointment_dates(request):
 
 		return HttpResponse(json.dumps(response_data), content_type="application/json")
 
+def patients_scheduled(request):
+	'''
+	gets all  the patients scheduled for visit on a given date
+	'''
+	template_name='patients_scheduled.html'
+	page_title = 'Patients Scheduled'
+	visits = Visits.objects.filter(dateofnextappointment = datetime.today())
+	patients = []
+	for visit in visits:
+		patient = visit.ART_patient
+		patients.append(patient) 
+
+	return render_to_response(template_name, locals(),
+		context_instance=RequestContext(request))
+
+
 def create_visit(request, pk):
 	if not request.user.is_authenticated:
 		return redirect(LoginRequest)

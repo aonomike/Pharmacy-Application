@@ -135,7 +135,7 @@
 
     <li class="list-group-item">
      <strong>TB Positive: </strong>
-    {% if patient.TB == True %}
+    {% if patient.TB %}
     <span class="pull-right true">Yes</span>
     {% else %}
     <span class="pull-right">No</span>
@@ -147,7 +147,7 @@
 
     <li class="list-group-item">
      <strong>Smokes: </strong>
-    {% if patient.smokes == True %}
+    {% if patient.smokes %}
     <span class="pull-right true">Yes</span>
     {% else %}
     <span class="pull-right">No</span>
@@ -157,7 +157,7 @@
 
     <li class="list-group-item">
      <strong>Drinks: </strong>
-    {% if patient.drinks == True %}
+    {% if patient.drinks %}
     <span class="pull-right true">Yes</span>
     {% else %}
     <span class="pull-right">No</span>
@@ -224,15 +224,7 @@
     <li class="list-group-item">
     <div><p> 
         <strong>Type Of Service: </strong>
-        {% if patient.type_of_service == '1' %}
-        <span class="pull-right">ART</span>
-        {% elif patient.type_of_service == '2' %}
-        <span class="pull-right">PEP</span>
-        {% elif patient.type_of_service == '5' %}
-        <span class="pull-right">OI Only</span>
-        {% elif patient.type_of_service == '3' %}
-        <span class="pull-right">PMTCT</span>
-        {% endif %}
+        <span class="pull-right">{{patient.type_of_service}}</span>
         </p>
         </div>
     </li>
@@ -264,7 +256,12 @@
   </button>
   <ul class="dropdown-menu" role="menu">
 
-    <li><a href="/patients/edit/{{patient.pk}}">
+    <li>{% if patient.current_status.currentstatus == 'Transit' %}
+   
+    <a href="/transit-patient/edit/{{patient.pk}}">
+    {% else %}
+     <a href="/patients/edit/{{patient.pk}}">
+    {% endif %}
     <i class="fa fa-check-circle-o"></i> Edit Patient Record</a></li>
     <li class="divider"></li>
     <li><a href="/patients/new-visit/{{patient.pk}}">

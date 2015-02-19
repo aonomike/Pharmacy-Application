@@ -1,9 +1,8 @@
 from datetime import date, datetime
 import json
 
-from django.shortcuts import render
 from django.http import HttpResponse
-from django.shortcuts import render, render_to_response, redirect, get_object_or_404
+from django.shortcuts import render_to_response, redirect, get_object_or_404
 from django.contrib import messages
 from django.template import RequestContext
 from django.views.decorators.cache import never_cache
@@ -13,13 +12,13 @@ from .models import RegimenHistory, RegimenChangeReasons, Regimen, DrugsInRegime
 from user_account.views import LoginRequest
 from patients.models import ARTPatient
 from patients.views import homepage
-from transactions.views import dispense_drugs, dispense
+from transactions.views import dispense
 from visits.models import Visits
 from commodities.models import PhysicalDrug
 
 @never_cache
 def get_regimen_change_reasons(request):
-	if request.is_ajax():
+    if request.is_ajax():
 		try:
 			regimen_change_reasons = RegimenChangeReasons.objects.filter(is_active = True)
 

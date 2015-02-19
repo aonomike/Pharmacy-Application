@@ -81,6 +81,9 @@ class DrugDhysicalTran(MetaData):
     	if self.expirydate < self.transactiondate:
     		raise ValidationError('Expiry Date Cannot Be Earlier Than Transaction Date')
 
+    def getARVDrug(self):
+        return PhysicalDrug.objects.get(arvdrug = self.arvdrug)
+
     class Meta:
         db_table = 'tbldrugphysicaltran'    
 

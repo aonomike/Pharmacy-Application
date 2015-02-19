@@ -1,0 +1,8 @@
+18 Jan 2015 17:20:36 [INFO] patients.views: [<Regimen: 21>, <Regimen: AF1A>, <Regimen: AF1B>, <Regimen: AF1C>, <Regimen: AF2A>, <Regimen: AF2B>, <Regimen: AF2C>, <Regimen: AF3A>, <Regimen: AF3B>, <Regimen: AF3C>, <Regimen: AHB1>, <Regimen: AR1>, <Regimen: AR10>, <Regimen: AR11>, <Regimen: AR12>, <Regimen: AR13>, <Regimen: AR14>, <Regimen: AR16>, <Regimen: AR17>, <Regimen: AR18>, '...(remaining elements truncated)...'] 
+
+18 Jan 2015 17:20:36 [INFO] patients.views: ART 
+
+18 Jan 2015 17:21:24 [INFO] patients.views: This is a fairlyy simple example 
+
+18 Jan 2015 17:21:24 [INFO] patients.views: PEP 
+

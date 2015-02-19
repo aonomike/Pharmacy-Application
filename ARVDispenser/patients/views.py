@@ -5,25 +5,24 @@ import datetime
 import json
 from datetime import date
 
-from django.shortcuts import render, render_to_response, redirect, get_object_or_404
+from django.shortcuts import render_to_response, redirect, get_object_or_404
 from django.template import RequestContext
-from django.views import generic
 from django.contrib import messages
-from django.http import HttpResponse, HttpResponseRedirect
-from django.contrib.auth.models import User
+from django.http import HttpResponse
 from django.db.models import Q
+import logging
 
-
-
-from .forms import ARTPatientForm, WeightHeightBSAHistoryForm, search_patient_form
+from .forms import ARTPatientForm, WeightHeightBSAHistoryForm, TransitPatientForm
 from .models import ARTPatient, WeightHeightBSAHistory, CurrentStatus
 from user_account.views import LoginRequest
-from visits.models import Visits
-from visits.forms import VisitForm
+from visits.models import Visits, VisitType
 from ARTRegimen.models import Regimen, RegimenHistory, RegimenChangeReasons
-from commodities.models import DrugDhysicalTran
 from transactions.models import PatientTransaction
 from sourceOrDestination.models import DrugSource, DrugDestination
+
+
+logger = logging.getLogger(__name__)
+
 
 def homepage(request):
 	if request.user.is_authenticated():
@@ -35,6 +34,81 @@ def homepage(request):
                               context_instance=RequestContext(request))
 	else:
                 return redirect(LoginRequest)
+
+#create new or edit existing. If patient_id is None, create new, else edit this patient
+def transit_patient_registration(request, pk = None):
+        if not request.user.is_authenticated:
+                return redirect(LoginRequest)
+
+	template_name='patients/transit_patient.html'
+	page_title = 'Transit Patient Registration'
+
+	if pk:
+		patient = ARTPatient.objects.get(pk = pk)
+	else:
+		patient = None
+
+	if request.method == 'POST':
+                form = TransitPatientForm(request.POST, request.FILES, instance = patient )
+
+		if request.POST.get('cancel', None):
+                        return redirect(homepage)
+
+		if form.is_valid():
+                        if patient:
+                                editted_patient = form.save(commit = False)
+                                editted_patient.modified_at = datetime.datetime.now()
+                                editted_patient.regimen = None
+                                editted_patient.save()
+                                if request.POST.get('weight') != u"":
+                                        weight_height_details = WeightHeightBSAHistory(eventdate = date.today(),
+                                                                                       weight = request.POST.get('weight'),
+                                                                                       ART_patient = editted_patient )
+                                        weight_height_details.save()
+                                messages.info(request, ("{0}'s Patient Record Updated Successfully!").format(editted_patient))
+                                return redirect(patient_profile, pk = pk)
+                        else:
+                                saved_patient = form.save(commit = False)
+                                saved_patient.modified_at = datetime.datetime.now()
+                                saved_patient.created_at = datetime.datetime.now()
+                                saved_patient.current_status = CurrentStatus.objects.get(pk = 15)
+                                saved_patient.regimen = None
+                                saved_patient.is_active = True
+                                saved_patient.save()
+                                pk = saved_patient.pk
+                                if request.POST.get('weight') != u"":
+                                        weight_height_details = WeightHeightBSAHistory(eventdate = date.today(),
+                                                                                       weight = request.POST.get('weight'),
+                                                                                       ART_patient = saved_patient )
+                                        weight_height_details.save()
+                                visit = Visits(eventdate = datetime.datetime.now(),
+                                               ART_patient = saved_patient,
+                                               modified_at = datetime.datetime.now(),
+                                               created_at = datetime.datetime.now(),
+                                               dateofnextappointment = None,
+                                               is_active = True,
+                                               visittype = VisitType.objects.get(visittype = 'Start'),
+                                               days_to_TCA = None)
+                                visit.save()
+                                messages.info(request, ("{0}'s Patient Record Created Successfully!").format(saved_patient))
+                                return redirect('transactions.views.dispense', pk = pk, visit_id = visit.pk)
+		else:
+                        messages.warning(request,
+                                         "Ooops! Please correct the highlighted fields, then try again.")
+                        return render_to_response(template_name, locals(),
+                                                  context_instance=RequestContext(request))
+	else:
+                if patient:
+                        try:
+                                wthtbsa = WeightHeightBSAHistory.objects.filter(ART_patient = patient).latest('eventdate')
+                        except DoesNotExist:
+                                wthtbsa = None
+                        form=TransitPatientForm(instance = patient, initial={'weight':wthtbsa.weight})
+                else:
+                        form=TransitPatientForm()
+                        
+                return render_to_response(template_name, locals(),
+				context_instance=RequestContext(request))
 
 
 def search_patient(request, search_text):
@@ -70,7 +144,11 @@ def search_patient(request, search_text):
 				patient_data.append(full_name)
 				patient_data.append(p.sex.upper())
 				patient_data.append(p.is_active)
+				patient_data.append(p.current_status.currentstatus)
+				patient_data.append(p.type_of_service)
+				
 				patient_data.append(p.pk)
+				'''
 				if p.type_of_service == '1':
 					patient_data.append('ART')
 				elif p.type_of_service == '2':
@@ -79,6 +157,7 @@ def search_patient(request, search_text):
 					patient_data.append('OI Only')
 				elif p.type_of_service == '3':
 					patient_data.append('PMTCT')
+				'''
 
 				patients_list.append(patient_data)
 
@@ -96,7 +175,8 @@ def activate_patient(request, pk):
     	patient.save()
     	messages.info(request, ("{0} Activated Successfully!").format(patient))
     	return redirect(homepage)
-    
+ 
+	  
 
 #create new or edit existing. If patient_id is None, create new, else edit this patient
 def patient_registration_view(request, pk = None):
@@ -140,6 +220,17 @@ def patient_registration_view(request, pk = None):
 						  created_at = edited_patient.created_at,
 						  is_active = True)
 						 rh.save()
+					if request.POST.get('weight') != u"" and request.POST.get('height') != u"":
+						weight_height_details = WeightHeightBSAHistory(eventdate = date.today(),
+							weight = request.POST.get('weight'), height = request.POST.get('height'),
+							ART_patient = edited_patient )
+						weight_height_details.save()
+
+					elif request.POST.get('weight') != u"" and request.POST.get('height') == u"":
+						weight_height_details = WeightHeightBSAHistory(eventdate = date.today(),
+							weight = request.POST.get('weight'),
+							ART_patient = edited_patient )
+						weight_height_details.save()
 					messages.info(request, ("{0}'s Patient Record Updated Successfully!").format(edited_patient))
 				else:
 					saved_patient = form.save(commit = False)
@@ -177,9 +268,13 @@ def patient_registration_view(request, pk = None):
 				return render_to_response(template_name, context,
 					context_instance=RequestContext(request))
 		else:
+                        try:
+                                wthtbsa = WeightHeightBSAHistory.objects.filter(ART_patient = patient).latest('eventdate')
+                        except WeightHeightBSAHistory.DoesNotExist:
+                                wthtbsa = None
 			form=ARTPatientForm(instance = patient, initial = {'current_status': 1 },)
-			context={'form':form,'page_title':page_title}
-			return render_to_response(template_name, context,
+			
+			return render_to_response(template_name, locals(),
 				context_instance=RequestContext(request))
 
 	else:
@@ -260,9 +355,16 @@ def patient_bsa(request,pk):
 
 def get_regimen_in_service(request, type_of_service):
 	if request.is_ajax():
-		try:
-			regimen = Regimen.objects.filter(type_of_service = type_of_service)
-			
+                try:
+                        regimen = None
+                        if type_of_service == 'ART':
+                                regimen = Regimen.objects.filter(type_of_service = '1')
+                        if type_of_service == 'PEP':
+                                regimen = Regimen.objects.filter(type_of_service = '2')
+                        if type_of_service == 'OI Only':
+                                regimen = Regimen.objects.filter(type_of_service = '5')
+                        logger.info('This is a fairlyy simple example')
+			logger.info(type_of_service)
 		except Regimen.DoesNotExist:
 			regimen = None
 		
